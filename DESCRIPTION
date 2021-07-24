@@ -1,5 +1,5 @@
 Package: bayesdag
-Title: What the Package Does (One Line, Title Case)
+Title: Fully Bayesian approaches to causal discovery and causal effect estimation
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "First",
@@ -7,9 +7,10 @@ Authors@R:
            role = c("aut", "cre"),
            email = "first.last@example.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: bayesdag implements a bunch of fully Bayesian methodologies for learning 
+  the causal structure of a given set of variables in the so-called causally sufficient case. 
+  It also provides some functions for causal effect estimation with uncertain DAGs.
+License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
