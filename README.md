@@ -1,25 +1,12 @@
 
+This repository is only temporarily public.
+
 # bayesdag
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of bayesdag is to ...
+The goal of bayesdag is to provide a simple way to use Bayesian methodologies for DAG structure learning and causal effect estimation in the "causally sufficient"" case.
 
-## Installation
 
-You can install the released version of bayesdag from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("bayesdag")
-```
-
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(bayesdag)
-## basic example code
-```
 

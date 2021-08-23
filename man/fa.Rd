@@ -7,6 +7,8 @@
 fa(node, DAG)
 }
 \arguments{
+\item{node}{Questa e' una prova di commento}
+
 \item{DAG}{}
 }
 \value{

@@ -1,6 +1,6 @@
 #' Learn the family of a node given a DAG
 #'
-#' @param node
+#' @param node Questa e' una prova di commento
 #' @param DAG
 #'
 #' @return fa
