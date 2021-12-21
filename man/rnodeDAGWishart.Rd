@@ -2,18 +2,25 @@
 % Please edit documentation in R/rnodeDAGWishart.R
 \name{rnodeDAGWishart}
 \alias{rnodeDAGWishart}
-\title{Sample 1 observation for a single node of a DAG from a DAG-Wishart distribution}
+\title{Draw one observation from a Normal-Inverse-Gamma distribution (internal function)}
 \usage{
 rnodeDAGWishart(node, DAG, aj, U)
 }
 \arguments{
-\item{node}{The node for which}
+\item{node}{numerical label of the node in \code{DAG}}
 
-\item{U}{}
+\item{DAG}{\eqn{(q,q)} adjacency matrix of the DAG}
+
+\item{aj}{common shape hyperparameter of the compatible DAG-Wishart, \eqn{a > q - 1}}
+
+\item{U}{position hyperparameter of the compatible DAG-Wishart, a \eqn{(q, q)} s.p.d. matrix}
 }
 \value{
-
+A list with two elements; a vector with one draw for the (vector) regression coefficient and a scalar with one draw for the conditional variance
 }
 \description{
-Sample 1 observation for a single node of a DAG from a DAG-Wishart distribution
+This function performs one draw from the Multivariate-Normal-Inverse-Gamma (prior/posterior) distribution of the parameters of a Normal linear regression model.
+Response variable is \code{node} and covariates are given by the parents of \code{node} in \code{DAG}.
+It is implemented node-by-node in \code{rDAGWishart} to obtain draws
+from a compatible (prior/posterior) DAG-Wishart distribution.
 }

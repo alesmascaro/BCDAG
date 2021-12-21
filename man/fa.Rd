@@ -2,18 +2,18 @@
 % Please edit documentation in R/fa.R
 \name{fa}
 \alias{fa}
-\title{Learn the family of a node given a DAG}
+\title{Find the family of a node in a DAG (internal function)}
 \usage{
 fa(node, DAG)
 }
 \arguments{
-\item{node}{Questa e' una prova di commento}
+\item{node}{numerical label of the node in \code{DAG}}
 
-\item{DAG}{}
+\item{DAG}{\eqn{(q,q)} adjacency matrix of the DAG}
 }
 \value{
-fa
+A numerical vector with the labels of the family of \code{node} in \code{DAG}
 }
 \description{
-Learn the family of a node given a DAG
+This function finds the family (union of \code{node} and its parents) of \code{node} in \code{DAG}
 }

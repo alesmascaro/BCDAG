@@ -14,11 +14,14 @@ Sigma <- t(solve(L))%*%D%*%solve(L)
 a <- 6
 g <- 1/1000
 U <- g*diag(1,q)
+w = 0.2
 
+set.seed(1)
 X <- mvtnorm::rmvnorm(n, sigma = Sigma)
 
-out <- learn_DAG(5000, 2000, X, a, U, w = 0.3)
+out <- learn_DAG(1000, 0, X, a, U, w, fast = TRUE, collapse = TRUE, save.memory = FALSE)
 
-apply(out$Graphs, c(1,2), mean)
-
+test_that("learn_DAG identifies the correct DAG in a simple case", {
+  expect_equal(bd_encode(DAG3), bd_encode(get_MPMdag(out)))
+})
 

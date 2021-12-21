@@ -1,20 +1,28 @@
-
-#' An internal function that randomly modifies a DAG and checks that the resulting DAG is a DAG
+#' MCMC proposal distribution (internal function)
+#'
+#' This function implements a proposal distribution for the MCMC scheme of \code{learn_DAG}.
+#' Given an input \code{DAG}, it first builds the set of all DAGs which can be obtained by applying a local move
+#' (insertion, deletion or reversal of one edge) to \code{DAG},
+#' that is the set of direct successors of \code{DAG};
+#' next, it randomly draws one candidate (proposed) DAG from the so-obtained set.
+#' Finally, the set of direct successors of the proposed DAG is constructed.
+#' The function returns: the proposed DAG, the type of operator applied to \code{DAG} to obtain the proposed DAG
+#' (with value 1 if insertion, 2 if deletion, 3 if reversal),
+#' the nodes involved in the local move, the number of direct successors of \code{DAG} and of the proposed DAG.
+#' If \code{fast = TRUE} the two numbers of direct successors are approximated by the number of possible operators that can be applied to the DAGs
+#' (equal for the two graphs)
 #'
 #' @param DAG Adjacency matrix of the current DAG
-#'
-#' @return A list containing the proposed DAG, the type of operation performed, the nodes on which the operation has been performed and the cardinality of all the possible operations
+#' @param fast boolean, if \code{TRUE} an approximate proposal is implemented
+#' @return A list containing the \eqn{(q,q)} adjacency matrix of the proposed DAG, the type of applied operator (with values in \eqn{{1,2,3}}), the numerical labels of the nodes involved in the move, the integer number of direct successors of \code{DAG} and of the proposed DAG
 #' @export
-#'
-#' @examples
-
 propose_DAG <- function(DAG, fast) {
   A <- DAG
   q <- ncol(A)
   A_na <- A
   diag(A_na) <- NA
 
-  # Define the set of possible operations!
+  # Define the set of possible operations
   # The cardinality of O will change depending on how many edges are present in the DAG
 
   id_set = c()
@@ -41,7 +49,7 @@ propose_DAG <- function(DAG, fast) {
 
   O = rbind(id_set, dd_set, rd_set)
 
-  # Actually sample one random operation and verify it produces a DAG
+  # Sample one random operator and verify it produces a DAG
 
   if (fast == FALSE) {
     proposed.opcardvec <- vector(length = nrow(O))

@@ -1,4 +1,5 @@
 library(testthat)
-library(bayesdag)
+library(BCDAG)
 
-test_check("bayesdag")
+test_check("BCDAG")
+

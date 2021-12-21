@@ -2,16 +2,18 @@
 % Please edit documentation in R/pa.R
 \name{pa}
 \alias{pa}
-\title{Learn the parents of a node in a DAG}
+\title{Find the parents of a node in a DAG (internal function)}
 \usage{
 pa(node, DAG)
 }
 \arguments{
-\item{DAG}{}
+\item{node}{numerical label of the node in \code{DAG}}
+
+\item{DAG}{\eqn{(q,q)} adjacency matrix of the DAG}
 }
 \value{
-pa
+A numerical vector with the labels of the parents of \code{node} in \code{DAG}
 }
 \description{
-Learn the parents of a node in a DAG
+This function finds the set of parents of \code{node} in \code{DAG}
 }

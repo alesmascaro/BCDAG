@@ -1,3 +1,7 @@
+#' Build the set of direct successors of a DAG (internal function)
+#'
+#' @param DAG The DAG for which we want to list the set of direct successors
+
 get_opcard <- function(DAG) {
   A <- DAG
   q <- ncol(A)
@@ -5,7 +9,6 @@ get_opcard <- function(DAG) {
   diag(A_na) <- NA
 
   # Define the set of possible operations!
-  # The cardinality of O will change depending on how many edges are present in the DAG
 
   id_set = c()
   dd_set = c()

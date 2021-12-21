@@ -13,6 +13,7 @@ Sigma <- t(solve(L))%*%D%*%solve(L)
 
 
 X <- mvtnorm::rmvnorm(n, sigma = Sigma)
+n <- nrow(X)
 tXX <- t(X)%*%X
 
 a <- 6
@@ -20,11 +21,11 @@ g <- 1/n
 U <- g*diag(1,q)
 
 test_that("Score equivalence of Markov equivalent DAGs", {
-  expect_equal(sum(sapply(1:q, function(j) DW_nodemll(j, DAG1, X, tXX, a, U))),
-               sum(sapply(1:q, function(j) DW_nodemll(j, DAG2, X, tXX, a, U))))
+  expect_equal(sum(sapply(1:q, function(j) DW_nodelml(j, DAG1, tXX, n, a, U))),
+               sum(sapply(1:q, function(j) DW_nodelml(j, DAG2, tXX, n, a, U))))
 })
 
 test_that("Score difference of non-Markov equivalent DAGs", {
-  expect_false(sum(sapply(1:q, function(j) DW_nodemll(j, DAG1, X, tXX, a, U))) ==
-                 sum(sapply(1:q, function(j) DW_nodemll(j, DAG3, X, tXX, a, U))))
+  expect_false(sum(sapply(1:q, function(j) DW_nodelml(j, DAG1, tXX, n, a, U))) ==
+                 sum(sapply(1:q, function(j) DW_nodelml(j, DAG3, tXX, n, a, U))))
 })

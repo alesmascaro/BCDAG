@@ -1,15 +1,13 @@
-
-#' A simple function to perform an add/remove/reverse edge operation on a DAG
+#' Perform local moves given a DAG (internal function)
 #'
-#' @param op The type of operation performed: op == 1 corresponds to adding an edge, op == 2 corresponds to removing an edge, op == 3 corresponds to reversing an edge
-#' @param A The adjacency matrix of the DAG on which the operation is performed
-#' @param nodes The nodes on which the operation is to be performed
+#' This function locally modifies a DAG by inserting (\code{op = 1}), deleting (\code{op = 2}) or reversing (\code{op = 3}) an edge between two \code{nodes}
 #'
-#' @return The adjacency matrix of the modified DAG
+#' @param op numerical type in \eqn{{1,2,3}} of the operator applied to \code{DAG}
+#' @param A \eqn{(q,q)} adjacency matrix of the input DAG
+#' @param nodes numerical labels of nodes on which the operator is applied, a \eqn{(2,1)} vector
+#'
+#' @return The \eqn{(q,q)} adjacency matrix of the modified DAG
 #' @export
-#'
-#' @examples
-
 operation <- function(op, A, nodes) {
   x <- nodes[1]
   y <- nodes[2]

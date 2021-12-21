@@ -2,11 +2,11 @@
 % Please edit documentation in R/acceptreject_DAG.R
 \name{acceptreject_DAG}
 \alias{acceptreject_DAG}
-\title{Accept/Reject a proposed DAG}
+\title{Accept/reject the proposed DAG given the current DAG (internal function)}
 \usage{
 acceptreject_DAG(
-  X,
   tXX,
+  n,
   currentDAG,
   proposedDAG,
   node,
@@ -19,27 +19,34 @@ acceptreject_DAG(
 )
 }
 \arguments{
-\item{X}{Matrix of centered data}
+\item{tXX}{\eqn{(q,q)} matrix \eqn{X'X} with \eqn{X} the \eqn{(n,q)} data matrix}
 
-\item{tXX}{Empirical covariance matrix (given centered data)}
+\item{n}{number of observations (rows) in the data matrix \eqn{X}}
 
-\item{currentDAG}{As the name suggests}
+\item{currentDAG}{\eqn{(q,q)} adjacency matrix of current DAG}
 
-\item{proposedDAG}{As the name suggests}
+\item{proposedDAG}{\eqn{(q,q)} adjacency matrix of proposed DAG}
 
-\item{node}{Nodes that differ between the two DAGs}
+\item{node}{nodes \eqn{u} and \eqn{v} involved in the modified edge \eqn{u -> v}}
 
-\item{op.type}{The operation performed on the current DAG to obtain the proposed DAG}
+\item{op.type}{the type of operator applied to \code{currentDAG} to obtain \code{proposedDAG}}
 
-\item{a}{hyperparameter}
+\item{a}{shape hyperparameter of the DAG Wishart prior}
 
-\item{U}{hyperparameter}
+\item{U}{position hyperparameter of the DAG Wishart prior}
 
-\item{w}{hyperparameter}
+\item{w}{prior probability of edge inclusion}
+
+\item{current.opcard}{number of direct successors of \code{currentDAG}}
+
+\item{proposed.opcard}{number of direct successors of \code{proposedDAG}}
 }
 \value{
-A Boolean indicating whether the proposed DAG has been accepted or not
+A Boolean indicating whether \code{proposedDAG} has been accepted (\code{TRUE}) or not (\code{FALSE})
 }
 \description{
-Accept/Reject a proposed DAG
+This function computes the Metropolis Hastings acceptance rate for \code{proposedDAG} given \code{currentDAG}
+and the accepts/rejects \code{proposedDAG} based on the Metropolis Hastings acceptance probability.
+\code{proposedDAG} is a direct successor of \code{currentDAG}, which was obtained by applying an operator of type InsertD, DeleteD or ReverseD to \code{currentDAG}.
+The two DAGs only differ by one edge \eqn{u -> v} which has been inserted/deleted/reversed in \code{currentDAG}.
 }
