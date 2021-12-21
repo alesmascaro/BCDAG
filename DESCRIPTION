@@ -1,23 +1,27 @@
-Package: bayesdag
-Title: Fully Bayesian approaches to causal discovery and causal effect estimation
+Package: BCDAG
+Title: An R package for Bayesian structural and Causal learning of Gaussian DAGs
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Federico",
+           family = "Castelletti",
+           role = "aut",
+           email = "federico.castelletti@unicatt.it",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person(given = "Alessandro",
+           family = "Mascaro",
            role = c("aut", "cre"),
            email = "first.last@example.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: bayesdag implements a bunch of fully Bayesian methodologies for learning 
-  the causal structure of a given set of variables in the so-called causally sufficient case. 
-  It also provides some functions for causal effect estimation with uncertain DAGs.
+Description: Description...
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Imports: pcalg,
-    mvtnorm,
-    gRbase
+Imports: graphics, gRbase, grDevices, lattice, methods, mvtnorm, qpdf, stats, utils
 Suggests: 
+    rmarkdown,
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+VignetteBuilder: knitr

@@ -1,15 +1,13 @@
-#' Learn the family of a node given a DAG
+#' Find the family of a node in a DAG (internal function)
 #'
-#' @param node Questa e' una prova di commento
-#' @param DAG
+#' This function finds the family (union of \code{node} and its parents) of \code{node} in \code{DAG}
 #'
-#' @return fa
+#' @param node numerical label of the node in \code{DAG}
+#' @param DAG \eqn{(q,q)} adjacency matrix of the DAG
+#'
+#' @return A numerical vector with the labels of the family of \code{node} in \code{DAG}
 #' @export
-#'
-#' @examples
-
 fa <- function(node, DAG) {
-  # DAG <- as(DAG, "matrix")
   pa <- which(DAG[,node] != 0)
   fa <- c(node, pa)
   return(fa)

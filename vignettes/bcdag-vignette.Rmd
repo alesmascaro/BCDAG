@@ -1,0 +1,27 @@
+---
+title: "bcdag-vignette"
+author: Alessandro Mascaro
+date: Sys.Date()
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{bcdag-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this vignette, the basic elements of the first version of the package `bcdag` are shown. In the first section, the functions `rDAG()` and `rDAGWishart()` are presented as simple tools for sampling DAGs and DAGs' parameters for Gaussian data. In the second section, the suggested workflow involving the function `learn_DAG()` and the functions of the `get_` family are shown. In the third section, a simple application to a real dataset is proposed. 
+
+## Generating data through `rDAG()` and `rDAGWishart()`
+
+As a first step for this vignette, we want to generate some data to use the methods implemented in the package `BCDAG`.  
+
+```{r setup}
+
+```
