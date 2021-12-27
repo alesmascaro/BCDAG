@@ -13,7 +13,7 @@
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
 #' @references J. Pearl (2000). \emph{Causality: Models, Reasoning, and Inference}. Cambridge University Press, Cambridge.
-#' @references F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+#' @references F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 #' @references  P. Nandy, M.H. Maathuis and T. Richardson (2017). Estimating the effect of joint interventions from observational data in sparse high-dimensional settings. \emph{Annals of Statistics} 45(2), 647-674.
 #'
 #' @param targets numerical vector with labels of target nodes

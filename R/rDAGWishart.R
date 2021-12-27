@@ -23,7 +23,7 @@
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
 #'
-#' @references F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+#' @references F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 #' @references X. Cao, K. Khare and M. Ghosh (2019). Posterior graph selection and estimation consistency for high-dimensional Bayesian DAG models. \emph{The Annals of Statistics} 47 319-348.
 #' @references S. Peluso and G. Consonni (2020). Compatible priors for model selection of high-dimensional Gaussian DAGs. \emph{Electronic Journal of Statistics} 14(2) 4110 - 4132.
 #'

@@ -26,8 +26,8 @@
 #'
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
-#' @references F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
-#' @references F. Castelletti (2020) Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
+#' @references F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+#' @references F. Castelletti (2020). Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
 #'
 #' @examples # Randomly generate a DAG and the DAG-parameters
 #' q = 8

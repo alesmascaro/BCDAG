@@ -12,7 +12,7 @@
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
 #'
-#' @references F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+#' @references F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 #'
 #' @param learnDAG_output object of class \code{bcdag}
 #'

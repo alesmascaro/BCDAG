@@ -13,7 +13,7 @@
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
 #'
-#' @references F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+#' @references F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 #' @references G. Garcia-Donato and M.A. Martinez-Beneito (2013). On sampling strategies in Bayesian variable selection problems with large model spaces. \emph{Journal of the American Statistical Association} 108 340-352.
 #'
 #' @param learnDAG_output object of class \code{bcdag}

@@ -27,8 +27,8 @@
 #'
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
-#' @references F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
-#' @references F. Castelletti (2020) Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
+#' @references F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+#' @references F. Castelletti (2020). Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
 #'
 #' @param S integer final number of MCMC draws from the posterior of DAGs and parameters
 #' @param burn integer initial number of burn-in iterations, needed by the MCMC chain to reach its stationary distribution and not included in the final output
@@ -155,7 +155,7 @@ learn_DAG <- function(S, burn,
       type = "complete"
       cat("\nSampling parameters...")
       pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
-      for (i in 1:S) {
+      for (i in 1:n.iter) {
         postparams <- rDAGWishart(1, Graphs[,,i], a+n, U+tXX)
         L[,,i] <- postparams$L
         D[,,i] <- postparams$D
@@ -189,7 +189,7 @@ learn_DAG <- function(S, burn,
       type = "compressed"
       cat("\nSampling parameters...")
       pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
-      for (i in 1:S) {
+      for (i in 1:n.iter) {
         postparams <- rDAGWishart(1, bd_decode(Graphs[i]), a+n, U+tXX)
         L[i] <- bd_encode(postparams$L)
         D[i] <- bd_encode(postparams$D)
