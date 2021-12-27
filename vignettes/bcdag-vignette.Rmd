@@ -14,14 +14,77 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(devtools)
+load_all()
 ```
 
-In this vignette, the basic elements of the first version of the package `bcdag` are shown. In the first section, the functions `rDAG()` and `rDAGWishart()` are presented as simple tools for sampling DAGs and DAGs' parameters for Gaussian data. In the second section, the suggested workflow involving the function `learn_DAG()` and the functions of the `get_` family are shown. In the third section, a simple application to a real dataset is proposed. 
+In this vignette, the basic elements of the first version of the package `BCDAG` are shown. In the first section, the functions `rDAG()` and `rDAGWishart()` are presented as simple tools for sampling DAGs and DAGs' parameters for Gaussian data. In the second section and third sections, the suggested workflow involving the function `learn_DAG()` and the functions of the `get_` family are shown.  
 
 ## Generating data through `rDAG()` and `rDAGWishart()`
 
-As a first step for this vignette, we want to generate some data to use the methods implemented in the package `BCDAG`.  
+As a first step for this vignette, we want to generate some centered Gaussian data from a Causal (DAG) model. 
+To sample a DAG model, `BCDAG` provides the function `rDAG()` which has 2 arguments: $q$, the number of nodes (i.e. the number of variables in the generated dataset) and $w$, a sparsity parameter specifying the probability of edge inclusion in the skeleton of the DAG:
 
 ```{r setup}
-
+set.seed(1)
+q <- 10
+w <- 0.2
+DAG <- rDAG(q,w)
 ```
+
+
+```{r printDAG}
+DAG
+```
+
+
+```{r metaDAG}
+class(DAG)
+sum(DAG); w*q*(q-1)/2
+```
+As it can be observed, `rDAG()` returns a matrix for which the $(u,v)$-th element determines the presence of an edge from *u* to *v*. 
+
+We now want to generate some centered data from a Gaussian linear Structural Equation Model (SEM) of the form 
+\begin{equation}
+\boldsymbol{X} = (\boldsymbol I-\boldsymbol L)\boldsymbol X + \boldsymbol \epsilon, \quad \boldsymbol \epsilon \sim N_q(\boldsymbol 0, \boldsymbol D)
+\end{equation}
+
+where $\boldsymbol L$ is a lower-triangular matrix containing the regression coefficients associated with the non-null elements of DAG $\mathcal{D}$ and $\boldsymbol \epsilon$ is a random vector of error terms whose variances are specified by the diagonal matrix $\boldsymbol D$. The implied probabilistic model is:
+\begin{equation}
+X|(\boldsymbol L,\boldsymbol D), \mathcal{D} \sim N_q\left(\boldsymbol{0}, \left( \boldsymbol L \boldsymbol D^{-1} \boldsymbol L^T\right)^{-1} \right)
+\end{equation}
+
+`rDAGWishart()` is an internal function used to sample from a compatible $\text{DAG-Wishart}(a,\boldsymbol U)$ inside the function `learn_DAG()`. However, in this context it can be used as an easy way to get random matrices $\boldsymbol L$ and $\boldsymbol D$. It takes as input the number of samples $n$, the DAG $\mathcal{D}$, a scalar shape-parameter $a > q-1$ and a symmetric positive definite matrix $\boldsymbol U$.
+
+```{r}
+a <- q
+U <- diag(1,q)
+outDL <- rDAGWishart(n=1, DAG, a, U)
+class(outDL)
+```
+
+
+```{r}
+L <- outDL$L; D <- outDL$D
+class(L); class(D)
+```
+
+The output of `rDAGWishart()` is of two elements: a $(q\times q \times n)$ dimensional array collecting $n$ sampled matrices $\boldsymbol L$ and a $(q\times q \times n)$ dimensional array collecting $n$ sampled matrices $\boldsymbol D$. For more details on `rDAGWishart()`, we refer to ... and to the next vignette.
+
+We are now ready to define the covariance matrix implied by the Gaussian linear SEM defined by the DAG $\mathcal{D}$
+
+```{r}
+  # Precision matrix
+Omega <- L %*% solve(D) %*% t(L)
+  # Covariance matrix
+Sigma <- solve(Omega)
+```
+
+and to sample from the resulting $q$-variate Normal distribution:
+
+```{r}
+n <- 1000
+X <- mvtnorm::rmvnorm(n = n, sigma = Sigma)
+```
+
+
