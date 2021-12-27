@@ -1,10 +1,8 @@
 ---
-title: "bcdag-vignette"
-author: Alessandro Mascaro
-date: Sys.Date()
+title: "Generating data using BCDAG"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{bcdag-vignette}
+  %\VignetteIndexEntry{Generating data using BCDAG}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,8 +12,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-library(devtools)
-load_all()
+```
+
+```{r setup}
+library(BCDAG)
 ```
 
 In this vignette, the basic elements of the first version of the package `BCDAG` are shown. In the first section, the functions `rDAG()` and `rDAGWishart()` are presented as simple tools for sampling DAGs and DAGs' parameters for Gaussian data. In the second section and third sections, the suggested workflow involving the function `learn_DAG()` and the functions of the `get_` family are shown.  
@@ -25,7 +25,7 @@ In this vignette, the basic elements of the first version of the package `BCDAG`
 As a first step for this vignette, we want to generate some centered Gaussian data from a Causal (DAG) model. 
 To sample a DAG model, `BCDAG` provides the function `rDAG()` which has 2 arguments: $q$, the number of nodes (i.e. the number of variables in the generated dataset) and $w$, a sparsity parameter specifying the probability of edge inclusion in the skeleton of the DAG:
 
-```{r setup}
+```{r}
 set.seed(1)
 q <- 10
 w <- 0.2
@@ -86,5 +86,3 @@ and to sample from the resulting $q$-variate Normal distribution:
 n <- 1000
 X <- mvtnorm::rmvnorm(n = n, sigma = Sigma)
 ```
-
-
