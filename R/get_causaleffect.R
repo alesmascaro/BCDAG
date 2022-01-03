@@ -139,7 +139,7 @@ get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE) {
   if (BMA == FALSE) {
     return(causaleffects)
   } else {
-    BMA_causaleffect <- colMeans(causaleffects)
+    BMA_causaleffect <- base::colMeans(causaleffects)
     return(BMA_causaleffect)
   }
 }

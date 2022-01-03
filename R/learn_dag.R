@@ -154,13 +154,14 @@ learn_DAG <- function(S, burn,
     if (collapse == FALSE) {
       type = "complete"
       cat("\nSampling parameters...")
-      pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+      # pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
       for (i in 1:n.iter) {
         postparams <- rDAGWishart(1, Graphs[,,i], a+n, U+tXX)
         L[,,i] <- postparams$L
         D[,,i] <- postparams$D
-        utils::setTxtProgressBar(pb, i)
-        close(pb)
+        print(i)
+        # utils::setTxtProgressBar(pb, i)
+        # close(pb)
       }
     }
     Graphs <- Graphs[,,(burn+1):n.iter]
