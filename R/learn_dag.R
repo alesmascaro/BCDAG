@@ -159,7 +159,6 @@ learn_DAG <- function(S, burn,
         postparams <- rDAGWishart(1, Graphs[,,i], a+n, U+tXX)
         L[,,i] <- postparams$L
         D[,,i] <- postparams$D
-        print(i)
         utils::setTxtProgressBar(pb, i)
         close(pb)
       }
