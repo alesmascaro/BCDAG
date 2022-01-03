@@ -110,14 +110,14 @@ learn_DAG <- function(S, burn,
     stop("U must be a squared spd matrix with dimensions equal to the number of variables")
   }
 
-  n.iter <- burn + S
+  n.iter <- input$burn + input$S
   X <- scale(data, scale = FALSE)
   tXX <- t(X)%*%X
 
   n <- dim(data)[1]
   q <- dim(data)[2]
 
-  ## Initialize arrays or vectors
+  ## Initialize arrays or vectors depending on save.memory
   if (save.memory == TRUE) {
     Graphs <- vector("double", n.iter)
     L <- vector("double", n.iter)
@@ -154,14 +154,14 @@ learn_DAG <- function(S, burn,
     if (collapse == FALSE) {
       type = "complete"
       cat("\nSampling parameters...")
-      # pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+      pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
       for (i in 1:n.iter) {
         postparams <- rDAGWishart(1, Graphs[,,i], a+n, U+tXX)
         L[,,i] <- postparams$L
         D[,,i] <- postparams$D
         print(i)
-        # utils::setTxtProgressBar(pb, i)
-        # close(pb)
+        utils::setTxtProgressBar(pb, i)
+        close(pb)
       }
     }
     Graphs <- Graphs[,,(burn+1):n.iter]
