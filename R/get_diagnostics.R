@@ -99,13 +99,13 @@ get_diagnostics <- function(learnDAG_output) {
   graphics::par(ask = TRUE)
   if(q <= 30) {
     for (j in 1:q) {
-      graphics::matplot(t(tracematrices[[j]]), type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("node", j), ylim = c(0,1))
+      graphics::matplot(t(tracematrices[[j]]), type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
       if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
     }
   } else {
     randomnodes <- sample(1:q, 30)
     for (j in randomnodes) {
-      graphics::matplot(t(tracematrices[[j]]), type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("node", j), ylim = c(0,1))
+      graphics::matplot(t(tracematrices[[j]]), type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
       if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
     }
   }

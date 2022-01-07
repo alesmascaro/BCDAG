@@ -59,6 +59,6 @@ summary.bcdag <- function(object, ...) {
   grDevices::devAskNewPage(ask = TRUE)
   c = grDevices::gray.colors(20, start = 1, end = 0, gamma = 1, alpha = NULL)
   print(lattice::levelplot(edgeprobs, xlab = "From", ylab = "Into", col.regions = c, main = "Probabilities of edge inclusion"))
-  print(lattice::histogram(Graphsizes, probability = TRUE, col = "grey", main = "Distribution of DAGs size"))
+  print(lattice::histogram(Graphsizes, probability = TRUE, col = "grey", ylab = "% on total", main = "Distribution of DAGs size"))
   grDevices::devAskNewPage(ask = FALSE)
 }
