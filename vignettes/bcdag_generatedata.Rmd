@@ -1,8 +1,8 @@
 ---
-title: "Generating data using BCDAG"
+title: "Random data generation from Gaussian DAG models"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Generating data using BCDAG}
+  %\VignetteIndexEntry{Random generation from Gaussian DAG models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,16 +14,29 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{css, echo = FALSE}
+.math.inline {
+  font-size: 11px;
+}
+```
+
 ```{r setup}
 library(BCDAG)
 ```
 
-In this vignette, the basic elements of the first version of the package `BCDAG` are shown. In the first section, the functions `rDAG()` and `rDAGWishart()` are presented as simple tools for sampling DAGs and DAGs' parameters for Gaussian data. In the second section and third sections, the suggested workflow involving the function `learn_DAG()` and the functions of the `get_` family are shown.  
+<!-- +++ -->
 
-## Generating data through `rDAG()` and `rDAGWishart()`
+<!-- NON MI PRENDE né emph né textit, alcune parole rimangono quindi "nascoste" -->
 
-As a first step for this vignette, we want to generate some centered Gaussian data from a Causal (DAG) model. 
-To sample a DAG model, `BCDAG` provides the function `rDAG()` which has 2 arguments: $q$, the number of nodes (i.e. the number of variables in the generated dataset) and $w$, a sparsity parameter specifying the probability of edge inclusion in the skeleton of the DAG:
+<!-- +++ -->
+
+This is the first of a series of three vignettes introducing the R package `BCDAG`.
+In this vignette we focus on functions `rDAG()` and `rDAGWishart()` which implement random generation of DAG structures and DAG parameters under the assumption that the joint distribution of variables $X_1,\dots, X_q$ is Gaussian and the corresponding model (Choleski) parameters follow a DAG-Wishart distribution. Finally, data generation from Gaussian DAG models is described.
+
+## Generating DAGs and parameters: functions `rDAG()` and `rDAGWishart()`
+
+Function `rDAG()` can be used to randomly generate a DAG structure $\mathcal{D}=(V,E)$, where $V=\{1,\dots,q\}$ and $E\subseteq V \times V$ is the set of edges.
+`rDAG()` has two arguments: the number of nodes (variables) $q$ and the prior probability of edge inclusion $w\in[0,1]$; the latter can be tuned to control the degree of sparsity in the resulting DAG. By fixing a probability of edge inclusion $w=0.2$, a DAG structure with $q=10$ nodes can be generated as follows:
 
 ```{r}
 set.seed(1)
@@ -36,26 +49,37 @@ DAG <- rDAG(q,w)
 ```{r printDAG}
 DAG
 ```
+Output of `rDAG()` is the 0-1 $(q,q)$ adjacency matrix of the generated DAG, with element $1$ at position $(u,v)$ indicating the presence of an edge $u\rightarrow v$.
+Notice that the generated DAG is *topologically ordered*, meaning that edges are allowed only from high to low nodes (nodes are labeled according to rows/columns indexes); accordingly the DAG adjacency matrix is lower-triangular.
 
+## Generating Gaussian DAG parameters
 
-```{r metaDAG}
-class(DAG)
-sum(DAG); w*q*(q-1)/2
-```
-As it can be observed, `rDAG()` returns a matrix for which the $(u,v)$-th element determines the presence of an edge from *u* to *v*. 
-
-We now want to generate some centered data from a Gaussian linear Structural Equation Model (SEM) of the form 
+Consider a Gaussian DAG model of the form
+\begin{eqnarray}
+X_1, \dots, X_q \,|\,\boldsymbol L, \boldsymbol D, \mathcal{D} &\sim& \mathcal{N}_q\left(\boldsymbol 0, (\boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top)^{-1}\right),
+\end{eqnarray}
+where
+$(\boldsymbol L, \boldsymbol D)$ are model parameters providing the decomposition of the precision (inverse-covariance) matrix $\boldsymbol{\Omega} = \boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top$;
+specifically, $\boldsymbol{L}$ is a $(q, q)$ matrix of coefficients such that for each $(u, v)$-element $\boldsymbol{L}_{uv}$ with $u \ne v$, we have $\boldsymbol{L}_{uv} \ne 0$ if and only if $(u, v) \in E$, while $\boldsymbol{L}_{uu} = 1$ for each $u = 1,\dots, q$;
+also, $\boldsymbol{D}$ is a $(q, q)$ diagonal matrix with $(u, u)$-element $\boldsymbol{D}_{uu}$.
+The latter decomposition follows from the equivalent Structural Equation Model (SEM) representation of a Gaussian DAG model:
+<!-- \begin{equation} -->
+<!-- \boldsymbol{x} = (\boldsymbol I-\boldsymbol L)\boldsymbol x + \boldsymbol \epsilon, \quad \boldsymbol \epsilon \sim \mathcal{N}_q(\boldsymbol 0, \boldsymbol D), -->
+<!-- \end{equation} -->
+<!-- CREDO SIA CORRETTO IL SEGUENTE (CON IL TRASPOSTO): -->
 \begin{equation}
-\boldsymbol{X} = (\boldsymbol I-\boldsymbol L)\boldsymbol X + \boldsymbol \epsilon, \quad \boldsymbol \epsilon \sim N_q(\boldsymbol 0, \boldsymbol D)
+\boldsymbol{L}^\top\boldsymbol{x} = \boldsymbol \epsilon, \quad \boldsymbol \epsilon \sim \mathcal{N}_q(\boldsymbol 0, \boldsymbol D),
 \end{equation}
 
-where $\boldsymbol L$ is a lower-triangular matrix containing the regression coefficients associated with the non-null elements of DAG $\mathcal{D}$ and $\boldsymbol \epsilon$ is a random vector of error terms whose variances are specified by the diagonal matrix $\boldsymbol D$. The implied probabilistic model is:
-\begin{equation}
-X|(\boldsymbol L,\boldsymbol D), \mathcal{D} \sim N_q\left(\boldsymbol{0}, \left( \boldsymbol L \boldsymbol D^{-1} \boldsymbol L^T\right)^{-1} \right)
-\end{equation}
+where $\boldsymbol x = (X_1,\dots, X_q)^\top$; see also Castelletti \& Mascaro (2021).
 
-`rDAGWishart()` is an internal function used to sample from a compatible $\text{DAG-Wishart}(a,\boldsymbol U)$ inside the function `learn_DAG()`. However, in this context it can be used as an easy way to get random matrices $\boldsymbol L$ and $\boldsymbol D$. It takes as input the number of samples $n$, the DAG $\mathcal{D}$, a scalar shape-parameter $a > q-1$ and a symmetric positive definite matrix $\boldsymbol U$.
+The DAG-Wishart distribution (Cao et al., 2019) provides a conjugate prior for $(\boldsymbol L, \boldsymbol D)$.
+Moreover, a *compatible* DAG-Wishart distribution, guaranteeing score equivalence for Markov equivalent DAGs, was introduced by Peluso \& Consonni (2020); see the original paper for full details.
 
+Function `rDAGWishart` implements random sampling from $(\boldsymbol L, \boldsymbol D)\,|\,\mathcal{D} \sim \text{DAG-Wishart}(\boldsymbol{a}_{c}^{\mathcal{D}}, \boldsymbol U)$, where
+$\boldsymbol{U}$ is the rate parameter (a $(q,q)$ s.p.d. matrix) and $\boldsymbol{a}^{\mathcal {D}}_{c}$ (a $(q,1)$ vector) is the shape parameter of the DAG-Wishart distribution. Moreover, in its compatible version, elements of the vector parameter $\boldsymbol{a}^{\mathcal {D}}_{c}$ are uniquely determined from a single *common* shape parameter $a>q-1$.
+Inputs of `rDAGWishart` are: the number of samples $n$, the underlying DAG $\mathcal{D}$, the common shape parameter $a$ and the rate parameter $\boldsymbol U$.
+Given the DAG $\mathcal{D}$ generated before, the following example implements a single ($n=1$) draw from a compatible DAG-Wishart distribution with parameters $a=q$, $\boldsymbol U = \boldsymbol I_q$:
 ```{r}
 a <- q
 U <- diag(1,q)
@@ -69,9 +93,13 @@ L <- outDL$L; D <- outDL$D
 class(L); class(D)
 ```
 
-The output of `rDAGWishart()` is of two elements: a $(q\times q \times n)$ dimensional array collecting $n$ sampled matrices $\boldsymbol L$ and a $(q\times q \times n)$ dimensional array collecting $n$ sampled matrices $\boldsymbol D$. For more details on `rDAGWishart()`, we refer to ... and to the next vignette.
+The output of `rDAGWishart()` consists of two elements: a $(q,q,n)$-dimensional array collecting the $n$ sampled matrices $\boldsymbol L^{(1)}, \dots, \boldsymbol L^{(n)}$ and a $(q,q,n)$-dimensional array collecting the $n$ sampled matrices $\boldsymbol D^{(1)}, \dots,\boldsymbol D^{(n)}$. We refer the reader to Castelletti \& Mascaro (2021) and Castelletti \& Mascaro (2022+) for more details.
 
-We are now ready to define the covariance matrix implied by the Gaussian linear SEM defined by the DAG $\mathcal{D}$
+## Generating data from a Gaussian DAG model
+
+Data generation from a Gaussian DAG model is finally straightforward.
+Recall that $\boldsymbol{\Omega} = \boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top$, where $\boldsymbol{\Omega}$ is the inverse-covariance (precision) matrix of a multivariate Gaussian model satisfying the constraints imposed by a DAG.
+Accordingly, we can recover the precision and covariance matrices as:
 
 ```{r}
   # Precision matrix
@@ -80,9 +108,30 @@ Omega <- L %*% solve(D) %*% t(L)
 Sigma <- solve(Omega)
 ```
 
-and to sample from the resulting $q$-variate Normal distribution:
+Next, i.i.d. draws from a Gaussian DAG model can be obtained through the function `rmvnorm()` provided within the R package `mvtnorm`: 
 
 ```{r}
 n <- 1000
 X <- mvtnorm::rmvnorm(n = n, sigma = Sigma)
 ```
+
+## References 
+
+
+* Ben-David E, Li T, Massam H, Rajaratnam B (2015). “High dimensional Bayesian inference
+for Gaussian directed acyclic graph models.” *arXiv pre-print*. URL https://arxiv.org/abs/1109.4371.
+
+* Cao X, Khare K, Ghosh M (2019). “Posterior graph selection and estimation consistency
+for high-dimensional Bayesian DAG models.” *The Annals of Statistics*, 47(1), 319–348.
+doi: https://doi.org/10.1214/18-AOS1689.
+
+* Castelletti F, Mascaro A (2021). “Structural learning and estimation of joint causal effects
+among network-dependent variables.” *Statistical Methods & Applications*, 30, 1289–1314.
+doi: https://doi.org/10.1007/s10260-021-00579-1.
+
+* Castelletti F, Mascaro A (2022+). “BCDAG: An R package for Bayesian structural and
+Causal learning of Gaussian DAGs.” *arXiv pre-print*.
+
+* Peluso S, Consonni G (2020). “Compatible priors for model selection of high-dimensional
+Gaussian DAGs.” *Electronic Journal of Statistics*, 14(2), 4110–4132. doi: https://doi.org/10.1214/20-EJS1768.
+
