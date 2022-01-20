@@ -2,7 +2,7 @@
 #'
 #' This function provides diagnostics of convergence for the MCMC output of \code{learn_DAG} function.
 #'
-#' Function \code{learn_DAG} implements a Markov Chain Monte Carlo (MCMC) algorithm for structural learning and posterior inference of Gaussian DAGs.
+#' Function \code{learn_DAG} implements a Markov Chain Monte Carlo (MCMC) algorithm for structure learning and posterior inference of Gaussian DAGs.
 #' Output of the algorithm is a collection of \eqn{S} DAG structures (represented as \eqn{(q,q)} adjacency matrices) and DAG parameters \eqn{(D,L)}
 #' approximately drawn from the joint posterior.
 #' In addition, if \code{learn_DAG} is implemented with \code{collapse = TRUE}, the only approximate marginal posterior of DAGs (represented by the collection of \eqn{S} DAG structures) is returned;
@@ -16,12 +16,12 @@
 #' The convergence of the curve around a "stable" average size generally suggests good convergence of the algorithm.
 #' With regard to (2), for each edge \eqn{u -> v}, the posterior probability at time \eqn{s}, for \eqn{s = 1, ..., S}, can be estimated as
 #' as the proportion of DAGs visited by the MCMC up to time \eqn{s} which contain the directed edge \eqn{u -> v}.
-#' Output is organized in \eqn{q} plots (one for each node \eqn{v = 1, ..., q}), each summarizing the posterior probabilities of edges \eqn{u -> v}, \eqn{u = 1, ..., q} +corretto?+.
+#' Output is organized in \eqn{q} plots (one for each node \eqn{v = 1, ..., q}), each summarizing the posterior probabilities of edges \eqn{u -> v}, \eqn{u = 1, ..., q}.
 #' If the number of nodes is larger than 30 the traceplot of a random sample of 30 nodes is returned.
 #'
 #' @param learnDAG_output object of class \code{bcdag}
 #'
-#' @return A collection of plots summarizing the behavior of the number of edges and the posterior probabilities of edge inclusion computed from the MCMC output
+#' @return A collection of plots summarizing the behavior of the number of edges and the posterior probabilities of edge inclusion computed from the MCMC output.
 #' @export
 #'
 #' @author Federico Castelletti and Alessandro Mascaro
