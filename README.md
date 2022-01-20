@@ -72,6 +72,12 @@ out |>
   get_causaleffect(targets = c(3,4), response = 1, BMA = TRUE)
 ```
 
+The three steps here implemented are detailed in the vignettes [1 -
+Random data generation from Gaussian DAG-models](#), [2 - MCMC scheme
+for posterior inference of Gaussian DAG models: the `learn_DAG()`
+function](#) and [3 - Elaborate on the output of `learn_DAG()` using
+get\_ functions](#)
+
 # Authors
 
 -   Alessandro Mascaro, Department of Economics, Management and
