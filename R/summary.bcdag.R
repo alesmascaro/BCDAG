@@ -37,7 +37,7 @@ summary.bcdag <- function(object, ...) {
   type = attributes(learnDAG_output)$type
   input = attributes(learnDAG_output)$input
 
-  cat("A bcdag object containing ", input$S, " draws from",
+  cat("A ", type, " bcdag object containing ", input$S, " draws from",
       ifelse(type == "collapsed" | type == "compressed and collapsed", " the posterior distribution of DAGs.", "the joint posterior over DAGs, L and D."),
       "(Burnin =", input$burn, ").",
       ifelse(type == "compressed" | type == "compressed and collapsed", "\n\nThe output is saved as strings (option save.memory = TRUE)", " "))
