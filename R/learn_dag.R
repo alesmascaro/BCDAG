@@ -1,6 +1,6 @@
 #' MCMC scheme for Gaussian DAG posterior inference
 #'
-#' This function implements a Markov Chain Monte Carlo (MCMC) algorithm for structural learning of Gaussian
+#' This function implements a Markov Chain Monte Carlo (MCMC) algorithm for structure learning of Gaussian
 #' DAGs and posterior inference of DAG model parameters
 #'
 #' Consider a collection of random variables \eqn{X_1, \dots, X_q} whose distribution is zero-mean multivariate Gaussian with covariance matrix Markov w.r.t. a Directed Acyclic Graph (DAG).
@@ -38,7 +38,7 @@
 #' @param w edge inclusion probability hyperparameter of the DAG prior in \eqn{[0,1]}
 #' @param fast boolean, if \code{TRUE} an approximate proposal for the MCMC moves is implemented
 #' @param save.memory boolean, if \code{TRUE} MCMC draws are stored as strings, instead of arrays
-#' @param collapse boolean, if \code{TRUE} only structural learning of DAGs is performed
+#' @param collapse boolean, if \code{TRUE} only structure learning of DAGs is performed
 #'
 #' @return An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse == FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory == FALSE}, these are stored in three arrays of dimension \eqn{qxqxS}. Otherwise, they're stored as strings.
 #' @export
