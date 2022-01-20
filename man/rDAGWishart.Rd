@@ -41,7 +41,7 @@ outDL = rDAGWishart(n = 5, DAG = DAG, a = q, U = diag(1, q))
 outDL
 }
 \references{
-F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 
 X. Cao, K. Khare and M. Ghosh (2019). Posterior graph selection and estimation consistency for high-dimensional Bayesian DAG models. \emph{The Annals of Statistics} 47 319-348.
 

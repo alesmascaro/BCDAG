@@ -10,13 +10,13 @@ get_diagnostics(learnDAG_output)
 \item{learnDAG_output}{object of class \code{bcdag}}
 }
 \value{
-A collection of plots summarizing the behavior of the number of edges and the posterior probabilities of edge inclusion computed from the MCMC output
+A collection of plots summarizing the behavior of the number of edges and the posterior probabilities of edge inclusion computed from the MCMC output.
 }
 \description{
 This function provides diagnostics of convergence for the MCMC output of \code{learn_DAG} function.
 }
 \details{
-Function \code{learn_DAG} implements a Markov Chain Monte Carlo (MCMC) algorithm for structural learning and posterior inference of Gaussian DAGs.
+Function \code{learn_DAG} implements a Markov Chain Monte Carlo (MCMC) algorithm for structure learning and posterior inference of Gaussian DAGs.
 Output of the algorithm is a collection of \eqn{S} DAG structures (represented as \eqn{(q,q)} adjacency matrices) and DAG parameters \eqn{(D,L)}
 approximately drawn from the joint posterior.
 In addition, if \code{learn_DAG} is implemented with \code{collapse = TRUE}, the only approximate marginal posterior of DAGs (represented by the collection of \eqn{S} DAG structures) is returned;
@@ -30,7 +30,7 @@ In addition, the traceplot of the average number of edges in the DAGs visited up
 The convergence of the curve around a "stable" average size generally suggests good convergence of the algorithm.
 With regard to (2), for each edge \eqn{u -> v}, the posterior probability at time \eqn{s}, for \eqn{s = 1, ..., S}, can be estimated as
 as the proportion of DAGs visited by the MCMC up to time \eqn{s} which contain the directed edge \eqn{u -> v}.
-Output is organized in \eqn{q} plots (one for each node \eqn{v = 1, ..., q}), each summarizing the posterior probabilities of edges \eqn{u -> v}, \eqn{u = 1, ..., q} +corretto?+.
+Output is organized in \eqn{q} plots (one for each node \eqn{v = 1, ..., q}), each summarizing the posterior probabilities of edges \eqn{u -> v}, \eqn{u = 1, ..., q}.
 If the number of nodes is larger than 30 the traceplot of a random sample of 30 nodes is returned.
 }
 \examples{
@@ -52,9 +52,9 @@ out_mcmc = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w 
 get_diagnostics(out_mcmc)
 }
 \references{
-F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 
-F. Castelletti (2020) Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
+F. Castelletti (2020). Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
 }
 \author{
 Federico Castelletti and Alessandro Mascaro

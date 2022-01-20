@@ -44,7 +44,7 @@ get_MAPdag(out_mcmc)
 
 }
 \references{
-F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 
 G. Garcia-Donato and M.A. Martinez-Beneito (2013). On sampling strategies in Bayesian variable selection problems with large model spaces. \emph{Journal of the American Statistical Association} 108 340-352.
 }

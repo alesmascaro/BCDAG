@@ -43,7 +43,7 @@ get_edgeprobs(out_mcmc)
 
 }
 \references{
-F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 }
 \author{
 Federico Castelletti and Alessandro Mascaro

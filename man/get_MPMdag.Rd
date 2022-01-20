@@ -43,7 +43,7 @@ get_MPMdag(out_mcmc)
 
 }
 \references{
-F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication
+F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication
 
 M.M. Barbieri and J.O. Berger (2004). Optimal predictive model selection. \emph{The Annals of Statistics} 32 870-897
 }

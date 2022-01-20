@@ -33,13 +33,13 @@ learn_DAG(
 
 \item{save.memory}{boolean, if \code{TRUE} MCMC draws are stored as strings, instead of arrays}
 
-\item{collapse}{boolean, if \code{TRUE} only structural learning of DAGs is performed}
+\item{collapse}{boolean, if \code{TRUE} only structure learning of DAGs is performed}
 }
 \value{
 An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse == FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory == FALSE}, these are stored in three arrays of dimension \eqn{qxqxS}. Otherwise, they're stored as strings.
 }
 \description{
-This function implements a Markov Chain Monte Carlo (MCMC) algorithm for structural learning of Gaussian
+This function implements a Markov Chain Monte Carlo (MCMC) algorithm for structure learning of Gaussian
 DAGs and posterior inference of DAG model parameters
 }
 \details{
@@ -95,9 +95,9 @@ get_MPMdag(out_mcmc_collapse)
 get_MPMdag(out_mcmc_collapse_fast)
 }
 \references{
-F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 
-F. Castelletti (2020) Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
+F. Castelletti (2020). Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
 }
 \author{
 Federico Castelletti and Alessandro Mascaro
