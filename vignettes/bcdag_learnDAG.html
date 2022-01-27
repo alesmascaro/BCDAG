@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>MCMC scheme for posterior inference of Gaussian DAG models: the learn_DAG() function</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">MCMC scheme for posterior inference of Gaussian DAG models: the <code>learn_DAG()</code> function</h1>
+
+
+
+<style type="text/css">
+.math.inline {
+  font-size: 11px;
+}
+</style>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BCDAG)</span></code></pre></div>
+<p>This is the second of a series of three vignettes for the R package <code>BCDAG</code>. In this vignette we focus on function <code>learn_DAG()</code>, which implements a Markov Chain Monte Carlo (MCMC) algorithm to sample from the joint posterior of DAG structures and DAG-parameters under the Gaussian assumption.</p>
+<div id="model-description" class="section level3">
+<h3>Model description</h3>
+<p>The underlying Bayesian Gaussian DAG-model can be summarized as follows: <span class="math display">\[\begin{eqnarray}
+X_1, \dots, X_q \,|\,\boldsymbol L, \boldsymbol D, \mathcal{D} &amp;\sim&amp; \mathcal{N}_q\left(\boldsymbol 0, (\boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top)^{-1}\right)\\
+(\boldsymbol L, \boldsymbol D)\,|\,\mathcal{D} &amp;\sim&amp; \text{DAG-Wishart}(\boldsymbol{a}_{c}^{\mathcal{D}}, \boldsymbol U) \\
+p(\mathcal{D}) &amp;\propto&amp; w^{|\mathcal{S}_\mathcal{D}|}(1-w)^{\frac{q(q-1)}{2} - {|\mathcal{S}_\mathcal{D}|}}
+\end{eqnarray}\]</span></p>
+<p>In particular <span class="math inline">\(\mathcal{D}=(V,E)\)</span> denotes a DAG structure with set of nodes <span class="math inline">\(V=\{1,\dots,q\}\)</span> and set of edges <span class="math inline">\(E\subseteq V \times V\)</span>. Moreover, <span class="math inline">\((\boldsymbol L, \boldsymbol D)\)</span> are model parameters providing the decomposition of the precision (inverse-covariance) matrix <span class="math inline">\(\boldsymbol{\Omega} = \boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top\)</span>; specifically, <span class="math inline">\(\boldsymbol{L}\)</span> is a <span class="math inline">\((q, q)\)</span> matrix of coefficients such that for each <span class="math inline">\((u, v)\)</span>-element <span class="math inline">\(\boldsymbol{L}_{uv}\)</span> with <span class="math inline">\(u \ne v\)</span>, <span class="math inline">\(\boldsymbol{L}_{uv} \ne 0\)</span> if and only if <span class="math inline">\((u, v) \in E\)</span>, while <span class="math inline">\(\boldsymbol{L}_{uu} = 1\)</span> for each <span class="math inline">\(u = 1,\dots, q\)</span>; also, <span class="math inline">\(\boldsymbol{D}\)</span> is a <span class="math inline">\((q, q)\)</span> diagonal matrix with <span class="math inline">\((u, u)\)</span>-element <span class="math inline">\(\boldsymbol{D}_{uu}\)</span>.</p>
+<p>The latter decomposition follows from the equivalent Structural Equation Model (SEM) representation of a Gaussian DAG-model; see also Castelletti &amp; Mascaro (2021).</p>
+<p>Conditionally to <span class="math inline">\(\mathcal{D}\)</span>, a prior to <span class="math inline">\((\boldsymbol{L}, \boldsymbol{D})\)</span> is assigned through a <em>compatible</em> DAG-Wishart distribution with rate hyperparameter <span class="math inline">\(\boldsymbol{U}\)</span>, a <span class="math inline">\((q,q)\)</span> s.p.d. matrix, and shape hyperparameter <span class="math inline">\(\boldsymbol{a}^{\mathcal {D}}_{c}\)</span>, a <span class="math inline">\((q,1)\)</span> vector; see also Cao et al. (2019) and Peluso &amp; Consonni (2020).</p>
+<p>Finally, a prior on DAG <span class="math inline">\(\mathcal{D}\)</span> is assigned through a Binomial distribution on the number of edges in the graph; in <span class="math inline">\(p(\mathcal{D})\)</span>, <span class="math inline">\(w \in (0,1)\)</span> is a prior probability of edge inclusion, while <span class="math inline">\(|\mathcal{S_{\mathcal{D}}}|\)</span> denotes the number of edges in <span class="math inline">\(\mathcal{D}\)</span>; see again Castelletti &amp; Mascaro (2021) for further details.</p>
+<p>Target of the MCMC scheme is therefore the joint posterior of <span class="math inline">\((\boldsymbol{L},\boldsymbol{D},\mathcal{D})\)</span>, <span class="math display">\[\begin{equation}
+p(\boldsymbol L, \boldsymbol D, \mathcal{D}\,|\, \boldsymbol X) \propto p(\boldsymbol{X}\,|\,\boldsymbol L, \boldsymbol D, \mathcal{D})p(\boldsymbol{L},\boldsymbol{D}\,|\,\mathcal{D}) \,p(\mathcal{D}),
+\end{equation}\]</span> where <span class="math inline">\(\boldsymbol{X}\)</span> denotes a <span class="math inline">\((n,q)\)</span> data matrix as obtained through <span class="math inline">\(n\)</span> i.i.d. draws from the Gaussian DAG-model and <span class="math inline">\(p(\boldsymbol{X}\,|\,\boldsymbol L, \boldsymbol D, \mathcal{D})\)</span> is the likelihood function. See also Castelletti &amp; Mascaro (2022+) for full details.</p>
+</div>
+<div id="generating-data" class="section level3">
+<h3>Generating data</h3>
+<p>We first randomly generate a DAG <span class="math inline">\(\mathcal{D}\)</span>, the DAG parameters <span class="math inline">\((\boldsymbol{L},\boldsymbol{D})\)</span> and then <span class="math inline">\(n=1000\)</span> i.i.d. observations from a Gaussian DAG-model as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="dv">8</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>DAG <span class="ot">&lt;-</span> <span class="fu">rDAG</span>(q,w)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> q</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>U <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="dv">1</span>,q)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>outDL <span class="ot">&lt;-</span> <span class="fu">rDAGWishart</span>(<span class="at">n=</span><span class="dv">1</span>, DAG, a, U)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> outDL<span class="sc">$</span>L; D <span class="ot">&lt;-</span> outDL<span class="sc">$</span>D</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>Omega <span class="ot">&lt;-</span> L <span class="sc">%*%</span> <span class="fu">solve</span>(D) <span class="sc">%*%</span> <span class="fu">t</span>(L)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>Sigma <span class="ot">&lt;-</span> <span class="fu">solve</span>(Omega)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> mvtnorm<span class="sc">::</span><span class="fu">rmvnorm</span>(<span class="at">n =</span> n, <span class="at">sigma =</span> Sigma)</span></code></pre></div>
+<p>See also our <a href="#">vignette about data generation from Gaussian DAG-models</a>.</p>
+</div>
+<div id="learn_dag" class="section level2">
+<h2><code>learn_DAG()</code></h2>
+<p>Function <code>learn_DAG()</code> implements an MCMC algorithm to sample from the joint posterior of DAGs and DAG parameters. This is based on a Partial Analytic Structure (PAS) algorithm (Godsill, 2012) which, at each iteration:</p>
+<ol style="list-style-type: decimal">
+<li>Updates the DAG through a Metropolis-Hastings (MH) step where, given the current DAG, a new (direct successor) DAG is drawn from a suitable proposal distribution and accepted with a probability given by the MH acceptance rate (see also section <a href="#a-note-on-fast-true">A note on <code>fast = TRUE</code></a>);</li>
+<li>Samples from the posterior distribution of the (updated DAG) parameters; see also Castelletti &amp; Consonni (2021) for more details.</li>
+</ol>
+<p>We implement it as follows:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">learn_DAG</span>(<span class="at">S =</span> <span class="dv">5000</span>, <span class="at">burn =</span> <span class="dv">1000</span>, <span class="at">data =</span> X,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                 a, U, w, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fast =</span> <span class="cn">FALSE</span>, <span class="at">save.memory =</span> <span class="cn">FALSE</span>, <span class="at">collapse =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div id="input" class="section level3">
+<h3>Input</h3>
+<p>Inputs of <code>learn_DAG()</code> correspond to three different sets of arguments:</p>
+<ul>
+<li><code>S</code>, <code>burn</code> and <code>data</code> are standard inputs required by any MCMC algorithm. In particular, <code>S</code> defines the desired length of the chain, which is obtained by discarding the first <code>burn</code> observations (the total number of sampled observations is therefore <code>S + burn</code>); <code>data</code> is instead the <span class="math inline">\((n,q)\)</span> matrix <span class="math inline">\(\boldsymbol{X}\)</span>;</li>
+<li><code>a</code>, <code>U</code> and <code>w</code> are hyperparameters of the priors on DAGs (<code>w</code>) and DAG parameters (<code>a</code>, <code>U</code>); see also Equation [REF]. The same appear in functions <code>rDAG()</code> and <code>rDAGWishart()</code> which were introduced in our vignette [ADD REF TO THE VIGNETTE].</li>
+<li><code>fast</code>, <code>save.memory</code> and <code>collapse</code> are boolean arguments which allow to: implement an approximate proposal distribution within the MCMC scheme (<code>fast = TRUE</code>); change the array structure of the stored MCMC output into strings in order to save memory (<code>save.memory = TRUE</code>); implement an MCMC for DAG structure learning only, without sampling from the posterior of parameters (<code>collapse = TRUE</code>). See also <a href="#a-note-on-fast-true">A note on <code>fast = TRUE</code></a> and Castelletti &amp; Mascaro (2022+) for full details.</li>
+</ul>
+</div>
+<div id="output" class="section level3">
+<h3>Output</h3>
+<p>The output of <code>learn_DAG()</code> is an object of class <code>bcdag</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(out)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;bcdag&quot;</span></span></code></pre></div>
+<p><code>bcdag</code> objects include the output of the MCMC algorithm together with a collection of meta-data representing the input arguments of <code>learn_DAG()</code>; these are stored in the attributes of the object::</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(out)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 3</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ Graphs: num [1:8, 1:8, 1:5000] 0 0 0 0 1 0 0 1 0 0 ...</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ L     : num [1:8, 1:8, 1:5000] 1 0 0 0 -0.0194 ...</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ D     : num [1:8, 1:8, 1:5000] 0.164 0 0 0 0 ...</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - attr(*, &quot;class&quot;)= chr &quot;bcdag&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - attr(*, &quot;type&quot;)= chr &quot;complete&quot;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  - attr(*, &quot;input&quot;)=List of 9</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ S          : num 5000</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ burn       : num 1000</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ data       : num [1:1000, 1:8] -0.299 -0.351 -0.631 0.219 -0.351 ...</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ a          : num 8</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ U          : num [1:8, 1:8] 1 0 0 0 0 0 0 0 0 1 ...</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ w          : num 0.2</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ fast       : logi FALSE</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ save.memory: logi FALSE</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ collapse   : logi FALSE</span></span></code></pre></div>
+<p>Attribute <code>type</code> refers to the output of <code>learn_DAG()</code>, whose structure depends on the choice of boolean arguments <code>save.memory</code> and <code>collapse</code>.</p>
+<p>When both are set equal to <code>FALSE</code>, as in the previous example, the output of <code>learn_DAG()</code> is a <em>complete</em> <code>bcdag</code> object, collecting three <span class="math inline">\((q,q,S)\)</span> arrays with the DAG structures (in the form of <span class="math inline">\(q \times q\)</span> adjacency matrices) and the DAG parameters <span class="math inline">\(\boldsymbol{L}\)</span> and <span class="math inline">\(\boldsymbol{D}\)</span> (both as <span class="math inline">\(q \times q\)</span> matrices) sampled by the MCMC:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>out<span class="sc">$</span>Graphs[,,<span class="dv">1</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,]    0    0    0    0    0    1    0    0</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,]    0    0    0    0    0    0    0    1</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,]    1    0    0    0    0    0    0    0</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,]    0    1    0    1    0    0    0    0</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,]    1    0    0    0    0    0    0    0</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(out<span class="sc">$</span>L[,,<span class="dv">1</span>],<span class="dv">2</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       [,1]  [,2] [,3]  [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]  1.00  0.00    0  0.00    0 0.00    0 0.00</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,]  0.00  1.00    0  0.00    0 0.07    0 0.00</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,]  0.00  0.00    1  0.00    0 0.00    0 0.94</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,]  0.00  0.00    0  1.00    0 0.00    0 0.00</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,] -0.02  0.00    0  0.00    1 0.00    0 0.00</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,]  0.00  0.00    0  0.00    0 1.00    0 0.00</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,]  0.00 -0.02    0 -1.97    0 0.00    1 0.00</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,]  0.40  0.00    0  0.00    0 0.00    0 1.00</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(out<span class="sc">$</span>D[,,<span class="dv">1</span>],<span class="dv">2</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4]  [,5] [,6] [,7] [,8]</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] 0.16 0.00 0.00 0.00  0.00  0.0 0.00 0.00</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] 0.00 0.57 0.00 0.00  0.00  0.0 0.00 0.00</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,] 0.00 0.00 0.74 0.00  0.00  0.0 0.00 0.00</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,] 0.00 0.00 0.00 0.94  0.00  0.0 0.00 0.00</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,] 0.00 0.00 0.00 0.00 77.94  0.0 0.00 0.00</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,] 0.00 0.00 0.00 0.00  0.00  0.8 0.00 0.00</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,] 0.00 0.00 0.00 0.00  0.00  0.0 0.31 0.00</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,] 0.00 0.00 0.00 0.00  0.00  0.0 0.00 0.96</span></span></code></pre></div>
+<p>When <code>collapse = TRUE</code> and <code>save.memory = FALSE</code> the output of <code>learn_DAG()</code> is a <em>collapsed</em> <code>bcdag</code> object, consisting of a <span class="math inline">\((q,q,S)\)</span> array with the adjacency matrices of the DAGs sampled by the MCMC:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>collapsed_out <span class="ot">&lt;-</span> <span class="fu">learn_DAG</span>(<span class="at">S =</span> <span class="dv">5000</span>, <span class="at">burn =</span> <span class="dv">1000</span>, <span class="at">data =</span> X,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                 a, U, w, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fast =</span> <span class="cn">FALSE</span>, <span class="at">save.memory =</span> <span class="cn">FALSE</span>, <span class="at">collapse =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(collapsed_out)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Graphs&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(collapsed_out)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;bcdag&quot;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(collapsed_out)<span class="sc">$</span>type</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;collapsed&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>collapsed_out<span class="sc">$</span>Graphs[,,<span class="dv">1</span>]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,]    0    0    0    0    0    0    1    0</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,]    1    0    0    0    0    0    0    0</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,]    0    0    0    0    0    0    0    1</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,]    1    0    1    0    0    0    0    0</span></span></code></pre></div>
+<p>When <code>save.memory = TRUE</code> and <code>collapse = FALSE</code>, the output is a <em>compressed</em> <code>bcdag</code> object, collecting samples from the joint posterior on DAGs and DAG parameters in the form of a vector of strings:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>compressed_out <span class="ot">&lt;-</span> <span class="fu">learn_DAG</span>(<span class="at">S =</span> <span class="dv">5000</span>, <span class="at">burn =</span> <span class="dv">1000</span>, <span class="at">data =</span> X,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                 a, U, w, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fast =</span> <span class="cn">FALSE</span>, <span class="at">save.memory =</span> <span class="cn">TRUE</span>, <span class="at">collapse =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(compressed_out)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Graphs&quot; &quot;L&quot;      &quot;D&quot;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(compressed_out)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;bcdag&quot;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(compressed_out)<span class="sc">$</span>type</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;compressed&quot;</span></span></code></pre></div>
+<p>In such a case, we can access to the MCMC draws as:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>compressed_out<span class="sc">$</span>Graphs[<span class="dv">1</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;0;0;0;0;1;0;0;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;0;0;0;0;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0&quot;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>compressed_out<span class="sc">$</span>L[<span class="dv">1</span>]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;1;0;0;0;-0.0207148822282879;0;0;0.389080449183578;0;1;0;0;0;0;0;0;0;0;1;0;0;0;0;0.464492744238912;0;0;0;1;0;0;-1.76444008583527;-0.020197409100651;0;0;0;0;1;0;0;0;0;0;0;0;0;1;0;0;0;0;0;0;0;0;1;0;0;0;0;0;0;0;0;1&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>compressed_out<span class="sc">$</span>D[<span class="dv">1</span>]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;0.154822760388322;0;0;0;0;0;0;0;0;0.544421200660809;0;0;0;0;0;0;0;0;0.395261505201729;0;0;0;0;0;0;0;0;1.04755025995276;0;0;0;0;0;0;0;0;67.9926231564594;0;0;0;0;0;0;0;0;0.831649133274509;0;0;0;0;0;0;0;0;0.303043124888535;0;0;0;0;0;0;0;0;1.76018923453861&quot;</span></span></code></pre></div>
+<p>In addition, we implement <code>bd_decode</code>, an internal function that can be used to visualize the previous objects as matrices:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bd_decode</span>(compressed_out<span class="sc">$</span>Graphs[<span class="dv">1</span>])</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,]    1    0    0    0    0    0    0    0</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,]    0    0    0    1    0    0    0    0</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,]    1    0    1    1    0    0    0    0</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">bd_decode</span>(compressed_out<span class="sc">$</span>L[<span class="dv">1</span>]),<span class="dv">2</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       [,1] [,2] [,3]  [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]  1.00    0 0.00  0.00    0    0    0    0</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,]  0.00    1 0.00  0.00    0    0    0    0</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,]  0.00    0 1.00  0.00    0    0    0    0</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,]  0.00    0 0.00  1.00    0    0    0    0</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,] -0.02    0 0.00  0.00    1    0    0    0</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,]  0.00    0 0.00  0.00    0    1    0    0</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,]  0.00    0 0.00 -1.76    0    0    1    0</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,]  0.39    0 0.46 -0.02    0    0    0    1</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">bd_decode</span>(compressed_out<span class="sc">$</span>D[<span class="dv">1</span>]),<span class="dv">2</span>)</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4]  [,5] [,6] [,7] [,8]</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,] 0.15 0.00  0.0 0.00  0.00 0.00  0.0 0.00</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,] 0.00 0.54  0.0 0.00  0.00 0.00  0.0 0.00</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,] 0.00 0.00  0.4 0.00  0.00 0.00  0.0 0.00</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,] 0.00 0.00  0.0 1.05  0.00 0.00  0.0 0.00</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,] 0.00 0.00  0.0 0.00 67.99 0.00  0.0 0.00</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,] 0.00 0.00  0.0 0.00  0.00 0.83  0.0 0.00</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,] 0.00 0.00  0.0 0.00  0.00 0.00  0.3 0.00</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,] 0.00 0.00  0.0 0.00  0.00 0.00  0.0 1.76</span></span></code></pre></div>
+<p>Finally, if <code>save.memory = TRUE</code> and <code>collapse = TRUE</code>, the output of <code>learn_DAG()</code> is a <em>compressed and collapsed</em> <code>bcdag</code> object collecting only the sampled DAGs represented as vector of strings:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>comprcoll_out <span class="ot">&lt;-</span> <span class="fu">learn_DAG</span>(<span class="at">S =</span> <span class="dv">5000</span>, <span class="at">burn =</span> <span class="dv">1000</span>, <span class="at">data =</span> X,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                 a, U, w, </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fast =</span> <span class="cn">FALSE</span>, <span class="at">save.memory =</span> <span class="cn">TRUE</span>, <span class="at">collapse =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(comprcoll_out)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Graphs&quot;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(comprcoll_out)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;bcdag&quot;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(comprcoll_out)<span class="sc">$</span>type</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;compressed and collapsed&quot;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">bd_decode</span>(comprcoll_out<span class="sc">$</span>Graphs[<span class="dv">1</span>])</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2,]    0    0    0    0    0    1    0    0</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4,]    1    0    0    0    0    0    0    0</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5,]    1    0    0    0    0    0    0    0</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6,]    0    0    0    0    0    0    0    0</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,]    0    0    0    1    0    0    0    0</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,]    1    0    1    0    0    0    0    0</span></span></code></pre></div>
+</div>
+</div>
+<div id="a-note-on-fast-true" class="section level2">
+<h2>A note on <code>fast = TRUE</code></h2>
+<p>Step 1. of the MCMC scheme implemented by <code>learn_DAG()</code> updates DAG <span class="math inline">\(\mathcal{D}\)</span> by randomly drawing a new candidate DAG <span class="math inline">\(\mathcal{D}&#39;\)</span> from a proposal distribution and then accepting it with probability given by the Metropolis Hastings (MH) acceptance rate; see also Castelletti &amp; Mascaro (2021). For a given DAG <span class="math inline">\(\mathcal{D}\)</span>, the proposal distribution <span class="math inline">\(q(\mathcal{D}&#39;\,|\,\mathcal{D})\)</span> is built over the set <span class="math inline">\(\mathcal{O}_{\mathcal{D}}\)</span> of  direct successors DAGs that can be reached from <span class="math inline">\(\mathcal{D}\)</span> by inserting, deleting or reversing a single edge in <span class="math inline">\(\mathcal{D}\)</span>. A DAG <span class="math inline">\(\mathcal{D}&#39;\)</span> is then proposed uniformly from the set <span class="math inline">\(\mathcal{O}_{\mathcal{D}}\)</span> so that <span class="math inline">\(q(\mathcal{D}&#39;\,|\,\mathcal{D})=1/|\mathcal{O}_{\mathcal{D}}|\)</span>. Moreover, the MH rate requires to evaluate the ratio of proposals <span class="math inline">\(q(\mathcal{D}&#39;\,|\,\mathcal{D})/q(\mathcal{D}\,|\,\mathcal{D}&#39;) = |\mathcal{O}_{\mathcal{D}&#39;}|/|\mathcal{O}_{\mathcal{D}}|\)</span>, and accordingly the construction of both <span class="math inline">\(\mathcal{O}_{\mathcal{D}}\)</span> and <span class="math inline">\(\mathcal{O}_{\mathcal{D}&#39;}\)</span>.</p>
+<p>If <code>fast = FALSE</code>, the proposal ratio is computed exactly; this requires the enumerations of <span class="math inline">\(\mathcal{O}_\mathcal{D}\)</span> and <span class="math inline">\(\mathcal{O}_{\mathcal{D}&#39;}\)</span> which may become computationally expensive, especially when <span class="math inline">\(q\)</span> is large. However, the ratio approaches <span class="math inline">\(1\)</span> as the number of variables <span class="math inline">\(q\)</span> increases: option <code>fast = TRUE</code> implements such an approximation, which therefore avoids the construction of <span class="math inline">\(\mathcal{O}_\mathcal{D}\)</span> and <span class="math inline">\(\mathcal{O}_{\mathcal{D}&#39;}\)</span>. A comparison between <code>fast = FALSE</code> and <code>fast = TRUE</code> in the execution of <code>learn_DAG()</code> produces the following results in terms of computational time:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No approximation</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>time_nofast <span class="ot">&lt;-</span> <span class="fu">system.time</span>(out_nofast <span class="ot">&lt;-</span> <span class="fu">learn_DAG</span>(<span class="at">S =</span> <span class="dv">5000</span>, <span class="at">burn =</span> <span class="dv">1000</span>, <span class="at">data =</span> X, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                      a, U, w, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fast =</span> <span class="cn">FALSE</span>, <span class="at">save.memory =</span> <span class="cn">FALSE</span>, <span class="at">collapse =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Approximation</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>time_fast <span class="ot">&lt;-</span> <span class="fu">system.time</span>(out_fast <span class="ot">&lt;-</span> <span class="fu">learn_DAG</span>(<span class="at">S =</span> <span class="dv">5000</span>, <span class="at">burn =</span> <span class="dv">1000</span>, <span class="at">data =</span> X, </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                      a, U, w, </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">fast =</span> <span class="cn">TRUE</span>, <span class="at">save.memory =</span> <span class="cn">FALSE</span>, <span class="at">collapse =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>time_nofast</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    utente   sistema trascorso </span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     19.79      0.04     19.84</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>time_fast</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    utente   sistema trascorso </span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      8.02      0.01      8.03</span></span></code></pre></div>
+<p>Finally, the corresponding estimated posterior probabilities of edge inclusion are the following:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">get_edgeprobs</span>(out_nofast), <span class="dv">2</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      1    2    3    4 5    6    7    8</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.00 0.06 0.07 0.00 0 0.00 0.00 0.00</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.05 0.00 0.02 0.03 0 0.21 0.04 0.00</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.09 0.02 0.00 0.00 0 0.01 0.02 0.52</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.00 0.06 0.00 0.00 0 0.01 0.52 0.00</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 1.00 0.00 0.00 0.00 0 0.00 0.01 0.00</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 0.03 0.26 0.00 0.00 0 0.00 0.02 0.00</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 0.03 0.01 0.00 0.48 0 0.03 0.00 0.02</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 1.00 0.00 0.48 0.01 0 0.00 0.03 0.00</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">get_edgeprobs</span>(out_fast), <span class="dv">2</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      1    2    3    4    5    6    7    8</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.00 0.04 0.01 0.02 0.00 0.04 0.01 0.00</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 0.05 0.00 0.00 0.03 0.00 0.20 0.01 0.00</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.05 0.00 0.00 0.00 0.01 0.01 0.06 0.55</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 0.02 0.03 0.00 0.00 0.00 0.02 0.55 0.01</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 1.00 0.00 0.01 0.00 0.00 0.00 0.01 0.00</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 0.06 0.24 0.01 0.00 0.01 0.00 0.03 0.01</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 0.00 0.02 0.03 0.45 0.00 0.01 0.00 0.00</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8 1.00 0.00 0.45 0.02 0.00 0.04 0.00 0.00</span></span></code></pre></div>
+<div id="references" class="section level3">
+<h3>References</h3>
+<ul>
+<li><p>Ben-David E, Li T, Massam H, Rajaratnam B (2015). “High dimensional Bayesian inference for Gaussian directed acyclic graph models.” <em>arXiv pre-print</em>. URL <a href="https://arxiv.org/abs/1109.4371" class="uri">https://arxiv.org/abs/1109.4371</a>.</p></li>
+<li><p>Cao X, Khare K, Ghosh M (2019). “Posterior graph selection and estimation consistency for high-dimensional Bayesian DAG models.” <em>The Annals of Statistics</em>, 47(1), 319–348. doi: <a href="https://doi.org/10.1214/18-AOS1689" class="uri">https://doi.org/10.1214/18-AOS1689</a>.</p></li>
+<li><p>Castelletti F, Consonni G (2021). “Bayesian causal inference in probit graphical models” <em>Bayesian Analysis</em>, In press. doi: <a href="https://doi.org/10.1214/21-BA1260" class="uri">https://doi.org/10.1214/21-BA1260</a>.</p></li>
+<li><p>Castelletti F, Mascaro A (2021). “Structural learning and estimation of joint causal effects among network-dependent variables.” <em>Statistical Methods &amp; Applications</em>, 30, 1289–1314. doi: <a href="https://doi.org/10.1007/s10260-021-00579-1" class="uri">https://doi.org/10.1007/s10260-021-00579-1</a>.</p></li>
+<li><p>Castelletti F, Mascaro A (2022+). “BCDAG: An R package for Bayesian structural and Causal learning of Gaussian DAGs.” <em>arXiv pre-print</em>.</p></li>
+<li><p>Godsill, SJ (2012). “On the relationship between Markov chain Monte Carlo methods for model uncertainty.” <em>Journal of computational and graphical statistics</em>, 10(2), 230-248. doi: <a href="https://doi.org/10.1198/10618600152627924" class="uri">https://doi.org/10.1198/10618600152627924</a>.</p></li>
+<li><p>Peluso S, Consonni G (2020). “Compatible priors for model selection of high-dimensional Gaussian DAGs.” <em>Electronic Journal of Statistics</em>, 14(2), 4110–4132. doi: <a href="https://doi.org/10.1214/20-EJS1768" class="uri">https://doi.org/10.1214/20-EJS1768</a>.</p></li>
+</ul>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
