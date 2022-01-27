@@ -2,7 +2,7 @@
 title: "Random data generation from Gaussian DAG models"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Random generation from Gaussian DAG models}
+  %\VignetteIndexEntry{Random data generation from Gaussian DAG models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,12 +23,6 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(BCDAG)
 ```
-
-<!-- +++ -->
-
-<!-- NON MI PRENDE né emph né textit, alcune parole rimangono quindi "nascoste" -->
-
-<!-- +++ -->
 
 This is the first of a series of three vignettes introducing the R package `BCDAG`.
 In this vignette we focus on functions `rDAG()` and `rDAGWishart()` which implement random generation of DAG structures and DAG parameters under the assumption that the joint distribution of variables $X_1,\dots, X_q$ is Gaussian and the corresponding model (Choleski) parameters follow a DAG-Wishart distribution. Finally, data generation from Gaussian DAG models is described.
@@ -63,21 +57,18 @@ $(\boldsymbol L, \boldsymbol D)$ are model parameters providing the decompositio
 specifically, $\boldsymbol{L}$ is a $(q, q)$ matrix of coefficients such that for each $(u, v)$-element $\boldsymbol{L}_{uv}$ with $u \ne v$, we have $\boldsymbol{L}_{uv} \ne 0$ if and only if $(u, v) \in E$, while $\boldsymbol{L}_{uu} = 1$ for each $u = 1,\dots, q$;
 also, $\boldsymbol{D}$ is a $(q, q)$ diagonal matrix with $(u, u)$-element $\boldsymbol{D}_{uu}$.
 The latter decomposition follows from the equivalent Structural Equation Model (SEM) representation of a Gaussian DAG model:
-<!-- \begin{equation} -->
-<!-- \boldsymbol{x} = (\boldsymbol I-\boldsymbol L)\boldsymbol x + \boldsymbol \epsilon, \quad \boldsymbol \epsilon \sim \mathcal{N}_q(\boldsymbol 0, \boldsymbol D), -->
-<!-- \end{equation} -->
-<!-- CREDO SIA CORRETTO IL SEGUENTE (CON IL TRASPOSTO): -->
+
 \begin{equation}
 \boldsymbol{L}^\top\boldsymbol{x} = \boldsymbol \epsilon, \quad \boldsymbol \epsilon \sim \mathcal{N}_q(\boldsymbol 0, \boldsymbol D),
 \end{equation}
 
 where $\boldsymbol x = (X_1,\dots, X_q)^\top$; see also Castelletti \& Mascaro (2021).
 
-The DAG-Wishart distribution (Cao et al., 2019) provides a conjugate prior for $(\boldsymbol L, \boldsymbol D)$.
-Moreover, a *compatible* DAG-Wishart distribution, guaranteeing score equivalence for Markov equivalent DAGs, was introduced by Peluso \& Consonni (2020); see the original paper for full details.
-
 Function `rDAGWishart` implements random sampling from $(\boldsymbol L, \boldsymbol D)\,|\,\mathcal{D} \sim \text{DAG-Wishart}(\boldsymbol{a}_{c}^{\mathcal{D}}, \boldsymbol U)$, where
-$\boldsymbol{U}$ is the rate parameter (a $(q,q)$ s.p.d. matrix) and $\boldsymbol{a}^{\mathcal {D}}_{c}$ (a $(q,1)$ vector) is the shape parameter of the DAG-Wishart distribution. Moreover, in its compatible version, elements of the vector parameter $\boldsymbol{a}^{\mathcal {D}}_{c}$ are uniquely determined from a single *common* shape parameter $a>q-1$.
+$\boldsymbol{U}$ is the rate parameter (a $(q,q)$ s.p.d. matrix) and $\boldsymbol{a}^{\mathcal {D}}_{c}$ (a $(q,1)$ vector) is the shape parameter of the DAG-Wishart distribution.
+This class of distributions was introduced by Ben David et al. (2015) as a conjugate prior for Gaussian DAG model-parameters.
+In its compatible version (Peluso \& Consonni, 2020), elements of the vector parameter $\boldsymbol{a}^{\mathcal {D}}_{c}$ are uniquely determined from a single *common* shape parameter $a>q-1$.
+
 Inputs of `rDAGWishart` are: the number of samples $n$, the underlying DAG $\mathcal{D}$, the common shape parameter $a$ and the rate parameter $\boldsymbol U$.
 Given the DAG $\mathcal{D}$ generated before, the following example implements a single ($n=1$) draw from a compatible DAG-Wishart distribution with parameters $a=q$, $\boldsymbol U = \boldsymbol I_q$:
 ```{r}
@@ -97,14 +88,14 @@ The output of `rDAGWishart()` consists of two elements: a $(q,q,n)$-dimensional 
 
 ## Generating data from a Gaussian DAG model
 
-Data generation from a Gaussian DAG model is finally straightforward.
+Data generation from a Gaussian DAG model is then straightforward.
 Recall that $\boldsymbol{\Omega} = \boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top$, where $\boldsymbol{\Omega}$ is the inverse-covariance (precision) matrix of a multivariate Gaussian model satisfying the constraints imposed by a DAG.
 Accordingly, we can recover the precision and covariance matrices as:
 
 ```{r}
-  # Precision matrix
+# Precision matrix
 Omega <- L %*% solve(D) %*% t(L)
-  # Covariance matrix
+# Covariance matrix
 Sigma <- solve(Omega)
 ```
 

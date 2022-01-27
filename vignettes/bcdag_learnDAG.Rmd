@@ -39,18 +39,6 @@ X_1, \dots, X_q \,|\,\boldsymbol L, \boldsymbol D, \mathcal{D} &\sim& \mathcal{N
 p(\mathcal{D}) &\propto& w^{|\mathcal{S}_\mathcal{D}|}(1-w)^{\frac{q(q-1)}{2} - {|\mathcal{S}_\mathcal{D}|}}
 \end{eqnarray}
 
-<!-- +++++ -->
-
-<!-- NOTA: -->
-
-<!-- Obs: HO MODIFICATO S = 500 e BURN = 100 PER VELOCIZZARE LA COMPILAZIONE; ALLA FINE RICORDATI DI RIMETTERLI A POSTO -->
-
-<!-- NON SONO RIUSCITO A INCLUDERE LE REF, HO LASCIATO INDICATO DOVE VAN MESSE; VEDI TU SE VUOI CIMENTARTI, SE NO LASCIAMO STARE -->
-
-<!-- NON MI PRENDE né emph né textit -->
-
-<!-- +++++ -->
-
 In particular $\mathcal{D}=(V,E)$ denotes a DAG structure with set of nodes $V=\{1,\dots,q\}$ and set of edges $E\subseteq V \times V$.
 Moreover, $(\boldsymbol L, \boldsymbol D)$ are model parameters providing the decomposition of the precision (inverse-covariance) matrix $\boldsymbol{\Omega} = \boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top$;
 specifically, $\boldsymbol{L}$ is a $(q, q)$ matrix of coefficients such that for each $(u, v)$-element $\boldsymbol{L}_{uv}$ with $u \ne v$, $\boldsymbol{L}_{uv} \ne 0$ if and only if $(u, v) \in E$, while $\boldsymbol{L}_{uu} = 1$ for each $u = 1,\dots, q$;
@@ -100,13 +88,13 @@ see also Castelletti \& Consonni (2021) for more details.
 We implement it as follows:
 
 ```{r echo = FALSE, include=FALSE}
-out <- learn_DAG(S = 500, burn = 100, data = X,
+out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = FALSE, collapse = FALSE)
 ```
 
 ```{r eval = FALSE}
-out <- learn_DAG(S = 500, burn = 100, data = X,
+out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = FALSE, collapse = FALSE)
 ```
@@ -154,13 +142,13 @@ round(out$D[,,1],2)
 When `collapse = TRUE` and `save.memory = FALSE` the output of `learn_DAG()` is a *collapsed* `bcdag` object, consisting of a $(q,q,S)$ array with the adjacency matrices of the DAGs sampled by the MCMC:
 
 ```{r echo = FALSE, include=FALSE}
-collapsed_out <- learn_DAG(S = 500, burn = 100, data = X,
+collapsed_out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = FALSE, collapse = TRUE)
 ```
 
 ```{r eval = FALSE}
-collapsed_out <- learn_DAG(S = 500, burn = 100, data = X,
+collapsed_out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = FALSE, collapse = TRUE)
 ```
@@ -177,13 +165,13 @@ collapsed_out$Graphs[,,1]
 When `save.memory = TRUE` and `collapse = FALSE`, the output is a *compressed* `bcdag` object, collecting samples from the joint posterior on DAGs and DAG parameters in the form of a vector of strings: 
 
 ```{r echo = FALSE, include=FALSE}
-compressed_out <- learn_DAG(S = 500, burn = 100, data = X,
+compressed_out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = TRUE, collapse = FALSE)
 ```
 
 ```{r eval = FALSE}
-compressed_out <- learn_DAG(S = 500, burn = 100, data = X,
+compressed_out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = TRUE, collapse = FALSE)
 ```
@@ -215,13 +203,13 @@ round(bd_decode(compressed_out$D[1]),2)
 Finally, if `save.memory = TRUE` and `collapse = TRUE`, the output of `learn_DAG()` is a *compressed and collapsed* `bcdag` object collecting only the sampled DAGs represented as vector of strings:
 
 ```{r echo = FALSE, include=FALSE}
-comprcoll_out <- learn_DAG(S = 500, burn = 100, data = X,
+comprcoll_out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = TRUE, collapse = TRUE)
 ```
 
 ```{r eval = FALSE}
-comprcoll_out <- learn_DAG(S = 500, burn = 100, data = X,
+comprcoll_out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = TRUE, collapse = TRUE)
 ```
@@ -247,11 +235,11 @@ A comparison between `fast = FALSE` and `fast = TRUE` in the execution of `learn
 
 ```{r results='hide'}
 # No approximation
-time_nofast <- system.time(out_nofast <- learn_DAG(S = 500, burn = 100, data = X, 
+time_nofast <- system.time(out_nofast <- learn_DAG(S = 5000, burn = 1000, data = X, 
                       a, U, w, 
                       fast = FALSE, save.memory = FALSE, collapse = FALSE))
 # Approximation
-time_fast <- system.time(out_fast <- learn_DAG(S = 500, burn = 100, data = X, 
+time_fast <- system.time(out_fast <- learn_DAG(S = 5000, burn = 1000, data = X, 
                       a, U, w, 
                       fast = TRUE, save.memory = FALSE, collapse = FALSE))
 ```
@@ -261,7 +249,7 @@ time_fast
 ```
 
 
-The corresponding estimated posterior probabilities of edge inclusion are the following:
+Finally, the corresponding estimated posterior probabilities of edge inclusion are the following:
 
 ```{r}
 round(get_edgeprobs(out_nofast), 2)

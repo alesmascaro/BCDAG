@@ -56,14 +56,14 @@ X <- mvtnorm::rmvnorm(n = n, sigma = Sigma)
 Next, we use `learn_DAG()` to approximate the joint posterior distribution over DAG structures and DAG parameters:
 
 ```{r echo = FALSE, include=FALSE}
-out <- learn_DAG(S = 500, burn = 100, data = X,
+out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = FALSE, collapse = FALSE)
 ```
 
 ```{r eval = FALSE}
 ## Run MCMC
-out <- learn_DAG(S = 500, burn = 100, data = X,
+out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  a, U, w, 
                  fast = FALSE, save.memory = FALSE, collapse = FALSE)
 ```
@@ -233,22 +233,22 @@ head(effects_out)
 Additionally, if `BMA = TRUE`, `get_causaleffect()` returns a Bayesian Model Average (BMA) estimate of the causal effect coefficients:
 
 ```{r}
-  ## BMA estimate of causal effects
+## BMA estimate of causal effects
 round(get_causaleffect(out, targets = c(4,5), response = 1, BMA = TRUE), 3)
-  ## True causal effects
+## True causal effects
 round(causaleffect(targets = c(4,5), response = 1, L = L, D = D), 3)
 ```
 
 Also notice that, if the `BCDAG` object input of `get_causaleffect()` is of type `collapsed` or `compressed and collapsed`, then `get_causaleffect()` requires drawing from the posterior distribution of parameters $(\boldsymbol L, \boldsymbol D)$ before estimating the required causal effects:
 
 ```{r echo = FALSE, include=FALSE}
-coll_out <- learn_DAG(S = 500, burn = 100, data = X,
+coll_out <- learn_DAG(S = 5000, burn = 1000, data = X,
                       a, U, w, 
                  fast = FALSE, save.memory = FALSE, collapse = TRUE)
 ```
 
 ```{r eval=FALSE}
-coll_out <- learn_DAG(S = 500, burn = 100, data = X,
+coll_out <- learn_DAG(S = 5000, burn = 1000, data = X,
                       a, U, w, 
                  fast = FALSE, save.memory = FALSE, collapse = TRUE)
 ```
@@ -271,9 +271,9 @@ round(effects_collout, 3)
 
 ### References
 
-* Castelletti, F, Mascaro, A (2021). "Structural learning and estimation of joint causal effects among network-dependent variables". *Statistical Methods & Applications*, 30(5), 1289-1314.
+* Castelletti, F, Mascaro, A (2021). "Structural learning and estimation of joint causal effects among network-dependent variables". *Statistical Methods & Applications*, 30(5), 1289-1314. doi: https://doi.org/10.1007/s10260-021-00579-1.
 
-* Nandy, P, Maathuis, MH., Richardson, TS (2017). "Estimating the effect of joint interventions from observational data in sparse high-dimensional settings". *The Annals of Statistics*, 45(2), 647-674
+* Nandy, P, Maathuis, MH., Richardson, TS (2017). "Estimating the effect of joint interventions from observational data in sparse high-dimensional settings". *The Annals of Statistics*, 45(2), 647-674. doi: https://doi.org/10.1214/16-AOS1462.
 
 * Pearl J (2000). *Causality: Models, Reasoning, and Inference*. Cambridge University Press,
 Cambridge. ISBN 0-521-77362-8.
