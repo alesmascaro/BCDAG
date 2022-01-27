@@ -3,9 +3,9 @@
 
 # Overview
 
-**BCDAG** (**B**ayesian **C**ausal **DAG**) is a package for causal
-(DAG) structure learning and causal effect estimation from observational
-Gaussian data in the Bayesian setting.
+**BCDAG** (**B**ayesian **C**ausal **DAG**) is a package for Bayesian
+DAG structure learning and causal effect estimation from observational
+Gaussian data.
 
 The methodology implemented has been presented in [Castelletti, F. &
 Mascaro, A. (2021). *Structural learning and estimation of joint causal
@@ -32,7 +32,7 @@ The workflow of the package consists of two sequential steps: causal
 structure learning, performed through the function `learn_DAG()` and
 causal effect estimation, performed through the function
 `get_causaleffect()`. For a more detailed description of the inner
-mechanisms of these two functions, we refer the reader to the vignette.
+mechanisms of these two functions, we refer the reader to the vignettes.
 
 ## Example
 
@@ -50,11 +50,11 @@ outDL = rDAGWishart(n = 1, DAG = DAG, a = q, U = diag(1, q))
 L = outDL$L; D = outDL$D
 Sigma = solve(t(L))%*%D%*%solve(L)
 n = 200
-  # Generate observations from a Gaussian DAG-model
+# Generate observations from a Gaussian DAG-model
 X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
 ```
 
-Then, we can use the function `learn_DAG()` to perform causal structure
+We can use the function `learn_DAG()` to perform causal structure
 learning from the generated observational dataset:
 
 ``` r
@@ -62,8 +62,8 @@ learning from the generated observational dataset:
 out = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = w)
 ```
 
-Then, we can compute the BMA estimate of the causal effect of a hard
-intervention on a set of nodes on a response variable using
+Next, we can compute the BMA estimate of the causal effect on a response
+variable consequent to a hard intervention on a set of nodes by using
 `get_causaleffect()`:
 
 ``` r
@@ -73,15 +73,18 @@ out |>
 ```
 
 The three steps here implemented are detailed in the vignettes [1 -
-Random data generation from Gaussian DAG-models](#), [2 - MCMC scheme
-for posterior inference of Gaussian DAG models: the `learn_DAG()`
-function](#) and [3 - Elaborate on the output of `learn_DAG()` using
-get\_ functions](#)
+Random data generation from Gaussian
+DAG-models](https://alesmascaro.github.io/BCDAG/vignettes/bcdag_generatedata.html),
+[2 - MCMC scheme for posterior inference of Gaussian DAG models: the
+`learn_DAG()`
+function](https://alesmascaro.github.io/BCDAG/vignettes/bcdag_learnDAG.html)
+and [3 - Elaborate on the output of `learn_DAG()` using get\_
+functions](https://alesmascaro.github.io/BCDAG/vignettes/bcdag_getfamily.html)
 
 # Authors
 
 -   Alessandro Mascaro, Department of Economics, Management and
-    Statistics, University of Milano-Bicocca,
+    Statistics, University of Milano-Bicocca, Milan,
     <a.mascaro3@campus.unimib.it>
 -   Federico Castelletti, Department of Statistical sciences, Università
-    Cattolica del Sacro Cuore, Milan
+    Cattolica del Sacro Cuore, Milan, <federico.castelletti@unicatt.it>
