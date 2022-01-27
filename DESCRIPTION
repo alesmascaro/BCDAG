@@ -1,5 +1,5 @@
 Package: BCDAG
-Title: An R package for Bayesian structural and Causal learning of Gaussian DAGs
+Title: An R package for Bayesian structure and Causal learning of Gaussian DAGs
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Federico",
@@ -12,7 +12,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "first.last@example.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Description...
+Description: A collection of functions for structure learning of Directed Acyclic Graphs (DAGs) and estimation of joint causal effects from observational Gaussian data. Main algorithm consists of a Markov chain Monte Carlo (MCMC) scheme for posterior inference of DAG structures, DAG parameters and causal effects between variables.
 License: CC BY 4.0
 Encoding: UTF-8
 LazyData: true
