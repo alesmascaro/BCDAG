@@ -11,7 +11,6 @@
 #' @param U position hyperparameter of the compatible DAG-Wishart, a \eqn{(q, q)} s.p.d. matrix
 #'
 #' @return A list with two elements; a vector with one draw for the (vector) regression coefficient and a scalar with one draw for the conditional variance
-#' @export
 rnodeDAGWishart <- function(node, DAG, aj, U) {
   q <- ncol(data)
   n <- nrow(data)

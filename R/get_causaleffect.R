@@ -14,7 +14,7 @@
 #' Bayesian Model Average (BMA) estimate (obtained as the sample mean of the \eqn{S} draws) can be returned by setting \code{BMA = TRUE}.
 #'
 #' Notice that, whenever implemented with \code{collapse = FALSE}, \code{learn_DAG} returns the marginal posterior distribution of DAGs only.
-#' In this case, \code{get_causaleffect} preliminarily performs posterior inference ofDAG parameters by drawing samples from the posterior of \code{(D,L)}.
+#' In this case, \code{get_causaleffect} preliminarily performs posterior inference of DAG parameters by drawing samples from the posterior of \code{(D,L)}.
 #'
 #' @author Federico Castelletti and Alessandro Mascaro
 #'

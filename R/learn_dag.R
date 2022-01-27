@@ -12,7 +12,7 @@
 #' Posterior inference on the joint space of DAGs and DAG parameters is carried out through a Partial Analytic Structure (PAS) algorithm.
 #' Two steps are iteratively performed for \eqn{s = 1, 2, ...} : (1) update of the DAG through a Metropolis Hastings (MH) scheme;
 #' (2) sampling from the posterior distribution of the (updated DAG) parameters.
-#' In step (1) the update of the (current) DAG is performed by drawing a new (direct successor) DAG from a suitable proposal distribution. The proposed DAG is obtained by applying a \eqn{local move} (insertion, deletion or edge reversal)
+#' In step (1) the update of the (current) DAG is performed by drawing a new (direct successor) DAG from a suitable proposal distribution. The proposed DAG is obtained by applying a local move (insertion, deletion or edge reversal)
 #' to the current DAG and is accepted with probability given by the MH acceptance rate.
 #' The latter requires to evaluate the proposal distribution at both the current and proposed DAGs, which in turn involves the enumeration of
 #' all DAGs that can be obtained from local moves from respectively the current and proposed DAG.
@@ -40,7 +40,7 @@
 #' @param save.memory boolean, if \code{TRUE} MCMC draws are stored as strings, instead of arrays
 #' @param collapse boolean, if \code{TRUE} only structure learning of DAGs is performed
 #'
-#' @return An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse == FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory == FALSE}, these are stored in three arrays of dimension \eqn{qxqxS}. Otherwise, they're stored as strings.
+#' @return An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse = FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory = FALSE}, these are stored in three arrays of dimension \eqn{(q,q,S)}. Otherwise, they are stored as strings.
 #' @export
 #'
 #' @examples # Randomly generate a DAG and the DAG-parameters

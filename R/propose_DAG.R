@@ -15,7 +15,6 @@
 #' @param DAG Adjacency matrix of the current DAG
 #' @param fast boolean, if \code{TRUE} an approximate proposal is implemented
 #' @return A list containing the \eqn{(q,q)} adjacency matrix of the proposed DAG, the type of applied operator (with values in \eqn{{1,2,3}}), the numerical labels of the nodes involved in the move, the integer number of direct successors of \code{DAG} and of the proposed DAG
-#' @export
 propose_DAG <- function(DAG, fast) {
   A <- DAG
   q <- ncol(A)

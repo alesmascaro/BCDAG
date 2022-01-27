@@ -7,7 +7,6 @@
 #' @param nodes numerical labels of nodes on which the operator is applied, a \eqn{(2,1)} vector
 #'
 #' @return The \eqn{(q,q)} adjacency matrix of the modified DAG
-#' @export
 operation <- function(op, A, nodes) {
   x <- nodes[1]
   y <- nodes[2]

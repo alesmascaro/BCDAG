@@ -1,6 +1,6 @@
-#' Build the set of direct successors of a DAG (internal function)
+#' Find the direct successors DAGs of an input DAG (internal function)
 #'
-#' @param DAG The DAG for which we want to list the set of direct successors
+#' @param DAG The input DAG
 
 get_opcard <- function(DAG) {
   A <- DAG

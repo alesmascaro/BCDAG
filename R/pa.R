@@ -6,7 +6,6 @@
 #' @param DAG \eqn{(q,q)} adjacency matrix of the DAG
 #'
 #' @return A numerical vector with the labels of the parents of \code{node} in \code{DAG}
-#' @export
 pa <- function(node, DAG) {
   pa <- which(DAG[,node] != 0)
   return(pa)

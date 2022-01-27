@@ -17,7 +17,6 @@
 #' @param current.opcard number of direct successors of \code{currentDAG}
 #' @param proposed.opcard number of direct successors of \code{proposedDAG}
 #' @return A Boolean indicating whether \code{proposedDAG} has been accepted (\code{TRUE}) or not (\code{FALSE})
-#' @export
 
 acceptreject_DAG <- function(tXX, n, currentDAG, proposedDAG, node, op.type,
                              a, U, w, current.opcard, proposed.opcard) {
