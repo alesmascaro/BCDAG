@@ -24,11 +24,6 @@ knitr::opts_chunk$set(
 library(BCDAG)
 ```
 
-<!-- +++ -->
-
-<!-- HO ABBASSATO IL NUMERO DI ITERAZIONI A 500 (CON BURN 100); RICORDIAMOCI DI RIMETTERLO A POSTO ALLA FINE -->
-
-<!-- +++ -->
 
 This is the third of a series of three vignettes for the R package `BCDAG`. In this vignette, we show how to use the output of `learn_DAG()`
 for posterior inference on DAGs, DAG parameters, and causal effect estimation.
@@ -272,6 +267,9 @@ round(effects_collout, 3)
 ### References
 
 * Castelletti, F, Mascaro, A (2021). "Structural learning and estimation of joint causal effects among network-dependent variables". *Statistical Methods & Applications*, 30(5), 1289-1314. doi: https://doi.org/10.1007/s10260-021-00579-1.
+
+* Castelletti F, Mascaro A (2022). “BCDAG: An R package for Bayesian structural and
+Causal learning of Gaussian DAGs.” *arXiv pre-print*, url: https://arxiv.org/abs/2201.12003
 
 * Nandy, P, Maathuis, MH., Richardson, TS (2017). "Estimating the effect of joint interventions from observational data in sparse high-dimensional settings". *The Annals of Statistics*, 45(2), 647-674. doi: https://doi.org/10.1214/16-AOS1462.
 

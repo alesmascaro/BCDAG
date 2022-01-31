@@ -120,8 +120,8 @@ doi: https://doi.org/10.1214/18-AOS1689.
 among network-dependent variables.” *Statistical Methods & Applications*, 30, 1289–1314.
 doi: https://doi.org/10.1007/s10260-021-00579-1.
 
-* Castelletti F, Mascaro A (2022+). “BCDAG: An R package for Bayesian structural and
-Causal learning of Gaussian DAGs.” *arXiv pre-print*.
+* Castelletti F, Mascaro A (2022). “BCDAG: An R package for Bayesian structural and
+Causal learning of Gaussian DAGs.” *arXiv pre-print*, url: https://arxiv.org/abs/2201.12003
 
 * Peluso S, Consonni G (2020). “Compatible priors for model selection of high-dimensional
 Gaussian DAGs.” *Electronic Journal of Statistics*, 14(2), 4110–4132. doi: https://doi.org/10.1214/20-EJS1768.
