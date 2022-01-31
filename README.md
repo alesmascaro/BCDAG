@@ -88,3 +88,8 @@ functions](https://alesmascaro.github.io/BCDAG/vignettes/bcdag_getfamily.html)
     <a.mascaro3@campus.unimib.it>
 -   Federico Castelletti, Department of Statistical sciences, Università
     Cattolica del Sacro Cuore, Milan, <federico.castelletti@unicatt.it>
+
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/alesmascaro/BCDAG/workflows/R-CMD-check/badge.svg)](https://github.com/alesmascaro/BCDAG/actions)
+<!-- badges: end -->
