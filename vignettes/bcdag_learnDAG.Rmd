@@ -274,8 +274,8 @@ doi: https://doi.org/10.1214/18-AOS1689.
 among network-dependent variables.” *Statistical Methods & Applications*, 30, 1289–1314.
 doi: https://doi.org/10.1007/s10260-021-00579-1.
 
-* Castelletti F, Mascaro A (2022+). “BCDAG: An R package for Bayesian structural and
-Causal learning of Gaussian DAGs.” *arXiv pre-print*.
+* Castelletti F, Mascaro A (2022). “BCDAG: An R package for Bayesian structural and
+Causal learning of Gaussian DAGs.” *arXiv pre-print*, url: https://arxiv.org/abs/2201.12003
 
 * Godsill, SJ (2012). "On the relationship between Markov chain Monte Carlo methods for model uncertainty."
 *Journal of computational and graphical statistics*, 10(2), 230-248.
