@@ -19,7 +19,7 @@
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
 #' @references J. Pearl (2000). \emph{Causality: Models, Reasoning, and Inference}. Cambridge University Press, Cambridge.
-#' @references F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+#' @references F. Castelletti and A. Mascaro (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 #' @references  P. Nandy, M.H. Maathuis and T. Richardson (2017). Estimating the effect of joint interventions from observational data in sparse high-dimensional settings. \emph{Annals of Statistics} 45(2), 647-674.
 #'
 #'
@@ -45,8 +45,8 @@
 #' n = 200
 #' # Generate observations from a Gaussian DAG-model
 #' X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
-#' # Run the MCMC
-#' out_mcmc = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = w,
+#' # Run the MCMC (set S = 5000 and burn = 1000 for better results)
+#' out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = w,
 #'                      fast = TRUE, save.memory = FALSE)
 #' head(out_mcmc$Graphs)
 #' head(out_mcmc$L)

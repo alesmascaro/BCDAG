@@ -36,7 +36,7 @@ of the DAG parameters returned by \code{learn_DAG}. For each coefficient a sampl
 Bayesian Model Average (BMA) estimate (obtained as the sample mean of the \eqn{S} draws) can be returned by setting \code{BMA = TRUE}.
 
 Notice that, whenever implemented with \code{collapse = FALSE}, \code{learn_DAG} returns the marginal posterior distribution of DAGs only.
-In this case, \code{get_causaleffect} preliminarily performs posterior inference ofDAG parameters by drawing samples from the posterior of \code{(D,L)}.
+In this case, \code{get_causaleffect} preliminarily performs posterior inference of DAG parameters by drawing samples from the posterior of \code{(D,L)}.
 }
 \examples{
 # Randomly generate a DAG and the DAG-parameters
@@ -50,8 +50,8 @@ Sigma = solve(t(L))\%*\%D\%*\%solve(L)
 n = 200
 # Generate observations from a Gaussian DAG-model
 X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
-# Run the MCMC
-out_mcmc = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = w,
+# Run the MCMC (set S = 5000 and burn = 1000 for better results)
+out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = w,
                      fast = TRUE, save.memory = FALSE)
 head(out_mcmc$Graphs)
 head(out_mcmc$L)
@@ -63,7 +63,7 @@ get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1, BMA
 \references{
 J. Pearl (2000). \emph{Causality: Models, Reasoning, and Inference}. Cambridge University Press, Cambridge.
 
-F. Castelletti and Mascaro A. (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+F. Castelletti and A. Mascaro (2021) Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
 
 P. Nandy, M.H. Maathuis and T. Richardson (2017). Estimating the effect of joint interventions from observational data in sparse high-dimensional settings. \emph{Annals of Statistics} 45(2), 647-674.
 }

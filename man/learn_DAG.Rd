@@ -36,7 +36,7 @@ learn_DAG(
 \item{collapse}{boolean, if \code{TRUE} only structure learning of DAGs is performed}
 }
 \value{
-An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse == FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory == FALSE}, these are stored in three arrays of dimension \eqn{qxqxS}. Otherwise, they're stored as strings.
+An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse = FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory = FALSE}, these are stored in three arrays of dimension \eqn{(q,q,S)}. Otherwise, they are stored as strings.
 }
 \description{
 This function implements a Markov Chain Monte Carlo (MCMC) algorithm for structure learning of Gaussian
@@ -52,7 +52,7 @@ see also function \code{rDAGWishart} for more details.
 Posterior inference on the joint space of DAGs and DAG parameters is carried out through a Partial Analytic Structure (PAS) algorithm.
 Two steps are iteratively performed for \eqn{s = 1, 2, ...} : (1) update of the DAG through a Metropolis Hastings (MH) scheme;
 (2) sampling from the posterior distribution of the (updated DAG) parameters.
-In step (1) the update of the (current) DAG is performed by drawing a new (direct successor) DAG from a suitable proposal distribution. The proposed DAG is obtained by applying a \eqn{local move} (insertion, deletion or edge reversal)
+In step (1) the update of the (current) DAG is performed by drawing a new (direct successor) DAG from a suitable proposal distribution. The proposed DAG is obtained by applying a local move (insertion, deletion or edge reversal)
 to the current DAG and is accepted with probability given by the MH acceptance rate.
 The latter requires to evaluate the proposal distribution at both the current and proposed DAGs, which in turn involves the enumeration of
 all DAGs that can be obtained from local moves from respectively the current and proposed DAG.
@@ -77,15 +77,18 @@ Sigma = solve(t(L))\%*\%D\%*\%solve(L)
 # Generate observations from a Gaussian DAG-model
 n = 200
 X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
+
+## Set S = 5000 and burn = 1000 for better results
+
 # [1] Run the MCMC for posterior inference of DAGs and parameters (collapse = FALSE)
-out_mcmc = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
                      fast = FALSE, save.memory = FALSE, collapse = FALSE)
 # [2] Run the MCMC for posterior inference of DAGs only (collapse = TRUE)
-out_mcmc_collapse = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+out_mcmc_collapse = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
                               fast = FALSE, save.memory = FALSE, collapse = TRUE)
 # [3] Run the MCMC for posterior inference of DAGs only with approximate proposal
 # distribution (fast = TRUE)
-out_mcmc_collapse_fast = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+out_mcmc_collapse_fast = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
                                    fast = FALSE, save.memory = FALSE, collapse = TRUE)
 # Compute posterior probabilities of edge inclusion and Median Probability DAG Model
 # from the MCMC outputs [2] and [3]
@@ -96,6 +99,8 @@ get_MPMdag(out_mcmc_collapse_fast)
 }
 \references{
 F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+
+F. Castelletti and A. Mascaro (2022). BCDAG: An R package for Bayesian structural and Causal learning of Gaussian DAGs. \emph{arXiv pre-print}, url: https://arxiv.org/abs/2201.12003
 
 F. Castelletti (2020). Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
 }

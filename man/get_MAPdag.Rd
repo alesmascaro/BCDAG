@@ -36,8 +36,8 @@ Sigma = solve(t(L))\%*\%D\%*\%solve(L)
 # Generate observations from a Gaussian DAG-model
 n = 200
 X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
-# Run the MCMC
-out_mcmc = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+# Run the MCMC (Set S = 5000 and burn = 1000 for better results)
+out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
                      fast = TRUE, save.memory = FALSE)
 # Produce the MAP DAG estimate
 get_MAPdag(out_mcmc)

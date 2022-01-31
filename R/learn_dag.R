@@ -28,6 +28,7 @@
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
 #' @references F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
+#' @references F. Castelletti and A. Mascaro (2022). BCDAG: An R package for Bayesian structural and Causal learning of Gaussian DAGs. \emph{arXiv pre-print}, url: https://arxiv.org/abs/2201.12003
 #' @references F. Castelletti (2020). Bayesian model selection of Gaussian Directed Acyclic Graph structures. \emph{International Statistical Review} 88 752-775.
 #'
 #' @param S integer final number of MCMC draws from the posterior of DAGs and parameters
@@ -54,15 +55,18 @@
 #' # Generate observations from a Gaussian DAG-model
 #' n = 200
 #' X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
+#'
+#' ## Set S = 5000 and burn = 1000 for better results
+#'
 #' # [1] Run the MCMC for posterior inference of DAGs and parameters (collapse = FALSE)
-#' out_mcmc = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+#' out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
 #'                      fast = FALSE, save.memory = FALSE, collapse = FALSE)
 #' # [2] Run the MCMC for posterior inference of DAGs only (collapse = TRUE)
-#' out_mcmc_collapse = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+#' out_mcmc_collapse = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
 #'                               fast = FALSE, save.memory = FALSE, collapse = TRUE)
 #' # [3] Run the MCMC for posterior inference of DAGs only with approximate proposal
 #' # distribution (fast = TRUE)
-#' out_mcmc_collapse_fast = learn_DAG(S = 5000, burn = 1000, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+#' out_mcmc_collapse_fast = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
 #'                                    fast = FALSE, save.memory = FALSE, collapse = TRUE)
 #' # Compute posterior probabilities of edge inclusion and Median Probability DAG Model
 #' # from the MCMC outputs [2] and [3]

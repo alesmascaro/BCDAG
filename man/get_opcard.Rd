@@ -2,13 +2,13 @@
 % Please edit documentation in R/get_opcard.R
 \name{get_opcard}
 \alias{get_opcard}
-\title{Build the set of direct successors of a DAG (internal function)}
+\title{Find the direct successors DAGs of an input DAG (internal function)}
 \usage{
 get_opcard(DAG)
 }
 \arguments{
-\item{DAG}{The DAG for which we want to list the set of direct successors}
+\item{DAG}{The input DAG}
 }
 \description{
-Build the set of direct successors of a DAG (internal function)
+Find the direct successors DAGs of an input DAG (internal function)
 }
