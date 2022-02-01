@@ -29,3 +29,4 @@
 #' @source \url{http://bioinformatics.mdanderson.org/Supplements/Kornblau-AML-RPPA/aml-rppa.xls}
 #' @references Kornblau, S. M., Tibes, R., Qiu, Y. H., Chen, W., Kantarjian, H. M., Andreeff, M., ... & Mills, G. B. (2009). Functional proteomic profiling of AML predicts response and survival. Blood, The Journal of the American Society of Hematology, 113(1), 154-164.
 #' @references Kanehisa, M., Goto, S., Sato, Y., Furumichi, M., & Tanabe, M. (2012). KEGG for integration and interpretation of large-scale molecular data sets. Nucleic acids research, 40(D1), D109-D114.
+"leukemia"
