@@ -79,8 +79,7 @@ Output is organized in $q$ plots (one for each node $v = 1, \dots, q$), each sum
 
 
 ```{r fig.width = 7, fig.height= 6}
-out |>
-  get_diagnostics()
+get_diagnostics(out)
 ```
 
 
@@ -99,23 +98,20 @@ summary(out)
 Function `get_edgeprobs()` computes and returns the collection of posterior probabilities of edge inclusion, arranged as a $(q,q)$ matrix, with $(u,v)$-element referring to edge $u\rightarrow v$:
 
 ```{r}
-out |>
-  get_edgeprobs()
+get_edgeprobs(out)
 ```
 
 The MPM model returned in the output of `summary()` can be used as a single DAG-model estimate and is obtained by including all edges whose posterior probability exceeds the threshold $0.5$. Function `get_MPMdag()` applies to an object of class `bcdag` and returns the $(q,q)$ adjacency matrix of the MPM:
 
 ```{r}
-MPMdag <- out |>
-  get_MPMdag()
+MPMdag <- get_MPMdag(out)
 MPMdag
 ```
 
 As an alternative, the Maximum A Posterior DAG estimate (MAP) can be  considered. This corresponds to the DAG with the highest MCMC frequency of visits and can be recovered through the function `get_MAPdag()`:
 
 ```{r}
-MAPdag <- out |> 
-  get_MAPdag()
+MAPdag <- get_MAPdag(out)
 MAPdag
 ```
 
@@ -220,8 +216,7 @@ The identification and estimation of causal effects requires the specification o
 Output of the function is a sample of size $S$ from the posterior distribution of the causal effect coefficients associated with the intervention `targets`: 
 
 ```{r}
-effects_out <- out |>
-  get_causaleffect(targets = c(4,5), response = 1)
+effects_out <- get_causaleffect(out, targets = c(4,5), response = 1)
 head(effects_out)
 ```
 
