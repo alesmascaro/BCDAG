@@ -17,7 +17,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 biocViews: 
-Imports: BiogGenerics, graphics, gRbase, grDevices, lattice, methods, mvtnorm, stats, utils
+Imports: graphics, gRbase, grDevices, lattice, methods, mvtnorm, stats, utils
 Suggests: 
     rmarkdown,
     knitr,
