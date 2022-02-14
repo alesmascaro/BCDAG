@@ -13,13 +13,9 @@ effects among network-dependent variables*, Statistical Methods &
 Applications,
 1-26](https://link.springer.com/article/10.1007/s10260-021-00579-1)
 
-Currently, the package is still in an early stage of development.
-External contributions are more than welcome.
-
 # Installation
 
-The package is not available on CRAN. However, you can install it
-directly from this repository.
+The package can be installed exetuting the following chunk of code:
 
 ``` r
 # install.packages("devtools")
