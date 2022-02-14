@@ -94,7 +94,6 @@ In addition, the function returns some graphical outputs representing the Median
 summary(out)
 ```
 
-<!-- For each possible edge in the graph, $u\rightarrow v$, $u \ne v$, the corresponding posterior probability of inclusion is estimated as the proportion of DAGs in the MCMC output containing the directed edge $u\rightarrow v$; see also Castelletti \& Mascaro (2021). -->
 Function `get_edgeprobs()` computes and returns the collection of posterior probabilities of edge inclusion, arranged as a $(q,q)$ matrix, with $(u,v)$-element referring to edge $u\rightarrow v$:
 
 ```{r}
@@ -144,7 +143,6 @@ Specifically, we consider the causal effect on a response variable of interest c
 see also Nandy et al. (2017) and Castelletti \& Mascaro (2021) for formal definitions.
 
 For a given DAG, it is possible to identify and estimate the causal effect on a node $Y$ consequent to a hypothetical hard intervention on node $j$ using the rules of the *do-calculus* (Pearl, 2000).
-<!-- [QUESTO VALE NEL CASO SINGLE-NODE INTERVENTION, CORRETTO? LA FUNZIONE SI APPLICA ANCHE AL CASO JOINT PERO'] -->
 A simple implementation of this set of rules and an estimation method for the causally sufficient case and for Gaussian data is provided by function `causaleffect()`. The function takes as input a numerical vector representing the labels of the intervened nodes (also called intervention `target`), a numerical value indicating the `response` variable and the DAG model parameters `L` and `D`; see also Castelletti \& Mascaro (2021) or [our previous vignette](#) for a detailed model description.
 
 For a given response variable $Y \in\{1, \ldots, q\}$, and intervention target $I \subseteq \{1,\dots,q\}$ the *total joint effect* of an intervention $\operatorname{do}\left\{X_{j}=\tilde{x}_{j}\right\}_{j \in I}$ on $Y$ is
