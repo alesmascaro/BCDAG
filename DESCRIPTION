@@ -25,4 +25,4 @@ Suggests:
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 
-    R (>= 4.1)
+    R (>= 2.1)
