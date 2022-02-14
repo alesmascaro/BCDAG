@@ -21,7 +21,7 @@ The methodology implemented has been presented in [Castelletti, F. \& Mascaro, A
 
 # Installation
 
-The package can be installed exetuting the following chunk of code:
+The package can be installed executing the following chunk of code:
 
 ```{r eval = FALSE}
 # install.packages("devtools")

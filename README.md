@@ -15,7 +15,7 @@ Applications,
 
 # Installation
 
-The package can be installed exetuting the following chunk of code:
+The package can be installed executing the following chunk of code:
 
 ``` r
 # install.packages("devtools")
