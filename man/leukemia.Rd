@@ -35,7 +35,7 @@ A data frame with 68 rows and 18 variables:
 leukemia
 }
 \description{
-A dataset containing the protein expression levels of 18 proteins for 68 AML patients of subtype M2 (according to French-American-Britich (FAB) classification system).
+A dataset containing the protein expression levels of 18 proteins for 68 AML patients of subtype M2 (according to French-American-British (FAB) classification system).
 The 18 proteins selected are known to be involved in apoptosis and cell cycle regulation according to the KEGG database (Kanehisa et al. 2012).
 This is a subset of the dataset presented in Kornblau et al. (2009).
 }
