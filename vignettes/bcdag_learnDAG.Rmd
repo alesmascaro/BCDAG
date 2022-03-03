@@ -261,26 +261,22 @@ round(get_edgeprobs(out_fast), 2)
 ### References
 
 * Ben-David E, Li T, Massam H, Rajaratnam B (2015). “High dimensional Bayesian inference
-for Gaussian directed acyclic graph models.” *arXiv pre-print*. URL https://arxiv.org/abs/1109.4371.
+for Gaussian directed acyclic graph models.” *arXiv pre-print*.
 
 * Cao X, Khare K, Ghosh M (2019). “Posterior graph selection and estimation consistency
 for high-dimensional Bayesian DAG models.” *The Annals of Statistics*, 47(1), 319–348.
-doi: https://doi.org/10.1214/18-AOS1689.
-
 * Castelletti F, Consonni G (2021). “Bayesian causal inference in probit graphical models”
-*Bayesian Analysis*, In press. doi: https://doi.org/10.1214/21-BA1260.
+*Bayesian Analysis*, In press.
 
 * Castelletti F, Mascaro A (2021). “Structural learning and estimation of joint causal effects
 among network-dependent variables.” *Statistical Methods & Applications*, 30, 1289–1314.
-doi: https://doi.org/10.1007/s10260-021-00579-1.
 
 * Castelletti F, Mascaro A (2022). “BCDAG: An R package for Bayesian structural and
-Causal learning of Gaussian DAGs.” *arXiv pre-print*, url: https://arxiv.org/abs/2201.12003
+Causal learning of Gaussian DAGs.” *arXiv pre-print*.
 
 * Godsill, SJ (2012). "On the relationship between Markov chain Monte Carlo methods for model uncertainty."
 *Journal of computational and graphical statistics*, 10(2), 230-248.
-doi: https://doi.org/10.1198/10618600152627924.
 
 * Peluso S, Consonni G (2020). “Compatible priors for model selection of high-dimensional
-Gaussian DAGs.” *Electronic Journal of Statistics*, 14(2), 4110–4132. doi: https://doi.org/10.1214/20-EJS1768.
+Gaussian DAGs.” *Electronic Journal of Statistics*, 14(2), 4110–4132.
 
