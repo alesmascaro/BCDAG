@@ -10,7 +10,7 @@ Authors@R:
            family = "Mascaro",
            role = c("aut", "cre"),
            email = "a.mascaro3@campus.unimib.it"))
-Description: A collection of functions for structure learning of Directed Acyclic Graphs (DAGs) and estimation of joint causal effects from observational Gaussian data. Main algorithm consists of a Markov chain Monte Carlo (MCMC) scheme for posterior inference of DAG structures, DAG parameters and causal effects between variables.
+Description: A collection of functions for structure learning of causal networks and estimation of joint causal effects from observational Gaussian data. Main algorithm consists of a Markov chain Monte Carlo scheme for posterior inference of causal structures, parameters and causal effects between variables.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
