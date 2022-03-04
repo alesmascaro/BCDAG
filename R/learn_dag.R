@@ -59,14 +59,14 @@
 #' ## Set S = 5000 and burn = 1000 for better results
 #'
 #' # [1] Run the MCMC for posterior inference of DAGs and parameters (collapse = FALSE)
-#' out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+#' out_mcmc = learn_DAG(S = 50, burn = 10, a = q, U = diag(1,q)/n, data = X, w = 0.1,
 #'                      fast = FALSE, save.memory = FALSE, collapse = FALSE)
 #' # [2] Run the MCMC for posterior inference of DAGs only (collapse = TRUE)
-#' out_mcmc_collapse = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+#' out_mcmc_collapse = learn_DAG(S = 50, burn = 10, a = q, U = diag(1,q)/n, data = X, w = 0.1,
 #'                               fast = FALSE, save.memory = FALSE, collapse = TRUE)
 #' # [3] Run the MCMC for posterior inference of DAGs only with approximate proposal
 #' # distribution (fast = TRUE)
-#' out_mcmc_collapse_fast = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+#' out_mcmc_collapse_fast = learn_DAG(S = 50, burn = 10, a = q, U = diag(1,q)/n, data = X, w = 0.1,
 #'                                    fast = FALSE, save.memory = FALSE, collapse = TRUE)
 #' # Compute posterior probabilities of edge inclusion and Median Probability DAG Model
 #' # from the MCMC outputs [2] and [3]
