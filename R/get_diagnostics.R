@@ -52,6 +52,9 @@ get_diagnostics <- function(learnDAG_output) {
     stop("learnDAG_output must be an object of class bcdag")
   }
 
+  oldpar <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(oldpar))
+
   type <- attributes(learnDAG_output)$type
   input <- attributes(learnDAG_output)$input
 
@@ -109,6 +112,5 @@ get_diagnostics <- function(learnDAG_output) {
       if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
     }
   }
-  graphics::par(mfrow = c(1,1), ask = FALSE)
 }
 

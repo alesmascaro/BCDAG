@@ -34,6 +34,9 @@ summary.bcdag <- function(object, ...) {
     stop("learnDAG_output must be an object of class bcdag")
   }
 
+  oldpar <- graphics::par(no.readonly = TRUE)
+  on.exit(graphics::par(oldpar))
+
   type = attributes(learnDAG_output)$type
   input = attributes(learnDAG_output)$input
 
