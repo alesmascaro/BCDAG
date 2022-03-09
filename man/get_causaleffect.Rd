@@ -4,7 +4,13 @@
 \alias{get_causaleffect}
 \title{Estimate total causal effects from the MCMC output}
 \usage{
-get_causaleffect(learnDAG_output, targets, response, BMA = FALSE)
+get_causaleffect(
+  learnDAG_output,
+  targets,
+  response,
+  BMA = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{learnDAG_output}{object of class \code{bcdag}}
@@ -15,6 +21,8 @@ get_causaleffect(learnDAG_output, targets, response, BMA = FALSE)
 
 \item{BMA}{boolean; if TRUE, the Bayesian model averaging (BMA) estimate of the total causal effect is returned;
 if FALSE, samples from the posterior distribution of causal effect coefficients are returned}
+
+\item{verbose}{if \code{TRUE}, progress bar of MCMC sampling is displayed}
 }
 \value{
 Either a \eqn{(p,1)} vector containing BMA causal effect estimates, or a \eqn{(S,p)} matrix collecting \eqn{S} draws from the posterior

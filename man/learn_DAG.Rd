@@ -13,7 +13,8 @@ learn_DAG(
   w,
   fast = FALSE,
   save.memory = FALSE,
-  collapse = FALSE
+  collapse = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ learn_DAG(
 \item{save.memory}{boolean, if \code{TRUE} MCMC draws are stored as strings, instead of arrays}
 
 \item{collapse}{boolean, if \code{TRUE} only structure learning of DAGs is performed}
+
+\item{verbose}{If \code{TRUE}, progress bars are displayed}
 }
 \value{
 An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse = FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory = FALSE}, these are stored in three arrays of dimension \eqn{(q,q,S)}. Otherwise, they are stored as strings.
@@ -81,21 +84,21 @@ X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
 ## Set S = 5000 and burn = 1000 for better results
 
 # [1] Run the MCMC for posterior inference of DAGs and parameters (collapse = FALSE)
-out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+out_mcmc = learn_DAG(S = 50, burn = 10, a = q, U = diag(1,q)/n, data = X, w = 0.1,
                      fast = FALSE, save.memory = FALSE, collapse = FALSE)
 # [2] Run the MCMC for posterior inference of DAGs only (collapse = TRUE)
-out_mcmc_collapse = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+out_mcmc_collapse = learn_DAG(S = 50, burn = 10, a = q, U = diag(1,q)/n, data = X, w = 0.1,
                               fast = FALSE, save.memory = FALSE, collapse = TRUE)
 # [3] Run the MCMC for posterior inference of DAGs only with approximate proposal
 # distribution (fast = TRUE)
-out_mcmc_collapse_fast = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = 0.1,
-                                   fast = FALSE, save.memory = FALSE, collapse = TRUE)
+# out_mcmc_collapse_fast = learn_DAG(S = 50, burn = 10, a = q, U = diag(1,q)/n, data = X, w = 0.1,
+#                                    fast = FALSE, save.memory = FALSE, collapse = TRUE)
 # Compute posterior probabilities of edge inclusion and Median Probability DAG Model
 # from the MCMC outputs [2] and [3]
 get_edgeprobs(out_mcmc_collapse)
-get_edgeprobs(out_mcmc_collapse_fast)
+# get_edgeprobs(out_mcmc_collapse_fast)
 get_MPMdag(out_mcmc_collapse)
-get_MPMdag(out_mcmc_collapse_fast)
+# get_MPMdag(out_mcmc_collapse_fast)
 }
 \references{
 F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.

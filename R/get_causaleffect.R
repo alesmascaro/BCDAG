@@ -28,6 +28,7 @@
 #' @param learnDAG_output object of class \code{bcdag}
 #' @param BMA boolean; if TRUE, the Bayesian model averaging (BMA) estimate of the total causal effect is returned;
 #' if FALSE, samples from the posterior distribution of causal effect coefficients are returned
+#' @param verbose if \code{TRUE}, progress bar of MCMC sampling is displayed
 #'
 #' @return Either a \eqn{(p,1)} vector containing BMA causal effect estimates, or a \eqn{(S,p)} matrix collecting \eqn{S} draws from the posterior
 #' of the \eqn{p} causal effect coefficients.
@@ -55,7 +56,7 @@
 #' # the causal effect on node 1 of an intervention on {3,4}
 #' get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1, BMA = TRUE)
 
-get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE) {
+get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE, verbose = TRUE) {
 
     ## Input check
 
@@ -99,15 +100,19 @@ get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE) {
         D[,,i] <- bd_decode(learnDAG_output$D[i])
       }
     } else {
-      cat("\nSampling parameters...")
-      pb <- utils::txtProgressBar(min = 2, max = S, style = 3)
+      if (verbose == TRUE) {
+        cat("\nSampling parameters...")
+        pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+      }
       for (i in 1:S) {
         Graphs[,,i] <- bd_decode(learnDAG_output$Graphs[i])
         postparams <- rDAGWishart(1, Graphs[,,i], input$a+n, input$U+tXX)
         L[,,i] <- postparams$L
         D[,,i] <- postparams$D
-        utils::setTxtProgressBar(pb, i)
-        close(pb)
+        if (verbose == TRUE) {
+          utils::setTxtProgressBar(pb, i)
+          close(pb)
+        }
       }
     }
   } else {                                              # If option save.memory == FALSE
@@ -118,14 +123,18 @@ get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE) {
     } else {
       L <- array(0, c(q,q,S))
       D <- array(0, c(q,q,S))
-      cat("\nSampling parameters...")
-      pb <- utils::txtProgressBar(min = 2, max = S, style = 3)
+      if (verbose == TRUE) {
+        cat("\nSampling parameters...")
+        pb <- utils::txtProgressBar(min = 2, max = S, style = 3)
+      }
       for (i in 1:S) {
         postparams <- rDAGWishart(1, Graphs[,,i], input$a+n, input$U+tXX)
         L[,,i] <- postparams$L
         D[,,i] <- postparams$D
-        utils::setTxtProgressBar(pb, i)
-        close(pb)
+        if (verbose == TRUE) {
+          utils::setTxtProgressBar(pb, i)
+          close(pb)
+        }
       }
     }
   }

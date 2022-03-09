@@ -40,6 +40,7 @@
 #' @param fast boolean, if \code{TRUE} an approximate proposal for the MCMC moves is implemented
 #' @param save.memory boolean, if \code{TRUE} MCMC draws are stored as strings, instead of arrays
 #' @param collapse boolean, if \code{TRUE} only structure learning of DAGs is performed
+#' @param verbose If \code{TRUE}, progress bars are displayed
 #'
 #' @return An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse = FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory = FALSE}, these are stored in three arrays of dimension \eqn{(q,q,S)}. Otherwise, they are stored as strings.
 #' @export
@@ -77,7 +78,8 @@
 
 learn_DAG <- function(S, burn,
                       data, a, U, w,
-                      fast = FALSE, save.memory = FALSE, collapse = FALSE) {
+                      fast = FALSE, save.memory = FALSE, collapse = FALSE,
+                      verbose = TRUE) {
 
   input <- as.list(environment())
 
@@ -138,8 +140,10 @@ learn_DAG <- function(S, burn,
 
   if (save.memory == FALSE) {
     type = "collapsed"
-    cat("Sampling DAGs...")
-    pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+    if (verbose == TRUE) {
+      cat("Sampling DAGs...")
+      pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+    }
     for (i in 1:n.iter) {
       prop <- propose_DAG(currentDAG, fast)
       is.accepted <- acceptreject_DAG(tXX, n,currentDAG, prop$proposedDAG,
@@ -152,19 +156,25 @@ learn_DAG <- function(S, burn,
       }
 
       Graphs[,,i] <- currentDAG
-      utils::setTxtProgressBar(pb, i)
-      close(pb)
+      if (verbose == TRUE) {
+        utils::setTxtProgressBar(pb, i)
+        close(pb)
+      }
     }
     if (collapse == FALSE) {
       type = "complete"
-      cat("\nSampling parameters...")
-      pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+      if (verbose == TRUE) {
+        cat("\nSampling parameters...")
+        pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+      }
       for (i in 1:n.iter) {
         postparams <- rDAGWishart(1, Graphs[,,i], a+n, U+tXX)
         L[,,i] <- postparams$L
         D[,,i] <- postparams$D
-        utils::setTxtProgressBar(pb, i)
-        close(pb)
+        if (verbose == TRUE) {
+          utils::setTxtProgressBar(pb, i)
+          close(pb)
+        }
       }
     }
     Graphs <- Graphs[,,(burn+1):n.iter]
@@ -172,8 +182,10 @@ learn_DAG <- function(S, burn,
     D <- D[,,(burn+1):n.iter]
   } else {
     type = "compressed and collapsed"
-    cat("Sampling DAGs...")
-    pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+    if (verbose == TRUE) {
+      cat("Sampling DAGs...")
+      pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+    }
     for (i in 1:n.iter) {
       prop <- propose_DAG(currentDAG, fast)
       is.accepted <- acceptreject_DAG(tXX, n,currentDAG, prop$proposedDAG,
@@ -186,19 +198,25 @@ learn_DAG <- function(S, burn,
       }
 
       Graphs[i] <- bd_encode(currentDAG)
-      utils::setTxtProgressBar(pb, i)
-      close(pb)
+      if (verbose == TRUE) {
+        utils::setTxtProgressBar(pb, i)
+        close(pb)
+      }
     }
     if (collapse == FALSE) {
       type = "compressed"
-      cat("\nSampling parameters...")
-      pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+      if (verbose == TRUE) {
+        cat("\nSampling parameters...")
+        pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+      }
       for (i in 1:n.iter) {
         postparams <- rDAGWishart(1, bd_decode(Graphs[i]), a+n, U+tXX)
         L[i] <- bd_encode(postparams$L)
         D[i] <- bd_encode(postparams$D)
-        utils::setTxtProgressBar(pb, i)
-        close(pb)
+        if (verbose == TRUE) {
+          utils::setTxtProgressBar(pb, i)
+          close(pb)
+        }
       }
     }
     Graphs <- utils::tail(Graphs, S)
