@@ -12,6 +12,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+oldpar <- par(no.readonly = TRUE)
+oldoptions <- options()
 ```
 
 ```{css, echo = FALSE}
@@ -268,3 +270,8 @@ Causal learning of Gaussian DAGs.” *arXiv pre-print*.
 
 * Pearl J (2000). *Causality: Models, Reasoning, and Inference*. Cambridge University Press,
 Cambridge. ISBN 0-521-77362-8.
+
+```{r, include = FALSE}
+par(oldpar)
+options(oldoptions)
+```

@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+oldpar <- par(no.readonly = TRUE)
+oldoptions <- options()
 ```
 
 ```{css, echo = FALSE}
@@ -280,3 +282,7 @@ Causal learning of Gaussian DAGs.” *arXiv pre-print*.
 * Peluso S, Consonni G (2020). “Compatible priors for model selection of high-dimensional
 Gaussian DAGs.” *Electronic Journal of Statistics*, 14(2), 4110–4132.
 
+```{r, include = FALSE}
+par(oldpar)
+options(oldoptions)
+```
