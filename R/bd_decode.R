@@ -5,6 +5,9 @@
 #'
 #' @param string a string to convert into matrix
 #' @param separator symbol used to separate elements in the input string
+#'
+#' @return The (q,q) original matrix from which the string vector was created using the internal function \code{bd_encode}
+#'
 #' @export
 
 bd_decode <- function(string, separator = ";") {
