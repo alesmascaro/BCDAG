@@ -11,6 +11,9 @@ bd_decode(string, separator = ";")
 
 \item{separator}{symbol used to separate elements in the input string}
 }
+\value{
+The (q,q) original matrix from which the string vector was created using the internal function \code{bd_encode}
+}
 \description{
 This function restores matrices from string objects.
 It is implemented in several functions, such as \code{get_causal_effect} and \code{get_edge_probs}, when output of \code{learn_DAG} was obtained with \code{save.memory = TRUE}
