@@ -102,7 +102,7 @@ get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE, ve
     } else {
       if (verbose == TRUE) {
         cat("\nSampling parameters...")
-        pb <- utils::txtProgressBar(min = 2, max = n.iter, style = 3)
+        pb <- utils::txtProgressBar(min = 2, max = S, style = 3)
       }
       for (i in 1:S) {
         Graphs[,,i] <- bd_decode(learnDAG_output$Graphs[i])
