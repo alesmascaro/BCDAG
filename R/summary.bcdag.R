@@ -45,7 +45,7 @@ summary.bcdag <- function(object, ...) {
       "(Burnin =", input$burn, ").",
       ifelse(type == "compressed" | type == "compressed and collapsed", "\n\nThe output is saved as strings (option save.memory = TRUE)", " "))
   cat("\n\nPrior hyperparameters: ", "\nw = ", input$w, "\na = ", input$a, "\nU =")
-  print(U)
+  print(input$U)
 
   edgeprobs <- get_edgeprobs(learnDAG_output)
   MPMdag <- get_MPMdag(learnDAG_output)
