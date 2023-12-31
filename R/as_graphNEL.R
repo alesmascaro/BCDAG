@@ -12,6 +12,6 @@
 #' DAG <- rDAG(q,w)
 #' as_graphNEL(DAG)
 as_graphNEL <- function(DAG) {
-  graphNEL <- igraph::as_graphnel(as(DAG, "igraph"))
+  graphNEL <- igraph::as_graphnel(methods::as(DAG, "igraph"))
   return(graphNEL)
 }
