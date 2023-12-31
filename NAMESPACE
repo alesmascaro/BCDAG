@@ -2,6 +2,7 @@
 
 S3method(summary,bcdag)
 export(DW_nodelml)
+export(as_graphNEL)
 export(bd_decode)
 export(causaleffect)
 export(get_MAPdag)
