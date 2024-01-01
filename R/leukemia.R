@@ -1,0 +1,32 @@
+#' Protein levels for 68 diagnosed AML patients of subtype M2
+#'
+#' A dataset containing the protein expression levels of 18 proteins for 68 AML patients of subtype M2 (according to French-American-British (FAB) classification system).
+#' The 18 proteins selected are known to be involved in apoptosis and cell cycle regulation according to the KEGG database (Kanehisa et al. 2012).
+#' This is a subset of the dataset presented in Kornblau et al. (2009).
+#'
+#' @format A data frame with 68 rows and 18 variables:
+#' \describe{
+#'   \item{AKT}{AKT protein, expression level}
+#'   \item{AKT.p308}{AKT.p308 protein, expression level}
+#'   \item{AKT.p473}{AKT.p473 protein, expression level}
+#'   \item{BAD}{BAD protein, expression level}
+#'   \item{BAD.p112}{BAD.p112 protein, expression level}
+#'   \item{BAD.p136}{BAD.p136 protein, expression level}
+#'   \item{BAD.p155}{BAD.p155 protein, expression level}
+#'   \item{BAX}{BAX protein, expression level}
+#'   \item{BCL2}{BCL2 protein, expression level}
+#'   \item{BCLXL}{BCLXL protein, expression level}
+#'   \item{CCND1}{CCND1 protein, expression level}
+#'   \item{GSK3}{GSK3 protein, expression level}
+#'   \item{GSK3.p}{GSK3.p protein, expression level}
+#'   \item{MYC}{MYC protein, expression level}
+#'   \item{PTEN}{PTEN protein, expression level}
+#'   \item{PTEN.p}{PTEN.p protein, expression level}
+#'   \item{TP53}{TP53 protein, expression level}
+#'   \item{XIAP}{XIAP protein, expression level}
+#'   ...
+#' }
+#' @source \url{http://bioinformatics.mdanderson.org/Supplements/Kornblau-AML-RPPA/aml-rppa.xls}
+#' @references Kornblau, S. M., Tibes, R., Qiu, Y. H., Chen, W., Kantarjian, H. M., Andreeff, M., ... & Mills, G. B. (2009). Functional proteomic profiling of AML predicts response and survival. Blood, The Journal of the American Society of Hematology, 113(1), 154-164.
+#' @references Kanehisa, M., Goto, S., Sato, Y., Furumichi, M., & Tanabe, M. (2012). KEGG for integration and interpretation of large-scale molecular data sets. Nucleic acids research, 40(D1), D109-D114.
+"leukemia"

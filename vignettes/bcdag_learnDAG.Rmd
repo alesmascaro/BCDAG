@@ -1,0 +1,288 @@
+---
+title: "MCMC scheme for posterior inference of Gaussian DAG models: the `learn_DAG()` function"
+output: rmarkdown::html_vignette
+# html_document:
+#   theme: readable
+#   highlight: textmate
+vignette: >
+  %\VignetteIndexEntry{MCMC scheme for posterior inference of Gaussian DAG models: the `learn_DAG()` function}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+oldpar <- par(no.readonly = TRUE)
+oldoptions <- options()
+```
+
+```{css, echo = FALSE}
+.math.inline {
+  font-size: 11px;
+}
+```
+
+```{r setup}
+library(BCDAG)
+```
+
+This is the second of a series of three vignettes for the R package `BCDAG`.
+In this vignette we focus on function `learn_DAG()`, which implements a Markov Chain Monte Carlo (MCMC) algorithm to sample from the joint posterior of DAG structures and DAG-parameters under the Gaussian assumption.
+
+### Model description
+
+The underlying Bayesian Gaussian DAG-model can be summarized as follows:
+\begin{eqnarray}
+X_1, \dots, X_q \,|\,\boldsymbol L, \boldsymbol D, \mathcal{D} &\sim& \mathcal{N}_q\left(\boldsymbol 0, (\boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top)^{-1}\right)\\
+(\boldsymbol L, \boldsymbol D)\,|\,\mathcal{D} &\sim& \text{DAG-Wishart}(\boldsymbol{a}_{c}^{\mathcal{D}}, \boldsymbol U) \\
+p(\mathcal{D}) &\propto& w^{|\mathcal{S}_\mathcal{D}|}(1-w)^{\frac{q(q-1)}{2} - {|\mathcal{S}_\mathcal{D}|}}
+\end{eqnarray}
+
+In particular $\mathcal{D}=(V,E)$ denotes a DAG structure with set of nodes $V=\{1,\dots,q\}$ and set of edges $E\subseteq V \times V$.
+Moreover, $(\boldsymbol L, \boldsymbol D)$ are model parameters providing the decomposition of the precision (inverse-covariance) matrix $\boldsymbol{\Omega} = \boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top$;
+specifically, $\boldsymbol{L}$ is a $(q, q)$ matrix of coefficients such that for each $(u, v)$-element $\boldsymbol{L}_{uv}$ with $u \ne v$, $\boldsymbol{L}_{uv} \ne 0$ if and only if $(u, v) \in E$, while $\boldsymbol{L}_{uu} = 1$ for each $u = 1,\dots, q$;
+also, $\boldsymbol{D}$ is a $(q, q)$ diagonal matrix with $(u, u)$-element $\boldsymbol{D}_{uu}$.
+
+The latter decomposition follows from the equivalent Structural Equation Model (SEM) representation of a Gaussian DAG-model; see also Castelletti \& Mascaro (2021).
+
+Conditionally to $\mathcal{D}$, a prior to $(\boldsymbol{L}, \boldsymbol{D})$ is assigned through a *compatible* DAG-Wishart distribution with rate hyperparameter $\boldsymbol{U}$, a $(q,q)$ s.p.d. matrix, and shape hyperparameter $\boldsymbol{a}^{\mathcal {D}}_{c}$, a $(q,1)$ vector; see also Cao et al. (2019) and Peluso \& Consonni (2020).
+
+Finally, a prior on DAG $\mathcal{D}$ is assigned through a Binomial distribution on the number of edges in the graph; in $p(\mathcal{D})$, $w \in (0,1)$ is a prior probability of edge inclusion, while $|\mathcal{S_{\mathcal{D}}}|$ denotes the number of edges in $\mathcal{D}$; see again Castelletti \& Mascaro (2021) for further details.
+
+Target of the MCMC scheme is therefore the joint posterior of $(\boldsymbol{L},\boldsymbol{D},\mathcal{D})$,
+\begin{equation}
+p(\boldsymbol L, \boldsymbol D, \mathcal{D}\,|\, \boldsymbol X) \propto p(\boldsymbol{X}\,|\,\boldsymbol L, \boldsymbol D, \mathcal{D})p(\boldsymbol{L},\boldsymbol{D}\,|\,\mathcal{D}) \,p(\mathcal{D}),
+\end{equation}
+where $\boldsymbol{X}$ denotes a $(n,q)$ data matrix as obtained through $n$ i.i.d. draws from the Gaussian DAG-model and $p(\boldsymbol{X}\,|\,\boldsymbol L, \boldsymbol D, \mathcal{D})$ is the likelihood function.
+See also Castelletti \& Mascaro (2022+) for full details.
+
+### Generating data
+
+We first randomly generate a DAG $\mathcal{D}$, the DAG parameters $(\boldsymbol{L},\boldsymbol{D})$ and then $n=1000$ i.i.d. observations from a Gaussian DAG-model as follows:
+
+```{r}
+set.seed(1)
+q <- 8
+w <- 0.2
+DAG <- rDAG(q,w)
+a <- q
+U <- diag(1,q)
+outDL <- rDAGWishart(n=1, DAG, a, U)
+L <- outDL$L; D <- outDL$D
+Omega <- L %*% solve(D) %*% t(L)
+Sigma <- solve(Omega)
+n <- 1000
+X <- mvtnorm::rmvnorm(n = n, sigma = Sigma)
+```
+See also our [vignette about data generation from Gaussian DAG-models](#).
+
+## `learn_DAG()`
+
+Function `learn_DAG()` implements an MCMC algorithm to sample from the joint posterior of DAGs and DAG parameters. This is based on a Partial Analytic Structure (PAS) algorithm (Godsill, 2012) which, at each iteration:
+
+1. Updates the DAG through a Metropolis-Hastings (MH) step where, given the current DAG, a new (direct successor) DAG is drawn from a suitable proposal distribution and accepted with a probability given by the MH acceptance rate (see also section [A note on `fast = TRUE`]);
+2. Samples from the posterior distribution of the (updated DAG) parameters;
+see also Castelletti \& Consonni (2021) for more details.
+
+We implement it as follows:
+
+```{r echo = FALSE, include=FALSE}
+out <- learn_DAG(S = 5000, burn = 1000, data = X,
+                 a, U, w, 
+                 fast = FALSE, save.memory = FALSE, collapse = FALSE)
+```
+
+```{r eval = FALSE}
+out <- learn_DAG(S = 5000, burn = 1000, data = X,
+                 a, U, w, 
+                 fast = FALSE, save.memory = FALSE, collapse = FALSE)
+```
+
+### Input
+
+Inputs of `learn_DAG()` correspond to three different sets of arguments:
+
+* `S`, `burn` and `data` are standard inputs required by any MCMC algorithm.
+In particular, `S` defines the desired length of the chain, which is obtained by discarding the first `burn` observations (the total number of sampled observations is therefore `S + burn`); `data` is instead the $(n,q)$ matrix $\boldsymbol{X}$;
+* `a`, `U` and `w` are hyperparameters of the priors on DAGs (`w`) and DAG parameters (`a`, `U`); see also Equation [REF]. The same appear in functions `rDAG()` and `rDAGWishart()` which were introduced in our vignette [ADD REF TO THE VIGNETTE].
+* `fast`, `save.memory` and `collapse` are boolean arguments which allow to: implement an approximate proposal distribution within the MCMC scheme (`fast = TRUE`); change the array structure of the stored MCMC output into strings in order to save memory (`save.memory = TRUE`);
+implement an MCMC for DAG structure learning only, without sampling from the posterior of parameters (`collapse = TRUE`).
+See also [A note on `fast = TRUE`] and Castelletti \& Mascaro (2022+) for full details.
+
+### Output
+
+The output of `learn_DAG()` is an object of class `bcdag`:
+
+```{r}
+class(out)
+```
+
+`bcdag` objects include the output of the MCMC algorithm together with a collection of meta-data representing the input arguments of `learn_DAG()`; these are stored in the attributes of the object::
+
+```{r}
+str(out)
+```
+
+Attribute `type` refers to the output of `learn_DAG()`, whose structure
+depends on the choice of boolean arguments `save.memory` and `collapse`.
+
+\vspace{0.2cm}
+
+When both are set equal to `FALSE`, as in the previous example, the output of `learn_DAG()` is a *complete* `bcdag` object, collecting three $(q,q,S)$ arrays with the DAG structures (in the form of $q \times q$ adjacency matrices) and the DAG parameters $\boldsymbol{L}$ and $\boldsymbol{D}$ (both as $q \times q$ matrices) sampled by the MCMC:
+
+```{r}
+out$Graphs[,,1]
+round(out$L[,,1],2)
+round(out$D[,,1],2)
+```
+
+\vspace{0.2cm}
+
+When `collapse = TRUE` and `save.memory = FALSE` the output of `learn_DAG()` is a *collapsed* `bcdag` object, consisting of a $(q,q,S)$ array with the adjacency matrices of the DAGs sampled by the MCMC:
+
+```{r echo = FALSE, include=FALSE}
+collapsed_out <- learn_DAG(S = 5000, burn = 1000, data = X,
+                 a, U, w, 
+                 fast = FALSE, save.memory = FALSE, collapse = TRUE)
+```
+
+```{r eval = FALSE}
+collapsed_out <- learn_DAG(S = 5000, burn = 1000, data = X,
+                 a, U, w, 
+                 fast = FALSE, save.memory = FALSE, collapse = TRUE)
+```
+
+```{r}
+names(collapsed_out)
+class(collapsed_out)
+attributes(collapsed_out)$type
+collapsed_out$Graphs[,,1]
+```
+
+\vspace{0.2cm}
+
+When `save.memory = TRUE` and `collapse = FALSE`, the output is a *compressed* `bcdag` object, collecting samples from the joint posterior on DAGs and DAG parameters in the form of a vector of strings: 
+
+```{r echo = FALSE, include=FALSE}
+compressed_out <- learn_DAG(S = 5000, burn = 1000, data = X,
+                 a, U, w, 
+                 fast = FALSE, save.memory = TRUE, collapse = FALSE)
+```
+
+```{r eval = FALSE}
+compressed_out <- learn_DAG(S = 5000, burn = 1000, data = X,
+                 a, U, w, 
+                 fast = FALSE, save.memory = TRUE, collapse = FALSE)
+```
+
+```{r}
+names(compressed_out)
+class(compressed_out)
+attributes(compressed_out)$type
+```
+
+In such a case, we can access to the MCMC draws as:
+
+```{r}
+compressed_out$Graphs[1]
+compressed_out$L[1]
+compressed_out$D[1]
+```
+
+In addition, we implement `bd_decode`, an internal function that can be used to visualize the previous objects as matrices:
+
+```{r}
+bd_decode(compressed_out$Graphs[1])
+round(bd_decode(compressed_out$L[1]),2)
+round(bd_decode(compressed_out$D[1]),2)
+```
+
+\vspace{0.2cm}
+
+Finally, if `save.memory = TRUE` and `collapse = TRUE`, the output of `learn_DAG()` is a *compressed and collapsed* `bcdag` object collecting only the sampled DAGs represented as vector of strings:
+
+```{r echo = FALSE, include=FALSE}
+comprcoll_out <- learn_DAG(S = 5000, burn = 1000, data = X,
+                 a, U, w, 
+                 fast = FALSE, save.memory = TRUE, collapse = TRUE)
+```
+
+```{r eval = FALSE}
+comprcoll_out <- learn_DAG(S = 5000, burn = 1000, data = X,
+                 a, U, w, 
+                 fast = FALSE, save.memory = TRUE, collapse = TRUE)
+```
+
+```{r}
+names(comprcoll_out)
+class(comprcoll_out)
+attributes(comprcoll_out)$type
+bd_decode(comprcoll_out$Graphs[1])
+```
+
+
+## A note on `fast = TRUE`
+
+Step 1. of the MCMC scheme implemented by `learn_DAG()` updates DAG $\mathcal{D}$ by randomly drawing a new candidate DAG $\mathcal{D}'$ from a proposal distribution and then accepting it with probability given by the Metropolis Hastings (MH) acceptance rate; see also Castelletti \& Mascaro (2021).
+For a given DAG $\mathcal{D}$, the proposal distribution $q(\mathcal{D}'\,|\,\mathcal{D})$ is built over the set $\mathcal{O}_{\mathcal{D}}$ of \emp{all} direct successors DAGs that can be reached from $\mathcal{D}$ by inserting, deleting or reversing a single edge in $\mathcal{D}$.
+A DAG $\mathcal{D}'$ is then proposed uniformly from the set $\mathcal{O}_{\mathcal{D}}$ so that $q(\mathcal{D}'\,|\,\mathcal{D})=1/|\mathcal{O}_{\mathcal{D}}|$.
+Moreover, the MH rate requires to evaluate the ratio of proposals $q(\mathcal{D}'\,|\,\mathcal{D})/q(\mathcal{D}\,|\,\mathcal{D}') = |\mathcal{O}_{\mathcal{D}'}|/|\mathcal{O}_{\mathcal{D}}|$, and accordingly the construction of both $\mathcal{O}_{\mathcal{D}}$ and $\mathcal{O}_{\mathcal{D}'}$.
+
+If `fast = FALSE`, the proposal ratio is computed exactly; this requires the enumerations of $\mathcal{O}_\mathcal{D}$ and $\mathcal{O}_{\mathcal{D}'}$ which may become computationally expensive, especially when $q$ is large.
+However, the ratio approaches $1$ as the number of variables $q$ increases: option `fast = TRUE` implements such an approximation, which therefore avoids the construction of $\mathcal{O}_\mathcal{D}$ and $\mathcal{O}_{\mathcal{D}'}$.
+A comparison between `fast = FALSE` and `fast = TRUE` in the execution of `learn_DAG()` produces the following results in terms of computational time:
+
+```{r results='hide'}
+# No approximation
+time_nofast <- system.time(out_nofast <- learn_DAG(S = 5000, burn = 1000, data = X, 
+                      a, U, w, 
+                      fast = FALSE, save.memory = FALSE, collapse = FALSE))
+# Approximation
+time_fast <- system.time(out_fast <- learn_DAG(S = 5000, burn = 1000, data = X, 
+                      a, U, w, 
+                      fast = TRUE, save.memory = FALSE, collapse = FALSE))
+```
+```{r}
+time_nofast
+time_fast
+```
+
+
+Finally, the corresponding estimated posterior probabilities of edge inclusion are the following:
+
+```{r}
+round(get_edgeprobs(out_nofast), 2)
+round(get_edgeprobs(out_fast), 2)
+```
+
+
+
+### References
+
+* Ben-David E, Li T, Massam H, Rajaratnam B (2015). “High dimensional Bayesian inference
+for Gaussian directed acyclic graph models.” *arXiv pre-print*.
+
+* Cao X, Khare K, Ghosh M (2019). “Posterior graph selection and estimation consistency
+for high-dimensional Bayesian DAG models.” *The Annals of Statistics*, 47(1), 319–348.
+* Castelletti F, Consonni G (2021). “Bayesian causal inference in probit graphical models”
+*Bayesian Analysis*, In press.
+
+* Castelletti F, Mascaro A (2021). “Structural learning and estimation of joint causal effects
+among network-dependent variables.” *Statistical Methods & Applications*, 30, 1289–1314.
+
+* Castelletti F, Mascaro A (2022). “BCDAG: An R package for Bayesian structural and
+Causal learning of Gaussian DAGs.” *arXiv pre-print*.
+
+* Godsill, SJ (2012). "On the relationship between Markov chain Monte Carlo methods for model uncertainty."
+*Journal of computational and graphical statistics*, 10(2), 230-248.
+
+* Peluso S, Consonni G (2020). “Compatible priors for model selection of high-dimensional
+Gaussian DAGs.” *Electronic Journal of Statistics*, 14(2), 4110–4132.
+
+```{r, include = FALSE}
+par(oldpar)
+options(oldoptions)
+```

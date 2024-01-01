@@ -1,0 +1,133 @@
+---
+title: "Random data generation from Gaussian DAG models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Random data generation from Gaussian DAG models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+oldpar <- par(no.readonly = TRUE)
+oldoptions <- options()
+```
+
+```{css, echo = FALSE}
+.math.inline {
+  font-size: 11px;
+}
+```
+
+```{r setup}
+library(BCDAG)
+```
+
+This is the first of a series of three vignettes introducing the R package `BCDAG`.
+In this vignette we focus on functions `rDAG()` and `rDAGWishart()` which implement random generation of DAG structures and DAG parameters under the assumption that the joint distribution of variables $X_1,\dots, X_q$ is Gaussian and the corresponding model (Choleski) parameters follow a DAG-Wishart distribution. Finally, data generation from Gaussian DAG models is described.
+
+## Generating DAGs and parameters: functions `rDAG()` and `rDAGWishart()`
+
+Function `rDAG()` can be used to randomly generate a DAG structure $\mathcal{D}=(V,E)$, where $V=\{1,\dots,q\}$ and $E\subseteq V \times V$ is the set of edges.
+`rDAG()` has two arguments: the number of nodes (variables) $q$ and the prior probability of edge inclusion $w\in[0,1]$; the latter can be tuned to control the degree of sparsity in the resulting DAG. By fixing a probability of edge inclusion $w=0.2$, a DAG structure with $q=10$ nodes can be generated as follows:
+
+```{r}
+set.seed(1)
+q <- 10
+w <- 0.2
+DAG <- rDAG(q,w)
+```
+
+
+```{r printDAG}
+DAG
+```
+Output of `rDAG()` is the 0-1 $(q,q)$ adjacency matrix of the generated DAG, with element $1$ at position $(u,v)$ indicating the presence of an edge $u\rightarrow v$.
+Notice that the generated DAG is *topologically ordered*, meaning that edges are allowed only from high to low nodes (nodes are labeled according to rows/columns indexes); accordingly the DAG adjacency matrix is lower-triangular.
+
+## Generating Gaussian DAG parameters
+
+Consider a Gaussian DAG model of the form
+\begin{eqnarray}
+X_1, \dots, X_q \,|\,\boldsymbol L, \boldsymbol D, \mathcal{D} &\sim& \mathcal{N}_q\left(\boldsymbol 0, (\boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top)^{-1}\right),
+\end{eqnarray}
+where
+$(\boldsymbol L, \boldsymbol D)$ are model parameters providing the decomposition of the precision (inverse-covariance) matrix $\boldsymbol{\Omega} = \boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top$;
+specifically, $\boldsymbol{L}$ is a $(q, q)$ matrix of coefficients such that for each $(u, v)$-element $\boldsymbol{L}_{uv}$ with $u \ne v$, we have $\boldsymbol{L}_{uv} \ne 0$ if and only if $(u, v) \in E$, while $\boldsymbol{L}_{uu} = 1$ for each $u = 1,\dots, q$;
+also, $\boldsymbol{D}$ is a $(q, q)$ diagonal matrix with $(u, u)$-element $\boldsymbol{D}_{uu}$.
+The latter decomposition follows from the equivalent Structural Equation Model (SEM) representation of a Gaussian DAG model:
+
+\begin{equation}
+\boldsymbol{L}^\top\boldsymbol{x} = \boldsymbol \epsilon, \quad \boldsymbol \epsilon \sim \mathcal{N}_q(\boldsymbol 0, \boldsymbol D),
+\end{equation}
+
+where $\boldsymbol x = (X_1,\dots, X_q)^\top$; see also Castelletti \& Mascaro (2021).
+
+Function `rDAGWishart` implements random sampling from $(\boldsymbol L, \boldsymbol D)\,|\,\mathcal{D} \sim \text{DAG-Wishart}(\boldsymbol{a}_{c}^{\mathcal{D}}, \boldsymbol U)$, where
+$\boldsymbol{U}$ is the rate parameter (a $(q,q)$ s.p.d. matrix) and $\boldsymbol{a}^{\mathcal {D}}_{c}$ (a $(q,1)$ vector) is the shape parameter of the DAG-Wishart distribution.
+This class of distributions was introduced by Ben David et al. (2015) as a conjugate prior for Gaussian DAG model-parameters.
+In its compatible version (Peluso \& Consonni, 2020), elements of the vector parameter $\boldsymbol{a}^{\mathcal {D}}_{c}$ are uniquely determined from a single *common* shape parameter $a>q-1$.
+
+Inputs of `rDAGWishart` are: the number of samples $n$, the underlying DAG $\mathcal{D}$, the common shape parameter $a$ and the rate parameter $\boldsymbol U$.
+Given the DAG $\mathcal{D}$ generated before, the following example implements a single ($n=1$) draw from a compatible DAG-Wishart distribution with parameters $a=q$, $\boldsymbol U = \boldsymbol I_q$:
+```{r}
+a <- q
+U <- diag(1,q)
+outDL <- rDAGWishart(n=1, DAG, a, U)
+class(outDL)
+```
+
+
+```{r}
+L <- outDL$L; D <- outDL$D
+class(L); class(D)
+```
+
+The output of `rDAGWishart()` consists of two elements: a $(q,q,n)$-dimensional array collecting the $n$ sampled matrices $\boldsymbol L^{(1)}, \dots, \boldsymbol L^{(n)}$ and a $(q,q,n)$-dimensional array collecting the $n$ sampled matrices $\boldsymbol D^{(1)}, \dots,\boldsymbol D^{(n)}$. We refer the reader to Castelletti \& Mascaro (2021) and Castelletti \& Mascaro (2022+) for more details.
+
+## Generating data from a Gaussian DAG model
+
+Data generation from a Gaussian DAG model is then straightforward.
+Recall that $\boldsymbol{\Omega} = \boldsymbol{L}\boldsymbol{D}^{-1}\boldsymbol{L}^\top$, where $\boldsymbol{\Omega}$ is the inverse-covariance (precision) matrix of a multivariate Gaussian model satisfying the constraints imposed by a DAG.
+Accordingly, we can recover the precision and covariance matrices as:
+
+```{r}
+# Precision matrix
+Omega <- L %*% solve(D) %*% t(L)
+# Covariance matrix
+Sigma <- solve(Omega)
+```
+
+Next, i.i.d. draws from a Gaussian DAG model can be obtained through the function `rmvnorm()` provided within the R package `mvtnorm`: 
+
+```{r}
+n <- 1000
+X <- mvtnorm::rmvnorm(n = n, sigma = Sigma)
+```
+
+## References 
+
+
+* Ben-David E, Li T, Massam H, Rajaratnam B (2015). “High dimensional Bayesian inference
+for Gaussian directed acyclic graph models.” *arXiv pre-print*.
+
+* Cao X, Khare K, Ghosh M (2019). “Posterior graph selection and estimation consistency
+for high-dimensional Bayesian DAG models.” *The Annals of Statistics*, 47(1), 319–348.
+
+* Castelletti F, Mascaro A (2021). “Structural learning and estimation of joint causal effects
+among network-dependent variables.” *Statistical Methods & Applications*, 30, 1289–1314.
+
+* Castelletti F, Mascaro A (2022). “BCDAG: An R package for Bayesian structural and
+Causal learning of Gaussian DAGs.” *arXiv pre-print*.
+
+* Peluso S, Consonni G (2020). “Compatible priors for model selection of high-dimensional
+Gaussian DAGs.” *Electronic Journal of Statistics*, 14(2), 4110–4132.
+
+```{r, include = FALSE}
+par(oldpar)
+options(oldoptions)
+```
+
