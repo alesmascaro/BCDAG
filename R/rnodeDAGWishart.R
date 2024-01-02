@@ -25,7 +25,7 @@ rnodeDAGWishart <- function(node, DAG, aj, U) {
     out$sigmaj <- stats::rgamma(1, shape = aj/2, rate = U_jj/2)^-1
   } else {
     U_paj.j <- U[pa,j]
-    invU_papa <- solve(U[pa,pa])
+    invU_papa <- chol2inv(chol(U[pa,pa]))
     U_jj <- U[j,j] - t(U_paj.j)%*%invU_papa%*%U_paj.j
 
     out$sigmaj <- stats::rgamma(1, shape = aj/2, rate = U_jj/2)^-1

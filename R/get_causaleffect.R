@@ -82,7 +82,7 @@ get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE, ve
   n <- nrow(input$data)
   q <- ncol(input$data)
   X <- scale(input$data, scale = FALSE)
-  tXX = t(X) %*% X
+  tXX = crossprod(X)
 
   if(targets_check == FALSE) stop("targets must be a vector containing the position of intervention targets in the dataset")
   if(response_check == FALSE) stop("response must be the numerical value indicating the position of the response variable in the dataset")

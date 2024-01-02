@@ -118,7 +118,7 @@ learn_DAG <- function(S, burn,
 
   n.iter <- input$burn + input$S
   X <- scale(data, scale = FALSE)
-  tXX <- t(X)%*%X
+  tXX <- crossprod(X)
 
   n <- dim(data)[1]
   q <- dim(data)[2]
