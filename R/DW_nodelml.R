@@ -11,7 +11,7 @@
 #' @param U position hyperparameter of the DAG Wishart prior
 #'
 #' @return The logarithm of the marginal likelihood of \code{node}
-#' @export
+#' @noRd
 DW_nodelml <- function(node, DAG, tXX, n, a, U) {
   j <- node
   pa <- pa(j, DAG)

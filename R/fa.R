@@ -4,6 +4,7 @@
 #'
 #' @param node numerical label of the node in \code{DAG}
 #' @param DAG \eqn{(q,q)} adjacency matrix of the DAG
+#' @noRd
 #'
 #' @return A numerical vector with the labels of the family of \code{node} in \code{DAG}
 fa <- function(node, DAG) {

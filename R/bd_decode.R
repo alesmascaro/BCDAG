@@ -8,7 +8,7 @@
 #'
 #' @return The (q,q) original matrix from which the string vector was created using the internal function \code{bd_encode}
 #'
-#' @export
+#' @noRd
 
 bd_decode <- function(string, separator = ";") {
   vec4mat <- as.numeric(strsplit(string, separator)[[1]])
