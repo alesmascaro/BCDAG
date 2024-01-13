@@ -4,10 +4,14 @@
 \alias{get_diagnostics}
 \title{MCMC diagnostics}
 \usage{
-get_diagnostics(learnDAG_output)
+get_diagnostics(learnDAG_output, ask = TRUE, nodes = integer(0))
 }
 \arguments{
 \item{learnDAG_output}{object of class \code{bcdag}}
+
+\item{ask}{Boolean argument passed to par() for visualization;}
+
+\item{nodes}{Numerical vector indicating those nodes for which we want to compute the posterior probability of edge inclusion;}
 }
 \value{
 A collection of plots summarizing the behavior of the number of edges and the posterior probabilities of edge inclusion computed from the MCMC output.
