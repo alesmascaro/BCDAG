@@ -56,8 +56,7 @@
 #' # the causal effect on node 1 of an intervention on {3,4}
 #' get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1, BMA = TRUE)
 
-get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE, verbose = TRUE) {
-
+get_causaleffect <- function(learnDAG_output, targets, response, verbose = TRUE) {
     ## Input check
 
   learnDAGinput_check <- validate_bcdag(learnDAG_output)
@@ -145,10 +144,23 @@ get_causaleffect <- function(learnDAG_output, targets, response, BMA = FALSE, ve
   for (i in 1:S) {
     causaleffects[i,] <- causaleffect(targets, response, L[,,i], D[,,i])
   }
-  if (BMA == FALSE) {
-    return(causaleffects)
-  } else {
-    BMA_causaleffect <- base::colMeans(causaleffects)
-    return(BMA_causaleffect)
-  }
+
+  postmean <- base::apply(causaleffects, 2, mean)
+  postquantiles <- base::apply(causaleffects, 2, stats::quantile, c(0.025, 0.25, 0.5, 0.75, 0.975))
+  Pr0 <- base::colMeans(causaleffects == 0)
+  Prg0 <- base::colMeans(causaleffects > 0)
+
+  out_ce <- list(causaleffects = causaleffects, post_mean = postmean,
+                 post_ci = postquantiles, Pr0 = Pr0, Prg0 = Prg0)
+
+  input <- c(input, targets = targets, response = response)
+
+  out <- new_bcdagCE(out_ce, input = input, type = type)
+
+  # if (BMA == FALSE) {
+  #   return(causaleffects)
+  # } else {
+  #   BMA_causaleffect <- base::colMeans(causaleffects)
+  #   return(BMA_causaleffect)
+  # }
 }

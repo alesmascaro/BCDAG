@@ -1,6 +1,6 @@
-#' Transform matrix into graphNEL object
+#' Transform adjacency matrix into graphNEL object
 #'
-#' Internal function to transform an adjacency matrix into a graphNEL object, useful for plotting
+#' Function to transform an adjacency matrix into a graphNEL object.
 #' @param DAG Adjacency matrix of a DAG
 #'
 #' @return A graphNEL object
