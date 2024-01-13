@@ -2,7 +2,7 @@
 % Please edit documentation in R/as_graphNEL.R
 \name{as_graphNEL}
 \alias{as_graphNEL}
-\title{Transform matrix into graphNEL object}
+\title{Transform adjacency matrix into graphNEL object}
 \usage{
 as_graphNEL(DAG)
 }
@@ -13,7 +13,7 @@ as_graphNEL(DAG)
 A graphNEL object
 }
 \description{
-Internal function to transform an adjacency matrix into a graphNEL object, useful for plotting
+Function to transform an adjacency matrix into a graphNEL object.
 }
 \examples{
 # Randomly generate DAG
