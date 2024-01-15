@@ -30,7 +30,7 @@ n = 200
 X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
 # Run the MCMC (set S = 5000 and burn = 1000 for better results)
 out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = w,
-                     fast = TRUE, save.memory = FALSE)
-out_ce <- get_causaleffect(out, targets = c(4,6), response = 1))
+                     fast = TRUE, save.memory = FALSE, verbose = FALSE)
+out_ce <- get_causaleffect(out_mcmc, targets = c(4,6), response = 1)
 summary(out_ce)
 }

@@ -14,9 +14,6 @@ get_causaleffect(learnDAG_output, targets, response, verbose = TRUE)
 \item{response}{numerical label of response variable}
 
 \item{verbose}{if \code{TRUE}, progress bar of MCMC sampling is displayed}
-
-\item{BMA}{boolean; if TRUE, the Bayesian model averaging (BMA) estimate of the total causal effect is returned;
-if FALSE, samples from the posterior distribution of causal effect coefficients are returned}
 }
 \value{
 Either a \eqn{(p,1)} vector containing BMA causal effect estimates, or a \eqn{(S,p)} matrix collecting \eqn{S} draws from the posterior
@@ -60,7 +57,7 @@ head(out_mcmc$L)
 head(out_mcmc$D)
 # Compute the BMA estimate of coefficients representing
 # the causal effect on node 1 of an intervention on {3,4}
-get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1, BMA = TRUE)
+get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1)$post_mean
 }
 \references{
 J. Pearl (2000). \emph{Causality: Models, Reasoning, and Inference}. Cambridge University Press, Cambridge.

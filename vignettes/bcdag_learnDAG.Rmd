@@ -195,9 +195,9 @@ compressed_out$D[1]
 In addition, we implement `bd_decode`, an internal function that can be used to visualize the previous objects as matrices:
 
 ```{r}
-bd_decode(compressed_out$Graphs[1])
-round(bd_decode(compressed_out$L[1]),2)
-round(bd_decode(compressed_out$D[1]),2)
+BCDAG:::bd_decode(compressed_out$Graphs[1])
+round(BCDAG:::bd_decode(compressed_out$L[1]),2)
+round(BCDAG:::bd_decode(compressed_out$D[1]),2)
 ```
 
 \vspace{0.2cm}
@@ -220,7 +220,7 @@ comprcoll_out <- learn_DAG(S = 5000, burn = 1000, data = X,
 names(comprcoll_out)
 class(comprcoll_out)
 attributes(comprcoll_out)$type
-bd_decode(comprcoll_out$Graphs[1])
+BCDAG:::bd_decode(comprcoll_out$Graphs[1])
 ```
 
 

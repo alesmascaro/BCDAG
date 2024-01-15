@@ -24,7 +24,7 @@ out <- learn_DAG(1000, 0, X, a, U, w, fast = TRUE, collapse = TRUE)
 
 outw <- list(Graphs = c(1,2), L = c(1,2), D = c(1,1))
 
-wrongOut <- "get_causaleffect(outw, c(2,3), 1, BMA = T)"
+wrongOut <- "get_causaleffect(outw, c(2,3), 1)"
 
 test_that("learn_DAG identifies the correct DAG in a simple case", {
   expect_error(eval(parse(text = wrongOut)), "learnDAG_output must be an object of class bcdag")

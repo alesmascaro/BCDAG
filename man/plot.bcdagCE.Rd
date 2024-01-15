@@ -10,6 +10,8 @@
 \item{object}{a \code{bcdagCE} object for which a plot is desired}
 
 \item{...}{additional arguments affecting the summary produced}
+
+\item{which_ce}{specifies the list of nodes for which you intend to generate a boxplot and a histogram}
 }
 \value{
 Boxplot and histogram of the posterior distribution of the causal effects computed using get_causaleffect().
@@ -30,7 +32,7 @@ n = 200
 X = mvtnorm::rmvnorm(n = n, sigma = Sigma)
 # Run the MCMC (set S = 5000 and burn = 1000 for better results)
 out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = w,
-                     fast = TRUE, save.memory = FALSE)
-out_ce <- get_causaleffect(out, targets = c(4,6), response = 1))
+                     fast = TRUE, save.memory = FALSE, verbose = FALSE)
+out_ce <- get_causaleffect(out_mcmc, targets = c(4,6), response = 1)
 plot(out_ce)
 }

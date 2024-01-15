@@ -26,8 +26,6 @@
 #' @param targets numerical \eqn{(p,1)} vector with labels of target nodes
 #' @param response numerical label of response variable
 #' @param learnDAG_output object of class \code{bcdag}
-#' @param BMA boolean; if TRUE, the Bayesian model averaging (BMA) estimate of the total causal effect is returned;
-#' if FALSE, samples from the posterior distribution of causal effect coefficients are returned
 #' @param verbose if \code{TRUE}, progress bar of MCMC sampling is displayed
 #'
 #' @return Either a \eqn{(p,1)} vector containing BMA causal effect estimates, or a \eqn{(S,p)} matrix collecting \eqn{S} draws from the posterior
@@ -54,7 +52,7 @@
 #' head(out_mcmc$D)
 #' # Compute the BMA estimate of coefficients representing
 #' # the causal effect on node 1 of an intervention on {3,4}
-#' get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1, BMA = TRUE)
+#' get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1)$post_mean
 
 get_causaleffect <- function(learnDAG_output, targets, response, verbose = TRUE) {
     ## Input check

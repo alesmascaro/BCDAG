@@ -211,20 +211,23 @@ As it can be observed, this time a single intervention on $X_4$ produces a negat
 
 
 The identification and estimation of causal effects requires the specification of a DAG. When the DAG is unknown, function `get_causaleffect()` can be used. It applies to objects of class `bcdag`; the latter corresponds to the output of `learn_DAG()` and consists of a sample of size $S$ from the posterior of DAGs and DAG parameters. In addition `get_causaleffect()` takes as input a numerical vector representing the labels of the intervened nodes (the intervention `target`) and a numerical value indicating the `response` variable.
-Output of the function is a sample of size $S$ from the posterior distribution of the causal effect coefficients associated with the intervention `targets`: 
+Output of the function is an object of class `bcdagCE`, containing a sample of size $S$ from the posterior distribution of the causal effect coefficients associated with the intervention `targets` and some useful summaries of the posterior distributions such as the mean and the quantiles: 
 
 ```{r}
 effects_out <- get_causaleffect(out, targets = c(4,5), response = 1)
-head(effects_out)
+head(effects_out$causaleffects)
 ```
 
-Additionally, if `BMA = TRUE`, `get_causaleffect()` returns a Bayesian Model Average (BMA) estimate of the causal effect coefficients:
+The additional summaries can be accessed in a similar way:
 
 ```{r}
+## Posterior quantiles
+effects_out$post_ci
 ## BMA estimate of causal effects
-round(get_causaleffect(out, targets = c(4,5), response = 1, BMA = TRUE), 3)
+round(effects_out$post_mean, 3)
 ## True causal effects
 round(causaleffect(targets = c(4,5), response = 1, L = L, D = D), 3)
+
 ```
 
 Also notice that, if the `BCDAG` object input of `get_causaleffect()` is of type `collapsed` or `compressed and collapsed`, then `get_causaleffect()` requires drawing from the posterior distribution of parameters $(\boldsymbol L, \boldsymbol D)$ before estimating the required causal effects:
@@ -247,13 +250,13 @@ names(coll_out)
 
 
 ```{r include = FALSE}
-effects_collout <- get_causaleffect(coll_out, targets = c(4,5), response = 1, BMA = TRUE)
+effects_collout <- get_causaleffect(coll_out, targets = c(4,5), response = 1)
 ```
 ```{r eval = FALSE}
-effects_collout <- get_causaleffect(coll_out, targets = c(4,5), response = 1, BMA = TRUE)
+effects_collout <- get_causaleffect(coll_out, targets = c(4,5), response = 1)
 ```
 ```{r}
-round(effects_collout, 3)
+round(effects_collout$post_mean, 3)
 ```
 
 
