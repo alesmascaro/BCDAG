@@ -1,6 +1,6 @@
 #' bcdagCE object plot
 #'
-#' @param object a \code{bcdagCE} object for which a plot is desired
+#' @param x a \code{bcdagCE} object for which a plot is desired
 #' @param ... additional arguments affecting the summary produced
 #' @param which_ce specifies the list of nodes for which you intend to generate a boxplot and a histogram
 #'
@@ -24,8 +24,8 @@
 #'                      fast = TRUE, save.memory = FALSE, verbose = FALSE)
 #' out_ce <- get_causaleffect(out_mcmc, targets = c(4,6), response = 1)
 #' plot(out_ce)
-plot.bcdagCE <- function(object, ..., which_ce = integer(0)) {
-  getCE_output <- object
+plot.bcdagCE <- function(x, ..., which_ce = integer(0)) {
+  getCE_output <- x
   if (!methods::is(getCE_output, "bcdagCE")) {
     stop("learnDAG_output must be an object of class bcdagCE")
   }

@@ -1,6 +1,6 @@
 #' bcdagCE object print
 #'
-#' @param object a \code{bcdagCE} object for which a summary is desired
+#' @param x a \code{bcdagCE} object for which a summary is desired
 #' @param ... additional arguments affecting the summary produced
 #'
 #' @return A printed message listing the inputs given to learn_DAG and get_causaleffect.
@@ -23,9 +23,9 @@
 #'                      fast = TRUE, save.memory = FALSE, verbose = FALSE)
 #' out_ce <- get_causaleffect(out_mcmc, targets = c(4,6), response = 1)
 #' print(out_ce)
-print.bcdagCE <- function(object, ...) {
-  getCE_output <- object
-  if (!methods::is(object,"bcdagCE")) {
+print.bcdagCE <- function(x, ...) {
+  getCE_output <- x
+  if (!methods::is(x,"bcdagCE")) {
     stop("learnDAG_output must be an object of class bcdagCE")
   }
   type = attributes(getCE_output)$type

@@ -1,6 +1,6 @@
 #' bcdag object plot
 #'
-#' @param object a \code{bcdag} object for which a plot is desired
+#' @param x a \code{bcdag} object for which a plot is desired
 #' @param ask Boolean argument passed to par() for visualization;
 #' @param ... additional arguments affecting the summary produced
 #'
@@ -29,8 +29,8 @@
 #'
 #' out <- learn_DAG(1000, 0, X, a, U, w, fast = TRUE, collapse = TRUE, save.memory = FALSE)
 #' plot(out)
-plot.bcdag <- function(object, ..., ask = TRUE) {
-  learnDAG_output <- object
+plot.bcdag <- function(x, ..., ask = TRUE) {
+  learnDAG_output <- x
   if (validate_bcdag(learnDAG_output) == FALSE) {
     stop("learnDAG_output must be an object of class bcdag")
   }

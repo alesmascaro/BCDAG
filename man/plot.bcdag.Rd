@@ -4,10 +4,10 @@
 \alias{plot.bcdag}
 \title{bcdag object plot}
 \usage{
-\method{plot}{bcdag}(object, ..., ask = TRUE)
+\method{plot}{bcdag}(x, ..., ask = TRUE)
 }
 \arguments{
-\item{object}{a \code{bcdag} object for which a plot is desired}
+\item{x}{a \code{bcdag} object for which a plot is desired}
 
 \item{...}{additional arguments affecting the summary produced}
 

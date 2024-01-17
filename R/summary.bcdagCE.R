@@ -42,8 +42,6 @@ summary.bcdagCE <- function(object, ...) {
   print(getCE_output$post_mean)
   cat("\nPosterior quantiles of causal effects: \n")
   print(t(getCE_output$post_ci))
-  cat("\nPosterior probability of causal effects being 0: \n")
-  print(getCE_output$Pr0)
-  cat("\nPosterior probability of causal effects being greater than 0: \n")
-  print(getCE_output$Prg0)
+  cat("\nPosterior probability of causal effects being greater, equal or smaller than 0: \n")
+  print(getCE_output$Probs)
 }

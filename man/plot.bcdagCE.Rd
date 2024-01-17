@@ -4,10 +4,10 @@
 \alias{plot.bcdagCE}
 \title{bcdagCE object plot}
 \usage{
-\method{plot}{bcdagCE}(object, ..., which_ce = integer(0))
+\method{plot}{bcdagCE}(x, ..., which_ce = integer(0))
 }
 \arguments{
-\item{object}{a \code{bcdagCE} object for which a plot is desired}
+\item{x}{a \code{bcdagCE} object for which a plot is desired}
 
 \item{...}{additional arguments affecting the summary produced}
 

@@ -4,10 +4,10 @@
 \alias{print.bcdagCE}
 \title{bcdagCE object print}
 \usage{
-\method{print}{bcdagCE}(object, ...)
+\method{print}{bcdagCE}(x, ...)
 }
 \arguments{
-\item{object}{a \code{bcdagCE} object for which a summary is desired}
+\item{x}{a \code{bcdagCE} object for which a summary is desired}
 
 \item{...}{additional arguments affecting the summary produced}
 }

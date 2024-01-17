@@ -1,6 +1,6 @@
 #' bcdag object print
 #'
-#' @param object a \code{bcdag} object for which a summary is desired
+#' @param x a \code{bcdag} object for which a summary is desired
 #' @param ... additional arguments affecting the summary produced
 #'
 #' @return A printed message listing the inputs given to learn_DAG.
@@ -28,8 +28,8 @@
 #'
 #' out <- learn_DAG(1000, 0, X, a, U, w, fast = TRUE, collapse = TRUE, save.memory = FALSE)
 #' print(out)
-print.bcdag <- function(object, ...) {
-  learnDAG_output <- object
+print.bcdag <- function(x, ...) {
+  learnDAG_output <- x
   if (validate_bcdag(learnDAG_output) == FALSE) {
     stop("learnDAG_output must be an object of class bcdag")
   }
