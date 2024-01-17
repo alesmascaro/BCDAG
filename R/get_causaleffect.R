@@ -145,20 +145,17 @@ get_causaleffect <- function(learnDAG_output, targets, response, verbose = TRUE)
 
   postmean <- base::apply(causaleffects, 2, mean)
   postquantiles <- base::apply(causaleffects, 2, stats::quantile, c(0.025, 0.25, 0.5, 0.75, 0.975))
-  Pr0 <- base::colMeans(causaleffects == 0)
-  Prg0 <- base::colMeans(causaleffects > 0)
+  Probs <- matrix(0, ncol = 3, nrow = length(targets))
+  Probs[,1] <- base::colMeans(causaleffects < 0)
+  Probs[,2] <- base::colMeans(causaleffects == 0)
+  Probs[,3] <- base::colMeans(causaleffects > 0)
+  rownames(Probs) <- paste0("h = ", targets)
+  colnames(Probs) <- c("<0", "=0", ">0")
 
   out_ce <- list(causaleffects = causaleffects, post_mean = postmean,
-                 post_ci = postquantiles, Pr0 = Pr0, Prg0 = Prg0)
+                 post_ci = postquantiles, Probs = Probs)
 
   input <- c(input, targets = targets, response = response)
 
   out <- new_bcdagCE(out_ce, input = input, type = type)
-
-  # if (BMA == FALSE) {
-  #   return(causaleffects)
-  # } else {
-  #   BMA_causaleffect <- base::colMeans(causaleffects)
-  #   return(BMA_causaleffect)
-  # }
 }
