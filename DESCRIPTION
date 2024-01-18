@@ -32,7 +32,8 @@ Imports:
     mvtnorm,
     Rgraphviz,
     stats,
-    utils
+    utils,
+    withr
 Suggests: 
     rmarkdown,
     knitr,
