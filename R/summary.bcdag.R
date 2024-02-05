@@ -40,6 +40,8 @@ summary.bcdag <- function(object, ...) {
   type = attributes(learnDAG_output)$type
   input = attributes(learnDAG_output)$input
 
+  hyperparams = list(w = input$w, a = input$a, U = input$U)
+
   cat("A ", type, " bcdag object containing ", input$S, " draws from",
       ifelse(type == "collapsed" | type == "compressed and collapsed", " the posterior distribution of DAGs.", "the joint posterior over DAGs, L and D."),
       "(Burnin =", input$burn, ").",
@@ -50,6 +52,10 @@ summary.bcdag <- function(object, ...) {
   edgeprobs <- unname(get_edgeprobs(learnDAG_output))
   cat("\nPosterior probabilities of edge inclusion: \n")
   print(round(edgeprobs, 3))
+
+  invisible(list(type = type, S = input$S, burn = input$burn,
+         hyperparams = hyperparams,
+         edgeprobs = edgeprobs))
 
   # edgeprobs <- get_edgeprobs(learnDAG_output)
   # MPMdag <- get_MPMdag(learnDAG_output)

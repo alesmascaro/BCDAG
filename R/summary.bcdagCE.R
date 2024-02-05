@@ -31,6 +31,8 @@ summary.bcdagCE <- function(object, ...) {
   type = attributes(getCE_output)$type
   input = attributes(getCE_output)$input
 
+  hyperparams <- list(w = input$w, a = input$a, U = input$U)
+
   targets <- as.numeric(input[base::grep("targets", names(input))])
 
   cat("A ", type, " bcdagCE object containing", input$S, "draws from the posterior distribution of causal effects of variables ",
@@ -44,4 +46,8 @@ summary.bcdagCE <- function(object, ...) {
   print(t(getCE_output$post_ci))
   cat("\nPosterior probability of causal effects being greater, equal or smaller than 0: \n")
   print(getCE_output$Probs)
+
+  invisible(list(type = type, S = input$S, targets = targets, response = input$response,
+                 hyperparams = hyperparams, post_mean = getCE_output$postmean,
+                 post_ci = getCE_output$post_ci, probs = getCE_output$Probs))
 }
