@@ -67,6 +67,8 @@ The various outputs are organized in \eqn{(q,q,S)} arrays; see also the example 
 If the target is DAG learning only, a collapsed sampler implementing the only step (1) of the MCMC scheme can be obtained
 by setting \code{collapse = TRUE}. In this case, the algorithm outputs a collection of \eqn{S} DAG structures only.
 See also functions \code{get_edgeprobs}, \code{get_MAPdag}, \code{get_MPMdag} for posterior summaries of the MCMC output.
+
+Print, summary and plot methods are available for this function. \code{print} provides information about the MCMC output and the values of the input prior hyperparameters. \code{summary} returns, besides the previous information, a \eqn{(q,q)} matrix collecting the marginal posterior probabilities of edge inclusion. \code{plot} returns the estimated Median Probability DAG Model (MPM), a \eqn{(q,q)} heat map with estimated marginal posterior probabilities of edge inclusion, and a barplot summarizing the distribution of the size of DAGs visited by the MCMC.
 }
 \examples{
 # Randomly generate a DAG and the DAG-parameters

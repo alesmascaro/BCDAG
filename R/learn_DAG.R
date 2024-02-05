@@ -25,6 +25,8 @@
 #' by setting \code{collapse = TRUE}. In this case, the algorithm outputs a collection of \eqn{S} DAG structures only.
 #' See also functions \code{get_edgeprobs}, \code{get_MAPdag}, \code{get_MPMdag} for posterior summaries of the MCMC output.
 #'
+#' Print, summary and plot methods are available for this function. \code{print} provides information about the MCMC output and the values of the input prior hyperparameters. \code{summary} returns, besides the previous information, a \eqn{(q,q)} matrix collecting the marginal posterior probabilities of edge inclusion. \code{plot} returns the estimated Median Probability DAG Model (MPM), a \eqn{(q,q)} heat map with estimated marginal posterior probabilities of edge inclusion, and a barplot summarizing the distribution of the size of DAGs visited by the MCMC.
+#'
 #' @author Federico Castelletti and Alessandro Mascaro
 #'
 #' @references F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.
