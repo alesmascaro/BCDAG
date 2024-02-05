@@ -96,20 +96,20 @@ get_diagnostics <- function(learnDAG_output, ask = TRUE, nodes = integer(0)) {
   }
 
     ## Plotting
-
   graphics::par(mfrow = c(1,2))
-  plot(1:S, Graphsizes, type = "l", xlab = "Iteration", ylab = "graph size", main = "", col = 1)
-  plot(1:S, cumsum(Graphsizes)/(1:S), type = "l", xlab = "Iteration", ylab = "average graph size", main = "", col = 2)
+  base::plot(1:S, Graphsizes, type = "l", xlab = "Iteration", ylab = "graph size", main = "Graph size traceplot", col = 1)
+  base::plot(1:S, cumsum(Graphsizes)/(1:S), type = "l", xlab = "Iteration", ylab = "average graph size", main = "Graph size running mean", col = 2)
 
   if (length(nodes) == 0) {
-    graphics::par(mfrow = c(2,3))
     graphics::par(ask = ask)
     if(q <= 30) {
+      graphics::par(mfrow = c(2,3))
       for (j in 1:q) {
         graphics::matplot(t(tracematrices[[j]]), type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
         if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
       }
     } else {
+      graphics::par(mfrow = c(2,3))
       randomnodes <- sample(1:q, 30)
       for (j in randomnodes) {
         graphics::matplot(t(tracematrices[[j]]), type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
@@ -117,13 +117,14 @@ get_diagnostics <- function(learnDAG_output, ask = TRUE, nodes = integer(0)) {
       }
     }
   } else {
-    graphics::par(ask = ask)
     if(length(nodes) <= 30) {
       for (j in nodes) {
+        graphics::par(ask = ask, mfrow = c(1,1))
         graphics::matplot(t(tracematrices[[j]]), type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
         if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
       }
     } else {
+      graphics::par(mfrow = c(2,3), ask = ask)
       randomnodes <- sample(nodes, 30)
       for (j in randomnodes) {
         graphics::matplot(t(tracematrices[[j]]), type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
@@ -131,6 +132,5 @@ get_diagnostics <- function(learnDAG_output, ask = TRUE, nodes = integer(0)) {
       }
     }
   }
-
 }
 
