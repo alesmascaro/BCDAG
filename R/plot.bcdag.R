@@ -55,7 +55,7 @@ plot.bcdag <- function(x, ..., ask = TRUE) {
   Rgraphviz::plot(as_graphNEL(MPMdag), main = "Median probability DAG")
   grDevices::devAskNewPage(ask = ask)
   c = grDevices::gray.colors(20, start = 1, end = 0, gamma = 1, alpha = NULL)
-  print(lattice::levelplot(edgeprobs, xlab = "From", ylab = "Into", col.regions = c, main = "Probabilities of edge inclusion"))
+  print(lattice::levelplot(t(edgeprobs), xlab = "Into", ylab = "From", col.regions = c, main = "Probabilities of edge inclusion"))
   print(lattice::histogram(Graphsizes, probability = TRUE, col = "grey", ylab = "% on total", main = "Distribution of DAGs size"))
   grDevices::devAskNewPage(ask = FALSE)
 }
