@@ -39,14 +39,14 @@ plot.bcdagCE <- function(x, ..., which_ce = integer(0)) {
   if (length(which_ce) == 0) {
     for (j in 1:ntargets) {
       bw <- lattice::bwplot(getCE_output$causaleffects[,j], xlab = paste0("Causal effect of ", targets[j]))
-      hg <- lattice::histogram(getCE_output$causaleffects[,j], xlab = paste0("Causal effect of ", targets[j]), ylab = "Frequancy")
+      hg <- lattice::histogram(getCE_output$causaleffects[,j], xlab = paste0("Causal effect of ", targets[j]), ylab = "Frequency")
       print(bw, split = c(1,1,2,1), more = T)
       print(hg, split = c(2,1,2,1), more = F)
     }
   } else {
     for (j in which_ce) {
       bw <- lattice::bwplot(getCE_output$causaleffects[,j], xlab = paste0("Causal effect of ", targets[j]))
-      hg <- lattice::histogram(getCE_output$causaleffects[,j], xlab = paste0("Causal effect of ", targets[j]))
+      hg <- lattice::histogram(getCE_output$causaleffects[,j], xlab = paste0("Causal effect of ", targets[j]), ylab = "Frequency")
       print(bw, split = c(1,1,2,1), more = T)
       print(hg, split = c(2,1,2,1), more = F)
     }
