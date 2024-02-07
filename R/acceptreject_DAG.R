@@ -16,6 +16,8 @@
 #' @param w prior probability of edge inclusion
 #' @param current.opcard number of direct successors of \code{currentDAG}
 #' @param proposed.opcard number of direct successors of \code{proposedDAG}
+#' @noRd
+#'
 #' @return A Boolean indicating whether \code{proposedDAG} has been accepted (\code{TRUE}) or not (\code{FALSE})
 
 acceptreject_DAG <- function(tXX, n, currentDAG, proposedDAG, node, op.type,

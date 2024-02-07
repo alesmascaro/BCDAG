@@ -4,9 +4,7 @@
 #' @param ... additional arguments affecting the summary produced
 #'
 #' @return A printed message listing the inputs given to learn_DAG and get_causaleffect.
-#' @rdname print.bcdagCE
-#' @export print.bcdagCE
-#' @export
+#' @noRd
 #'
 #' @examples q = 8
 #' w = 0.2

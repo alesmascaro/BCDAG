@@ -17,7 +17,7 @@
 #' @param a common shape hyperparameter of the compatible DAG-Wishart, \eqn{a > q - 1}
 #' @param U position hyperparameter of the compatible DAG-Wishart, a \eqn{(q, q)} s.p.d. matrix
 #'
-#' @return A list of two elements: a \eqn{qxqxn} array collecting \eqn{n} sampled matrices \eqn{L} and a \eqn{qxqxn} array collecting \eqn{n} sampled matrices \eqn{D}
+#' @return A list of two elements: a \eqn{(q,q,n)} array collecting \eqn{n} sampled matrices \eqn{L} and a \eqn{(q,q,n)} array collecting \eqn{n} sampled matrices \eqn{D}
 #' @export
 #'
 #' @author Federico Castelletti and Alessandro Mascaro

@@ -5,9 +5,7 @@
 #' @param ... additional arguments affecting the summary produced
 #'
 #' @return Plot of the Median Probability DAG and of the probabilities of edge inclusion as estimated by learn_DAG.
-#' @rdname plot.bcdag
-#' @export plot.bcdag
-#' @export
+#' @noRd
 #'
 #' @examples n <- 1000
 #' q <- 4
