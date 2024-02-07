@@ -39,7 +39,7 @@
 #'
 get_MPMdag <- function(learnDAG_output) {
 
-  if (validate_bcdag(learnDAG_output) == FALSE) {
+  if (!methods::is(learnDAG_output,"bcdag")) {
     stop("learnDAG_output must be an object of class bcdag")
   }
 

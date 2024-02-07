@@ -28,7 +28,7 @@
 #' print(out)
 print.bcdag <- function(x, ...) {
   learnDAG_output <- x
-  if (validate_bcdag(learnDAG_output) == FALSE) {
+  if (!methods::is(x,"bcdag")) {
     stop("learnDAG_output must be an object of class bcdag")
   }
   type = attributes(learnDAG_output)$type

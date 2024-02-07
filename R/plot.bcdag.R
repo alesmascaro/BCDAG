@@ -29,7 +29,7 @@
 #' plot(out)
 plot.bcdag <- function(x, ..., ask = TRUE) {
   learnDAG_output <- x
-  if (validate_bcdag(learnDAG_output) == FALSE) {
+  if (!methods::is(x,"bcdag")) {
     stop("learnDAG_output must be an object of class bcdag")
   }
 

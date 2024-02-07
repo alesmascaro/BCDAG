@@ -63,7 +63,7 @@
 get_causaleffect <- function(learnDAG_output, targets, response, verbose = TRUE) {
     ## Input check
 
-  learnDAGinput_check <- validate_bcdag(learnDAG_output)
+  learnDAGinput_check <- methods::is(learnDAG_output, "bcdag")
   targets_check <- is.numeric(targets) & is.vector(targets)
   if (targets_check) {
     targets_check <- targets_check & all(targets %% 1 == 0) &

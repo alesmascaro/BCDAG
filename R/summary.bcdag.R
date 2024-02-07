@@ -28,7 +28,7 @@
 #' summary(out)
 summary.bcdag <- function(object, ...) {
   learnDAG_output <- object
-  if (validate_bcdag(learnDAG_output) == FALSE) {
+  if (!methods::is(learnDAG_output,"bcdag")) {
     stop("learnDAG_output must be an object of class bcdag")
   }
 
