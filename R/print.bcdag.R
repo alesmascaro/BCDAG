@@ -4,7 +4,7 @@
 #' @param ... additional arguments affecting the summary produced
 #'
 #' @return A printed message listing the inputs given to learn_DAG.
-#' @noRd
+#' @export
 #'
 #' @examples n <- 1000
 #' q <- 4

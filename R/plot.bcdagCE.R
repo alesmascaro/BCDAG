@@ -5,7 +5,7 @@
 #' @param which_ce specifies the list of nodes for which you intend to generate a boxplot and a histogram
 #'
 #' @return Boxplot and histogram of the posterior distribution of the causal effects computed using get_causaleffect().
-#' @noRd
+#' @export
 #'
 #' @examples q = 8
 #' w = 0.2

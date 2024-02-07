@@ -4,7 +4,7 @@
 #' @param ... additional arguments affecting the summary produced
 #'
 #' @return A printed message listing the inputs given to learn_DAG, a graphical representation of the Median Probability DAG, a heatmap representing posterior probability of edge inclusion and an histogram of the number of edges in the visited DAGs.
-#' @noRd
+#' @export
 #'
 #' @examples n <- 1000
 #' q <- 4

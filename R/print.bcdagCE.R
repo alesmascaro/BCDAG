@@ -4,7 +4,7 @@
 #' @param ... additional arguments affecting the summary produced
 #'
 #' @return A printed message listing the inputs given to learn_DAG and get_causaleffect.
-#' @noRd
+#' @export
 #'
 #' @examples q = 8
 #' w = 0.2
