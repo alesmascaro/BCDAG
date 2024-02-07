@@ -20,7 +20,7 @@
 #' out_mcmc = learn_DAG(S = 500, burn = 100, a = q, U = diag(1,q)/n, data = X, w = w,
 #'                      fast = TRUE, save.memory = FALSE, verbose = FALSE)
 #' out_ce <- get_causaleffect(out_mcmc, targets = c(4,6), response = 1)
-#' summary(out_ce)
+#' # summary(out_ce)
 summary.bcdagCE <- function(object, ...) {
   getCE_output <- object
   if (!methods::is(object,"bcdagCE")) {

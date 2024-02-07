@@ -16,7 +16,7 @@ rDAGWishart(n, DAG, a, U)
 \item{U}{position hyperparameter of the compatible DAG-Wishart, a \eqn{(q, q)} s.p.d. matrix}
 }
 \value{
-A list of two elements: a \eqn{qxqxn} array collecting \eqn{n} sampled matrices \eqn{L} and a \eqn{qxqxn} array collecting \eqn{n} sampled matrices \eqn{D}
+A list of two elements: a \eqn{(q,q,n)} array collecting \eqn{n} sampled matrices \eqn{L} and a \eqn{(q,q,n)} array collecting \eqn{n} sampled matrices \eqn{D}
 }
 \description{
 This function implements a direct sampling from a compatible DAG-Wishart distribution with parameters \code{a} and \code{U}.

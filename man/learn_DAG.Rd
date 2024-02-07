@@ -103,9 +103,9 @@ get_MPMdag(out_mcmc_collapse)
 # get_MPMdag(out_mcmc_collapse_fast)
 
 # Methods
-print(out_mcmc)
-summary(out_mcmc)
-plot(out_mcmc)
+# print(out_mcmc)
+# summary(out_mcmc)
+# plot(out_mcmc)
 
 }
 \references{
