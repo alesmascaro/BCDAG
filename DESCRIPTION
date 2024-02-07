@@ -1,5 +1,5 @@
 Package: BCDAG
-Title: Bayesian Structure and Causal Learning of Gaussian Directed Graphs
+Title: Bayesian Structure and Causal Learning of Gaussian Directed Acyclic Graphs
 Version: 1.0.0.9000
 Authors@R: 
     c(person(given = "Federico",
@@ -10,9 +10,7 @@ Authors@R:
            family = "Mascaro",
            role = c("aut", "cre"),
            email = "a.mascaro3@campus.unimib.it"))
-Description: A collection of functions for structure learning of causal networks and estimation of joint 
-    causal effects from observational Gaussian data. Main algorithm consists of a Markov chain Monte Carlo 
-    scheme for posterior inference of causal structures, parameters and causal effects between variables.
+Description: A collection of functions for structure learning of causal networks and estimation of joint causal effects from observational Gaussian data. Main algorithm consists of a Markov chain Monte Carlo scheme for posterior inference of causal structures, parameters and causal effects between variables.
     References:
     F. Castelletti and A. Mascaro (2021) <doi:10.1007/s10260-021-00579-1>,
     F. Castelletti and A. Mascaro (2022) <arXiv:2201.12003>.
