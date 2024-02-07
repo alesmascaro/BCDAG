@@ -77,6 +77,12 @@
 #' # get_edgeprobs(out_mcmc_collapse_fast)
 #' get_MPMdag(out_mcmc_collapse)
 #' # get_MPMdag(out_mcmc_collapse_fast)
+#'
+#' # Methods
+#' print(out_mcmc)
+#' summary(out_mcmc)
+#' plot(out_mcmc)
+#'
 
 learn_DAG <- function(S, burn,
                       data, a, U, w,

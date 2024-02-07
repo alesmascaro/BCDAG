@@ -101,6 +101,12 @@ get_edgeprobs(out_mcmc_collapse)
 # get_edgeprobs(out_mcmc_collapse_fast)
 get_MPMdag(out_mcmc_collapse)
 # get_MPMdag(out_mcmc_collapse_fast)
+
+# Methods
+print(out_mcmc)
+summary(out_mcmc)
+plot(out_mcmc)
+
 }
 \references{
 F. Castelletti and A. Mascaro (2021). Structural learning and estimation of joint causal effects among network-dependent variables. \emph{Statistical Methods and Applications}, Advance publication.

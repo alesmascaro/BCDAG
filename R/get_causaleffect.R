@@ -53,7 +53,12 @@
 #' head(out_mcmc$D)
 #' # Compute the BMA estimate of coefficients representing
 #' # the causal effect on node 1 of an intervention on {3,4}
-#' get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1)$post_mean
+#' out_causal = get_causaleffect(learnDAG_output = out_mcmc, targets = c(3,4), response = 1)$post_mean
+#'
+#' # Methods
+#' print(out_causal)
+#' summary(out_causal)
+#' plot(out_causal)
 
 get_causaleffect <- function(learnDAG_output, targets, response, verbose = TRUE) {
     ## Input check
