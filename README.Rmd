@@ -69,7 +69,7 @@ The three steps here implemented are detailed in the vignettes [1 - Random data 
 
 # Authors
 
-- Alessandro Mascaro, Department of Economics, Management and Statistics, University of Milano-Bicocca, Milan, a.mascaro3@campus.unimib.it
+- Alessandro Mascaro, Department of Economics, Management and Statistics, University of Milano-Bicocca, Milan, alessandro.mascaro@upf.edu
 - Federico Castelletti, Department of Statistical sciences, Università Cattolica del Sacro Cuore, Milan, federico.castelletti@unicatt.it
 
 <!-- badges: start -->

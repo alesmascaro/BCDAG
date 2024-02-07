@@ -79,11 +79,11 @@ functions](https://alesmascaro.github.io/BCDAG/vignettes/bcdag_getfamily.html)
 
 # Authors
 
--   Alessandro Mascaro, Department of Economics, Management and
-    Statistics, University of Milano-Bicocca, Milan,
-    <a.mascaro3@campus.unimib.it>
--   Federico Castelletti, Department of Statistical sciences, Università
-    Cattolica del Sacro Cuore, Milan, <federico.castelletti@unicatt.it>
+- Alessandro Mascaro, Department of Economics, Management and
+  Statistics, University of Milano-Bicocca, Milan,
+  <alessandro.mascaro@upf.edu>
+- Federico Castelletti, Department of Statistical sciences, Università
+  Cattolica del Sacro Cuore, Milan, <federico.castelletti@unicatt.it>
 
 <!-- badges: start -->
 
