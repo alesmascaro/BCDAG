@@ -65,7 +65,7 @@ out <- learn_DAG(S = 5000, burn = 1000, data = X,
                  fast = FALSE, save.memory = FALSE, collapse = FALSE)
 ```
 
-## MCMC diagnsotics of convergence: function `get_diagnostics()`
+## MCMC diagnostics of convergence: function `get_diagnostics()`
 
 Before using the MCMC output for posterior inference, it is common practice to perform some convergence checks.
 Function `get_diagnostics()` provides graphical diagnostics of convergence for the MCMC output of `learn_DAG()`.
@@ -81,7 +81,7 @@ Output is organized in $q$ plots (one for each node $v = 1, \dots, q$), each sum
 
 
 ```{r fig.width = 7, fig.height= 6}
-get_diagnostics(out)
+get_diagnostics(out, ask = FALSE)
 ```
 
 

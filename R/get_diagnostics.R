@@ -86,18 +86,23 @@ get_diagnostics <- function(learnDAG_output, ask = TRUE, nodes = integer(0)) {
     cumedgeprob[,,i] <- cumedgesum[,,i]/i
   }
   tracematrices <- vector("list", q)
-  whc_iter <- lapply(1:q, function(i) 1:S)
+  whc_iter <- lapply(1:q, function(i) as.matrix(1:S))
   whcs <- vector("list", q)
   for (j in 1:q) {
     whc <- which(cumedgeprob[,j,S] >= 0.05)
     whcs[[j]] <- whc[order(cumedgeprob[whc, j, S], decreasing = TRUE)]
-    tracematrices[[j]] <- cumedgeprob[whcs[[j]],j,]
+    if (length(whcs[[j]]) != 1) {
+      tracematrices[[j]] <- t(as.matrix(cumedgeprob[whcs[[j]],j,]))
+    } else {
+      tracematrices[[j]] <- as.matrix(cumedgeprob[whcs[[j]],j,])
+    }
+
     if (S > 10000) {
       whc_iter[[j]] <- seq(1,S, length.out = 10000)
       if (length(whc) > 1) {
-        tracematrices[[j]] <- tracematrices[[j]][,whc_iter[[j]]]
+        tracematrices[[j]] <- tracematrices[[j]][whc_iter[[j]],]
       } else {
-        tracematrices[[j]] <- t(tracematrices[[j]][whc_iter[[j]]])
+        tracematrices[[j]] <- as.matrix(tracematrices[[j]][whc_iter[[j]]])
       }
     }
   }
@@ -110,14 +115,14 @@ get_diagnostics <- function(learnDAG_output, ask = TRUE, nodes = integer(0)) {
     if(q <= 30) {
       graphics::par(mfrow = c(2,3))
       for (j in 1:q) {
-        graphics::matplot(y = t(tracematrices[[j]]), x = whc_iter[[j]], type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
+        graphics::matplot(y = tracematrices[[j]], x = whc_iter[[j]], type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
         if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
       }
     } else {
       graphics::par(mfrow = c(2,3))
       randomnodes <- sample(1:q, 30)
       for (j in randomnodes) {
-        graphics::matplot(y = t(tracematrices[[j]]), x = whc_iter[[j]], type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
+        graphics::matplot(y = tracematrices[[j]], x = whc_iter[[j]], type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
         if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
       }
     }
@@ -125,14 +130,14 @@ get_diagnostics <- function(learnDAG_output, ask = TRUE, nodes = integer(0)) {
     if(length(nodes) <= 30) {
       for (j in nodes) {
         graphics::par(ask = ask, mfrow = c(1,1))
-        graphics::matplot(y = t(tracematrices[[j]]), x = whc_iter[[j]], type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
+        graphics::matplot(y = tracematrices[[j]], x = whc_iter[[j]], type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
         if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
       }
     } else {
       graphics::par(mfrow = c(2,3), ask = ask)
       randomnodes <- sample(nodes, 30)
       for (j in randomnodes) {
-        graphics::matplot(y = t(tracematrices[[j]]), x = whc_iter[[j]], type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
+        graphics::matplot(y = tracematrices[[j]], x = whc_iter[[j]], type = "l", xlab = "Iteration", ylab = "prob. of inclusion", main = paste("Into node", j), ylim = c(0,1))
         if (length(whcs[[j]]) != 0) graphics::legend("topleft", legend = utils::head(whcs[[j]], 6), col = 1:max(length(whcs[[j]]), 6), lty = 1, cex = 0.75)
       }
     }
