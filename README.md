@@ -15,7 +15,7 @@ Applications,
 
 # Installation
 
-The package can be installed executing the following chunk of code:
+The package can be installed executing the following code:
 
 ``` r
 # install.packages("devtools")
@@ -65,23 +65,22 @@ variable consequent to a hard intervention on a set of nodes by using
 ``` r
 # the causal effect on node 1 of an intervention on {3,4}
 out |>
-  get_causaleffect(targets = c(3,4), response = 1, BMA = TRUE)
+  get_causaleffect(targets = c(3,4), response = 1)
 ```
 
 The three steps here implemented are detailed in the vignettes [1 -
 Random data generation from Gaussian
-DAG-models](https://alesmascaro.github.io/BCDAG/vignettes/bcdag_generatedata.html),
+DAG-models](https://alesmascaro.github.io/BCDAG/bcdag_generatedata.html),
 [2 - MCMC scheme for posterior inference of Gaussian DAG models: the
 `learn_DAG()`
-function](https://alesmascaro.github.io/BCDAG/vignettes/bcdag_learnDAG.html)
-and [3 - Elaborate on the output of `learn_DAG()` using get\_
-functions](https://alesmascaro.github.io/BCDAG/vignettes/bcdag_getfamily.html)
+function](https://alesmascaro.github.io/BCDAG/bcdag_learnDAG.html) and
+[3 - Elaborate on the output of `learn_DAG()` using get\_
+functions](https://alesmascaro.github.io/BCDAG/bcdag_getfamily.html)
 
 # Authors
 
-- Alessandro Mascaro, Department of Economics, Management and
-  Statistics, University of Milano-Bicocca, Milan,
-  <alessandro.mascaro@upf.edu>
+- Alessandro Mascaro, Departament d’Economia i Empresa, Universitat
+  Pompeu Fabra, Barcelona, <alessandro.mascaro@upf.edu>
 - Federico Castelletti, Department of Statistical sciences, Università
   Cattolica del Sacro Cuore, Milan, <federico.castelletti@unicatt.it>
 
