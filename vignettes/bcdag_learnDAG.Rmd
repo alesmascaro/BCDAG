@@ -127,7 +127,7 @@ str(out)
 ```
 
 Attribute `type` refers to the output of `learn_DAG()`, whose structure
-depends on the choice of boolean arguments `save.memory` and `collapse`.
+depends on the choice of the arguments `save.memory` and `collapse`.
 
 \vspace{0.2cm}
 
