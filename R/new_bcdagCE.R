@@ -9,6 +9,7 @@
 #'
 #' @return An S3 object of class \code{bcdagCE}
 #' @noRd
+#' @keywords internal
 #'
 #' @author Federico Castelletti and Alessandro Mascaro
 #'

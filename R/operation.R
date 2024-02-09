@@ -6,6 +6,7 @@
 #' @param A \eqn{(q,q)} adjacency matrix of the input DAG
 #' @param nodes numerical labels of nodes on which the operator is applied, a \eqn{(2,1)} vector
 #' @noRd
+#' @keywords internal
 #'
 #' @return The \eqn{(q,q)} adjacency matrix of the modified DAG
 operation <- function(op, A, nodes) {

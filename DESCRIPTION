@@ -8,7 +8,7 @@ Authors@R:
            email = "federico.castelletti@unicatt.it"),
            person(given = "Alessandro",
            family = "Mascaro",
-           role = c("aut", "cre"),
+           role = c("aut", "cre", "cph"),
            email = "alessandro.mascaro@upf.edu"))
 Description: A collection of functions for structure learning of causal networks and estimation of joint causal effects from observational Gaussian data. Main algorithm consists of a Markov chain Monte Carlo scheme for posterior inference of causal structures, parameters and causal effects between variables.
     References:

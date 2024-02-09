@@ -1,7 +1,10 @@
 #' Find the direct successors DAGs of an input DAG (internal function)
 #'
 #' @param DAG The input DAG
+#'
+#' @return The cardinality of the set of DAGs that can be reached by addition, removal or reversal of one edge.
 #' @noRd
+#' @keywords internal
 
 get_opcard <- function(DAG) {
   A <- DAG

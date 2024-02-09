@@ -1,7 +1,5 @@
 # BCDAG 1.1.0
 
-# BCDAG (1.1)
-
 ## New functions
 * New `print()` and `plot` methods for objects of class `bcdag`;
 * New object class `bcdagCE`, containing the output of function `get_causaleffect()`, and associated `print()`, `summary()` and `plot` methods;

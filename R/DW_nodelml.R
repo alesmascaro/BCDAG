@@ -1,4 +1,4 @@
-#' Compute node-marginal likelihoods of a DAG model (internal function)
+#' Compute node-marginal likelihoods of a DAG model
 #'
 #' This function computes the log-marginal likelihood of the conditional distribution of variable \code{node}
 #' given its parents in \code{DAG} under a DAG-Wishart prior on the DAG model-parameters
@@ -12,6 +12,7 @@
 #'
 #' @return The logarithm of the marginal likelihood of \code{node}
 #' @noRd
+#' @keywords internal
 DW_nodelml <- function(node, DAG, tXX, n, a, U) {
   j <- node
   pa <- pa(j, DAG)
