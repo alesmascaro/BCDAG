@@ -1,10 +1,12 @@
 #' bcdag object plot
 #'
+#' This method returns summary plots of the output of \code{learn_DAG()}.
+#'
 #' @param x a \code{bcdag} object for which a plot is desired
 #' @param ask Boolean argument passed to par() for visualization;
 #' @param ... additional arguments affecting the summary produced
 #'
-#' @return Plot of the Median Probability DAG and of the probabilities of edge inclusion as estimated by learn_DAG.
+#' @return Plot of the Median Probability DAG, a heatmap of the probabilities of edge inclusion and an histogram of the sizes of graphs visited by learn_DAG().
 #' @export
 #'
 #' @examples n <- 1000

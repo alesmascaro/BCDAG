@@ -1,5 +1,7 @@
 #' bcdagCE object print
 #'
+#' This method returns a summary of the inputs given to \code{learn_DAG()} and \code{get_causaleffect()} to obtain the \code{bcdagCE} object.
+#'
 #' @param x a \code{bcdagCE} object for which a summary is desired
 #' @param ... additional arguments affecting the summary produced
 #'

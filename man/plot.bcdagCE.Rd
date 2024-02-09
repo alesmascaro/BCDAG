@@ -17,7 +17,7 @@
 Boxplot and histogram of the posterior distribution of the causal effects computed using get_causaleffect().
 }
 \description{
-bcdagCE object plot
+This method returns summary plots of the output of \code{get_causaleffect()}.
 }
 \examples{
 q = 8

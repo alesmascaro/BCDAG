@@ -15,7 +15,7 @@
 A printed message listing the inputs given to learn_DAG.
 }
 \description{
-bcdag object print
+This method returns a summary of the input given to \code{learn_DAG()} to produce the \code{bcdag} object.
 }
 \examples{
 n <- 1000

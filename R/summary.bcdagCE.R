@@ -1,9 +1,11 @@
 #' bcdagCE object summary
 #'
+#' This method produces summaries of the input and output of the function \code{get_causaleffect()}.
+#'
 #' @param object a \code{bcdagCE} object for which a summary is desired
 #' @param ... additional arguments affecting the summary produced
 #'
-#' @return A printed message listing the inputs given to learn_DAG and get_causaleffect() and summary statistics of the posterior distribution.
+#' @return A printed message listing the inputs given to learn_DAG() and get_causaleffect() and summary statistics of the posterior distribution.
 #' @export
 #'
 #' @examples q = 8

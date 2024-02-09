@@ -14,10 +14,10 @@
 \item{ask}{Boolean argument passed to par() for visualization;}
 }
 \value{
-Plot of the Median Probability DAG and of the probabilities of edge inclusion as estimated by learn_DAG.
+Plot of the Median Probability DAG, a heatmap of the probabilities of edge inclusion and an histogram of the sizes of graphs visited by learn_DAG().
 }
 \description{
-bcdag object plot
+This method returns summary plots of the output of \code{learn_DAG()}.
 }
 \examples{
 n <- 1000

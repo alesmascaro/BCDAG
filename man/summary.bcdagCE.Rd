@@ -12,10 +12,10 @@
 \item{...}{additional arguments affecting the summary produced}
 }
 \value{
-A printed message listing the inputs given to learn_DAG and get_causaleffect() and summary statistics of the posterior distribution.
+A printed message listing the inputs given to learn_DAG() and get_causaleffect() and summary statistics of the posterior distribution.
 }
 \description{
-bcdagCE object summary
+This method produces summaries of the input and output of the function \code{get_causaleffect()}.
 }
 \examples{
 q = 8

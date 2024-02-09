@@ -15,7 +15,7 @@
 A printed message listing the inputs given to learn_DAG and get_causaleffect.
 }
 \description{
-bcdagCE object print
+This method returns a summary of the inputs given to \code{learn_DAG()} and \code{get_causaleffect()} to obtain the \code{bcdagCE} object.
 }
 \examples{
 q = 8

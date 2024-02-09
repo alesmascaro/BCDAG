@@ -1,5 +1,7 @@
 #' bcdag object print
 #'
+#' This method returns a summary of the input given to \code{learn_DAG()} to produce the \code{bcdag} object.
+#'
 #' @param x a \code{bcdag} object for which a summary is desired
 #' @param ... additional arguments affecting the summary produced
 #'

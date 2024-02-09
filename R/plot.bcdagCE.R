@@ -1,5 +1,7 @@
 #' bcdagCE object plot
 #'
+#' This method returns summary plots of the output of \code{get_causaleffect()}.
+#'
 #' @param x a \code{bcdagCE} object for which a plot is desired
 #' @param ... additional arguments affecting the summary produced
 #' @param which_ce specifies the list of nodes for which you intend to generate a boxplot and a histogram

@@ -12,10 +12,10 @@
 \item{...}{additional arguments affecting the summary produced}
 }
 \value{
-A printed message listing the inputs given to learn_DAG, a graphical representation of the Median Probability DAG, a heatmap representing posterior probability of edge inclusion and an histogram of the number of edges in the visited DAGs.
+A printed message listing the inputs given to learn_DAG and the estimated posterior probabilities of edge inclusion.
 }
 \description{
-bcdag object summaries
+This method produces summaries of the input and output of the function \code{learn_DAG()}.
 }
 \examples{
 n <- 1000
