@@ -33,7 +33,7 @@ confint.bcdagCE <- function(object, parm = "all", level = 0.95, ...) {
   if (!(level > 0 & level < 1)) {
     stop("level must be in (0,1)")
   }
-  if (parm == "all") {
+  if (prod(parm == "all") == 1) {
     alpha <- 1-level
     ci <- base::apply(as.matrix(object$causaleffect), 2, stats::quantile, c(alpha/2, 1-alpha/2))
     ci <- t(ci)
