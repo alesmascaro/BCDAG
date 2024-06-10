@@ -38,7 +38,7 @@ confint.bcdagCE <- function(object, parm = "all", level = 0.95, ...) {
     ci <- base::apply(as.matrix(object$causaleffect), 2, stats::quantile, c(alpha/2, 1-alpha/2))
     ci <- t(ci)
   } else {
-    coln <- colnames(object)
+    coln <- colnames(object$causaleffects)
     coln <- sapply(coln, function(j) as.integer(substr(j, nchar(j), nchar(j))))
     ind <- parm %in% coln
     if (sum(!ind) != 0) {
