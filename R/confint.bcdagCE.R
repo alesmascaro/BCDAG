@@ -1,4 +1,4 @@
-#' Confidence Intervals of bcdagCE Object
+#' Confidence Intervals for bcdagCE Object
 #'
 #' Computes credible (not confidence!) intervals for one or more target variables from objects of class \code{bcdagCE}.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/confint.bcdagCE.R
 \name{confint.bcdagCE}
 \alias{confint.bcdagCE}
-\title{Confidence Intervals of bcdagCE Object}
+\title{Confidence Intervals for bcdagCE Object}
 \usage{
 \method{confint}{bcdagCE}(object, parm = "all", level = 0.95, ...)
 }
