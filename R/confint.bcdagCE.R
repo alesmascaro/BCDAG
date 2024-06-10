@@ -30,6 +30,9 @@ confint.bcdagCE <- function(object, parm = "all", level = 0.95, ...) {
   if (!methods::is(object,"bcdagCE")) {
     stop("learnDAG_output must be an object of class bcdagCE")
   }
+  if (length(level) != 1) {
+    stop("level must be a scalar")
+  }
   if (!(level > 0 & level < 1)) {
     stop("level must be in (0,1)")
   }
