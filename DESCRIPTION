@@ -1,6 +1,6 @@
 Package: BCDAG
 Title: Bayesian Structure and Causal Learning of Gaussian Directed Graphs
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: 
     c(person(given = "Federico",
            family = "Castelletti",
