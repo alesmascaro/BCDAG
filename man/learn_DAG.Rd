@@ -39,7 +39,7 @@ learn_DAG(
 \item{verbose}{If \code{TRUE}, progress bars are displayed}
 }
 \value{
-An S3 object of class \code{bcdag} containing \eqn{S} draws from the posterior of DAGs and (if \code{collapse = FALSE}) of DAG parameters \eqn{D} and \eqn{L}. If \code{save.memory = FALSE}, these are stored in three arrays of dimension \eqn{(q,q,S)}. Otherwise, they are stored as strings.
+An S3 object of class \code{bcdag} with a type attribute describing the options used to generate the output. If \code{collapse = FALSE} and \code{save.memory = FALSE} type is "complete" and the object contains \eqn{S} draws from the posterior of DAGs and of DAG parameters \eqn{D} and \eqn{L}, stored in three arrays of dimension \eqn{(q,q,S)}. If \code{save.memory = TRUE}, type is "compressed" and the output is stored as vectors of strings. If \code{collapsed = TRUE}, type is "collapsed" and the object only contains draws from the posterior over DAGs stored in a {(q,q,S)} array. If \code{save.memory = TRUE} and \code{collapsed = TRUE}, type is "compressed and collapsed" and the output is stored as a vector of strings.
 }
 \description{
 This function implements a Markov Chain Monte Carlo (MCMC) algorithm for structure learning of Gaussian
