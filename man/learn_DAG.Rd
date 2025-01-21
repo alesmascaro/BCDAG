@@ -39,7 +39,21 @@ learn_DAG(
 \item{verbose}{If \code{TRUE}, progress bars are displayed}
 }
 \value{
-An S3 object of class \code{bcdag} with a type attribute describing the options used to generate the output. If \code{collapse = FALSE} and \code{save.memory = FALSE} type is "complete" and the object contains \eqn{S} draws from the posterior of DAGs and of DAG parameters \eqn{D} and \eqn{L}, stored in three arrays of dimension \eqn{(q,q,S)}. If \code{save.memory = TRUE}, type is "compressed" and the output is stored as vectors of strings. If \code{collapsed = TRUE}, type is "collapsed" and the object only contains draws from the posterior over DAGs stored in a {(q,q,S)} array. If \code{save.memory = TRUE} and \code{collapsed = TRUE}, type is "compressed and collapsed" and the output is stored as a vector of strings.
+An S3 object of class \code{bcdag}, with a \code{type} attribute describing the chosen output format:
+\itemize{
+\item \code{"complete"} (\code{collapse = FALSE}, \code{save.memory = FALSE}):
+includes \eqn{S} draws of DAGs and parameters \eqn{D, L} stored in three
+\eqn{(q \times q \times S)} arrays.
+
+\item \code{"compressed"} (\code{collapse = FALSE}, \code{save.memory = TRUE}):
+same data, but stored as character vectors (strings).
+
+\item \code{"collapsed"} (\code{collapse = TRUE}, \code{save.memory = FALSE}):
+includes only DAG draws, stored in a \eqn{(q \times q \times S)} array.
+
+\item \code{"compressed and collapsed"} (\code{collapse = TRUE}, \code{save.memory = TRUE}):
+only DAG draws, stored as character vectors.
+}
 }
 \description{
 This function implements a Markov Chain Monte Carlo (MCMC) algorithm for structure learning of Gaussian
