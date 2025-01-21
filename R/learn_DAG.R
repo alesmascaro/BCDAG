@@ -47,17 +47,17 @@
 #' @return An S3 object of class \code{bcdag}, with a \code{type} attribute describing the chosen output format:
 #' \itemize{
 #'   \item \code{"complete"} (\code{collapse = FALSE}, \code{save.memory = FALSE}):
-#'   includes \eqn{S} draws of DAGs and parameters \eqn{D, L} stored in three
-#'   \eqn{(q \times q \times S)} arrays.
+#'   \eqn{S} draws of DAGs and parameters \eqn{D, L}, stored in three
+#'   \eqn{(q,q,S)} arrays;
 #'
 #'   \item \code{"compressed"} (\code{collapse = FALSE}, \code{save.memory = TRUE}):
-#'   same data, but stored as character vectors (strings).
+#'   \eqn{S} draws of DAGs and parameters \eqn{D, L}, stored as character vectors;
 #'
 #'   \item \code{"collapsed"} (\code{collapse = TRUE}, \code{save.memory = FALSE}):
-#'   includes only DAG draws, stored in a \eqn{(q \times q \times S)} array.
+#'   \eqn{S} draws of DAGs, stored in a \eqn{(q,q,S)} array;
 #'
 #'   \item \code{"compressed and collapsed"} (\code{collapse = TRUE}, \code{save.memory = TRUE}):
-#'   only DAG draws, stored as character vectors.
+#'   \eqn{S} draws of DAGs, stored as a character vector;
 #' }
 #' @export
 #'
