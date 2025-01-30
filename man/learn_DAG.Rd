@@ -42,11 +42,11 @@ learn_DAG(
 An S3 object of class \code{bcdag}, with a \code{type} attribute describing the chosen output format:
 \itemize{
 \item \code{"complete"} (\code{collapse = FALSE}, \code{save.memory = FALSE}):
-\eqn{S} draws of DAGs and parameters \eqn{D, L}, stored in three
+\eqn{S} draws of DAGs and parameters \eqn{(D, L)}, stored in three
 \eqn{(q,q,S)} arrays;
 
 \item \code{"compressed"} (\code{collapse = FALSE}, \code{save.memory = TRUE}):
-\eqn{S} draws of DAGs and parameters \eqn{D, L}, stored as character vectors;
+\eqn{S} draws of DAGs and parameters \eqn{(D, L)}, stored as character vectors;
 
 \item \code{"collapsed"} (\code{collapse = TRUE}, \code{save.memory = FALSE}):
 \eqn{S} draws of DAGs, stored in a \eqn{(q,q,S)} array;
