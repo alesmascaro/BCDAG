@@ -1,4 +1,5 @@
-# BCDAG (development version)
+# BCDAG 1.1.2
+* Improved documentation of `learn_DAG()`
 
 # BCDAG 1.1.1
 
