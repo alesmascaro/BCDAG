@@ -120,9 +120,9 @@ MAPdag
 
 ```{r fig.width = 7}
 par(mfrow = c(1,3))
-Rgraphviz::plot(as_graphNEL(DAG), main = "True DAG")
-Rgraphviz::plot(as_graphNEL(MPMdag), main = "MPM DAG")
-Rgraphviz::plot(as_graphNEL(MAPdag), main = "MAP DAG")
+graph::plot(as_graphNEL(DAG), main = "True DAG")
+graph::plot(as_graphNEL(MPMdag), main = "MPM DAG")
+graph::plot(as_graphNEL(MAPdag), main = "MAP DAG")
 ```
 
 In this example, the MPM and MAP estimates differ by a single an edge between nodes $4$ and $7$ which is reversed among the two graphs.
@@ -163,7 +163,7 @@ See also Castelletti \& Mascaro (2021) and Nandy et al. (2017) for more details.
 To better understand the difference between single and joint interventions, consider as an example the total causal effect on node $Y=1$ (i.e. variable $X_1$) of a joint intervention on nodes $4$ and $5$, $I=\{4,5\}$ (i.e. variables $X_4, X_5$) and the total causal effects of two separate interventions on nodes $4$ and $5$ under the causal model represented by the DAG generated before:
 
 ```{r}
-Rgraphviz::plot(as_graphNEL(DAG), main = "True DAG")
+graph::plot(as_graphNEL(DAG), main = "True DAG")
 ```
 
 These are given by:
@@ -181,8 +181,8 @@ However, if we slightly modify the DAG by adding an edge from node $4$ to node $
 DAG2 <- DAG
 DAG2[4,5] <- 1
 par(mfrow = c(1,2))
-Rgraphviz::plot(as_graphNEL(DAG), main = "True DAG")
-Rgraphviz::plot(as_graphNEL(DAG2), main = "Modified DAG")
+graph::plot(as_graphNEL(DAG), main = "True DAG")
+graph::plot(as_graphNEL(DAG2), main = "Modified DAG")
 ```
 
 ```{r include = FALSE}

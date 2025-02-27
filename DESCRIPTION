@@ -28,7 +28,6 @@ Imports:
     lattice,
     methods,
     mvtnorm,
-    Rgraphviz,
     stats,
     utils
 Suggests: 

@@ -52,7 +52,7 @@ plot.bcdag <- function(x, ..., ask = TRUE) {
     }
   }
   graphics::par(pty = "s")
-  Rgraphviz::plot(as_graphNEL(MPMdag), main = "Median probability DAG")
+  graph::plot(as_graphNEL(MPMdag), main = "Median probability DAG")
   grDevices::devAskNewPage(ask = ask)
   c = grDevices::gray.colors(20, start = 1, end = 0, gamma = 1, alpha = NULL)
   print(lattice::levelplot(t(edgeprobs), xlab = "Into", ylab = "From", col.regions = c, main = "Probabilities of edge inclusion"))
