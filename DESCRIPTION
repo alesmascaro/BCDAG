@@ -24,6 +24,7 @@ Imports:
     graph,
     graphics,
     gRbase,
+    Rgraphviz,
     grDevices,
     lattice,
     methods,
